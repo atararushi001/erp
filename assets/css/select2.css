@@ -1,0 +1,206 @@
+.select2.select2-container {
+    width: 100% !important;
+}
+
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+.select2-container .select2-selection--single {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    height: 28px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.select2-container .select2-selection--single,
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 2.37rem !important;
+}
+
+.select2-container--default .select2-selection--single {
+    background-color: #ffffff !important;
+    border: 0 solid #999999 !important;
+    border-radius: 0.3rem !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: black !important;
+    line-height: 28px;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    display: block;
+    padding-left: 8px;
+    padding-right: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 2.26rem !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 0.125rem !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 20px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    right: 10px !important;
+}
+
+.select2-container .select2-selection--single,
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 2.37rem !important;
+}
+
+.select2-container .select2-search .select2-search__field {
+    position: relative;
+    border-radius: 0.175rem;
+    outline: none;
+    padding: 0.2rem 0.5rem;
+    width: 100%;
+}
+
+/* styling for first option in every dropdown */
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Contact"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Customer Category"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Customer Type"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Industry"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Source / Referred by"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Branch/Warehouse"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Country"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="State"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="City"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="State"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Customer Name"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[value="Enquiry"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Enquiry Name"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Stage"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Enquiry"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Currency"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Select Category"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Select Material"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Select"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Select Unit"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Company name"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Job Title"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Department"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Communication Preference"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="About Company Category"] {
+    color: #999999 !important;
+    line-height: 28px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered[title="Product Category"] {
+    color: #999999 !important;
+    line-height: 28px;
+}

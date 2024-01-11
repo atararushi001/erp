@@ -1,0 +1,116 @@
+#sidebar.active {
+  width: 60px;
+}
+
+#sidebar::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+#sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+aside nav a span {
+  color: #666;
+}
+
+#sidebar nav a:hover span {
+  color: black;
+}
+
+aside nav a.active .nav-menu-img {
+  filter: none;
+  min-width: 20px !important;
+  min-height: 20px !important;
+}
+
+aside nav a.active span {
+  color: black;
+  font-weight: bold;
+}
+
+aside nav ul li a.active {
+  color: #000000;
+  font-weight: bold;
+}
+
+.nav-menu-img {
+  filter: invert(55%) sepia(1%) saturate(2%) hue-rotate(220deg) brightness(94%) contrast(87%);
+  min-width: 20px !important;
+  min-height: 20px !important;
+}
+
+#salesSubmenu li {
+  color: #666;
+}
+
+#salesSubmenu li:hover {
+  color: black;
+}
+
+#otherPagesSubmenu li {
+  color: #666;
+}
+
+#otherPagesSubmenu li:hover {
+  color: black;
+}
+
+#productSubmenu li {
+  color: #666;
+}
+
+#productSubmenu li:hover {
+  color: black;
+}
+
+#search-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #mydiv {
+    margin-left: 0;
+  }
+
+  aside {
+    position: fixed;
+    height: 100%;
+    z-index: 49;
+    margin-top: 0;
+  }
+
+  #sidebar {
+    position: absolute;
+    min-height: 100%;
+    width: 240px;
+    left: -240px;
+    transition: left 0.3s ease, width 0.3s ease;
+  }
+
+  #sidebar.open-from-right {
+    position: absolute;
+    left: 0;
+    min-height: 100% !important;
+    width: 240px;
+    transition: left 0.3s ease, width 0.3s ease;
+  }
+
+  #dashboard {
+    margin-top: 20px;
+  }
+}
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+
