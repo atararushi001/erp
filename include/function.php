@@ -21,7 +21,7 @@ function getoptionwithcode($table, $field, $value, $value2)
   include 'config.php';
   $data = mysqli_query($conn, "SELECT * FROM " . $table . " ORDER BY " . $value2);
   while ($datarow = mysqli_fetch_array($data)) {
-    echo '<option value="' . $datarow[$field] . '">' . $datarow[$value] . '(' . $datarow[$value] . ')</option>';
+    echo '<option value="' . $datarow[$field] . '">' . $datarow[$value] . '(' . $datarow[$value2] . ')</option>';
   }
 }
 function getoptionwithcodestatus($table, $field, $value, $value2, $status)
@@ -36,6 +36,16 @@ function getoption($table, $field, $value)
 {
   include 'config.php';
   $data = mysqli_query($conn, "SELECT * FROM " . $table . " ORDER BY " . $value);
+  print_r($data);
+  while ($datarow = mysqli_fetch_array($data)) {
+    echo '<option value="' . $datarow[$field] . '">' . $datarow[$value] . '</option>';
+  }
+}
+function getuseroption($table, $field, $value)
+{
+  include 'config.php';
+    $_SESSION['user_id'] = 1;
+  $data = mysqli_query($conn, "SELECT * FROM " . $table ." where admin_user = ".   $_SESSION['user_id']." ORDER BY " . $value);
   print_r($data);
   while ($datarow = mysqli_fetch_array($data)) {
     echo '<option value="' . $datarow[$field] . '">' . $datarow[$value] . '</option>';
@@ -505,6 +515,51 @@ function getcustomercategory()
       </svg>
       </a>
       <a href="../include/function.php?customer_category_delete=' . $datarow['cu_cat_id'] . '">
+      <svg class="mt-2" width="18" height="18" viewBox="0 0 24 24" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 6H5H21" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path
+          d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6"
+          stroke="#FF3B2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M10 11V17" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path d="M14 11V17" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+      </a>
+    </td> </tr>';
+  }
+}
+function getsales_stage()
+{
+  include 'config.php';
+  $data = mysqli_query($conn, "SELECT * FROM `enquiry_stage` where stage_status = 1");
+  $count = 0;
+  while ($datarow = mysqli_fetch_array($data)) {
+    $count++;
+    $activebtn = $datarow['stage_status'] == 1 ? ' <a style="cursor: pointer;" href=" ../include/function.php?stage_id_status=' . $datarow['stage_id'] . '" class="text-green-900 border border-green-600 bg-green-300 w-16 p-2">
+    Active
+  </a>' : '<a  style="cursor: pointer;" href=" ../include/function.php?stage_id_status=' . $datarow['stage_id'] . '"  class="text-red-900 border border-red-600 bg-red-300 w-16 p-2">
+  Inactive
+</a>';  
+    echo ' <tr><td class="px-6 py-4 whitespace-no-wrap">' . $count . '</td>
+    <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['stage_name'] . '</td>
+    <td class="px-6 py-4 whitespace-no-wrap">
+   ' . $activebtn . '
+    </td>
+    <td class="px-6 py-4 whitespace-no-wrap flex justify-between">
+    <a href="industry.php?stage_id=' . $datarow['stage_id'] . '">
+      <svg class="mt-2" width="18" height="18" viewBox="0 0 24 24" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 20H21" stroke="#8A8A8A" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path
+          d="M16.5 3.50023C16.8978 3.1024 17.4374 2.87891 18 2.87891C18.2786 2.87891 18.5544 2.93378 18.8118 3.04038C19.0692 3.14699 19.303 3.30324 19.5 3.50023C19.697 3.69721 19.8532 3.93106 19.9598 4.18843C20.0665 4.4458 20.1213 4.72165 20.1213 5.00023C20.1213 5.2788 20.0665 5.55465 19.9598 5.81202C19.8532 6.06939 19.697 6.30324 19.5 6.50023L7 19.0002L3 20.0002L4 16.0002L16.5 3.50023Z"
+          stroke="#8A8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      </a>
+      <a href="../include/function.php?deleteIndustry=' . $datarow['stage_id'] . '">
       <svg class="mt-2" width="18" height="18" viewBox="0 0 24 24" fill="none"
         xmlns="http://www.w3.org/2000/svg">
         <path d="M3 6H5H21" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round"
@@ -1083,6 +1138,28 @@ if (isset($_POST['sales_stage'])) {
   $stmt->close();
   $conn->close();
 }
+if (isset($_POST['company_category'])) {
+  $sql = "INSERT INTO `sales_company_category`(`company_category_name`) VALUES (?)";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("s", $_POST['company_category']);
+  if ($stmt->execute()) {
+
+    echo $conn->insert_id;
+  }
+  $stmt->close();
+  $conn->close();
+}
+if (isset($_POST['product_group'])) {
+  $sql = "INSERT INTO `product_group`(`product_group_name`) VALUES (?)";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("s", $_POST['product_group']);
+  if ($stmt->execute()) {
+
+    echo $conn->insert_id;
+  }
+  $stmt->close();
+  $conn->close();
+}
 if (isset($_GET['customercode'])) {
   $data = mysqli_query($conn, "SELECT * FROM `customer` WHERE  customer_code  = " . $_GET['customercode']);
   echo mysqli_num_rows($data);
@@ -1093,33 +1170,40 @@ if (isset($_POST['add_sales_enquiry'])) {
 
   $enquiry_code = mysqli_real_escape_string($conn, $_POST['enquiry_code']);
   $enquiry_customer_name = mysqli_real_escape_string($conn, $_POST['enquiry_customer_name']);
-  $enquiry_company_name = mysqli_real_escape_string($conn, $_POST['enquiry_company_name']);
   $sales_branch_warehouse = mysqli_real_escape_string($conn, $_POST['sales_branch_warehouse']);
   $enquiry_name = mysqli_real_escape_string($conn, $_POST['enquiry_name']);
   $sales_stage = mysqli_real_escape_string($conn, $_POST['enquiry_sales_stage']);
-  $enquiry_version = mysqli_real_escape_string($conn, $_POST['enquiry_version']);
+  $sales_company_category = mysqli_real_escape_string($conn, $_POST['sales_company_category']);
   $enquiry_close_date = mysqli_real_escape_string($conn, $_POST['enquiry_close_date']);
   $enquiry_currency = mysqli_real_escape_string($conn, $_POST['enquiry_currency']);
   $enquiry_customer_type = mysqli_real_escape_string($conn, $_POST['enquiry_customer_type']);
   $enquiry_source = mysqli_real_escape_string($conn, $_POST['enquiry_source']);
   $enquiry_description = mysqli_real_escape_string($conn, $_POST['enquiry_description']);
-  $stmt = $conn->prepare("INSERT INTO `sales_enquiry`( `enquiry_code`, `enquiry_customer_name`, `enquiry_company_name`, `sales_branch_warehouse`,
-   `enquiry_name`, `sales_stage`, `enquiry_version`, `enquiry_close_date`, `enquiry_currency`, `enquiry_customer_type`, `enquiry_source`, `enquiry_description`, `enquiry_user_id`)
+  $enquiry_version = mysqli_real_escape_string($conn, $_POST['enquiry_version']);
+  $assign_user_to = mysqli_real_escape_string($conn, $_POST['assign_user_to']);
+
+
+  $stmt = $conn->prepare("INSERT INTO `sales_enquiry`
+  ( `enquiry_code`, `enquiry_customer_name`, `sales_branch_warehouse`,
+   `enquiry_name`, `sales_stage`,`sales_company_category`,`enquiry_version`,`enquiry_close_date`, 
+   `enquiry_currency`, `enquiry_customer_type`,`enquiry_source`, `enquiry_description`
+   ,`assign_user_to`,`enquiry_user_id`)
         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
   $stmt->bind_param(
-    "sssssssssssss",
+    "ssssssssssssss",
     $enquiry_code,
     $enquiry_customer_name,
-    $enquiry_company_name,
     $sales_branch_warehouse,
     $enquiry_name,
     $sales_stage,
+    $sales_company_category,
     $enquiry_version,
     $enquiry_close_date,
     $enquiry_currency,
     $enquiry_customer_type,
     $enquiry_source,
     $enquiry_description,
+    $assign_user_to,
     $_SESSION['user_id']
   );
 
@@ -1327,7 +1411,7 @@ $('" . $selecter . "').val('" . $data . "');
 $('" . $selecter . "').trigger('change'); </script> ";
 }
 if (isset($_GET['customerdata'])) {
-  $customerquery = mysqli_query($conn, "SELECT * FROM customer join customer_type on customer.customer_type  = cu_ty_id join user on customer.customer_created_by = user.user_id join warehouse on  customer.customer_branch = warehouse.warehouse_id where customer_id = " . $_GET['customerdata']);
+  $customerquery = mysqli_query($conn, "SELECT * FROM customer join customer_type on customer.customer_type  = cu_ty_id join user on customer.customer_created_by = user.user_id join source on source.source_id  = customer.customer_source  join warehouse on  customer.customer_branch = warehouse.warehouse_id where customer_id = " . $_GET['customerdata']);
   $customerdata = mysqli_fetch_assoc($customerquery);
   echo json_encode($customerdata);
 }
@@ -1575,12 +1659,13 @@ if (isset($_POST['update_sales_quotation_contact'])) {
   $home_phone = mysqli_real_escape_string($conn, $_POST['home_phone']);
   $other_phone = mysqli_real_escape_string($conn, $_POST['other_phone']);
 
+  $modified_date= date("Y/m/d"); 
   $stmt = $conn->prepare("UPDATE `contact_quotation` SET `company_name`=?,`prefix`=?,`first_name`=?,`last_name`=?,`email1`=?,`email2`=?,
   `mobile_no1`=?,`mobile_no2`=?,`job_title`=?,`department`=?,`skype_id`=?,`communication_preference`=?,`website_link`=?,`linkedln_profile`=?,
   `shipping_address`=?,`shipping_country`=?,`shipping_state`=?,`shipping_city`=?,`shipping_postal_code`=?,`billing_address`=?,`billing_country`=?,
-  `billing_state`=?,`billing_city`=?,`billing_postal_code`=?,`date_of_birth`=?,`fax`=?,`home_phone`=?,`other_phone`=?,`created_by`=? WHERE `contact_quotation_id`=?");
+  `billing_state`=?,`billing_city`=?,`billing_postal_code`=?,`date_of_birth`=?,`fax`=?,`home_phone`=?,`other_phone`=?, `created_by`=? ,`modified_date` = ? WHERE `contact_quotation_id`=?");
   $stmt->bind_param(
-    "ssssssssssssssssssssssssssssis",
+    "ssssssssssssssssssssssssssssiss",
     $company_name,
     $prefix,
     $first_name,
@@ -1609,11 +1694,14 @@ if (isset($_POST['update_sales_quotation_contact'])) {
     $fax,
     $home_phone,
     $other_phone,
+   
     $_SESSION['user_id'],
+    $modified_date,
     $_POST['update_sales_quotation_contact']
+ 
   );
   if ($stmt->execute()) {
-    echo '<script>window.location.href = "../sales/contact.php"; </script>';
+     echo '<script>window.location.href = "../sales/contact.php"; </script>';
   }
 }
 if (isset($_POST['prefixdata'])) {

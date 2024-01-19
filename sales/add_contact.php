@@ -314,7 +314,9 @@ if (isset($_GET['contact_quotation_id'])) {
             <div class="flex flex-wrap gap-5">
                 <button class="text-white text-sm px-4 py-2 w-28" style="background-color: #007bff;" value="<?php echo isset($_GET['contact_quotation_id']) ? $contact_quotationdata['contact_quotation_id'] : '' ?>"
                  name="<?php echo isset($_GET['contact_quotation_id']) ? 'update_sales_quotation_contact': 'add_sales_quotation_contact' ?>">Save</button>
-                <button class="bordertext-sm px-4 py-2 w-28" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
+              
+                 <a name="cancel" href="contact.php" class="border bg-white text-sm px-8 py-2 w-28" style="color: #007bff; border: 1px solid #007bff;">Cancel</a>
+                 <!-- <button class="bordertext-sm px-4 py-2 w-28" href="" style="color: #007bff; border: 1px solid #007bff;">Cancel</button> -->
             </div>
         </div>
     </form>

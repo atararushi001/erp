@@ -18,7 +18,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
-        #salesStagePopup {
+        #sales_stagePopup {
             display: none;
             z-index: 99;
         }
@@ -32,7 +32,7 @@
         <div class="bg-white shadow-sm p-4">
             <div class="flex justify-between">
                 <h1 class="text-xl font-semibold">Sales Stage</h1>
-                <button class="text-white text-sm px-4 py-2" style="background-color: #007bff;" onclick="openModalhere('salesStagePopup')">
+                <button class="text-white text-sm px-4 py-2" style="background-color: #007bff;" onclick="openModalhere('sales_stagePopup')">
                     Add Sales Stage
                 </button>
             </div>
@@ -68,35 +68,40 @@
               </thead>
 
               <tbody>
+                <?php  getsales_stage(); ?>
               </tbody>
             </table>
           </div>
         </div>
     </div>
-    <div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300" style="z-index: 99;" id="salesStagePopup" style="display: none;">
-        <div id="ss_popup" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width: 600px;">
+    <div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300" style="  z-index: 99;" id="sales_stagePopup" style="display: BLOCK;">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width: 600px;">
             <div class="flex justify-between border-b">
                 <h2 class="text-gray-800 font-semibold p-4 text-xl">Create Sales Stage</h2>
-                <svg id="closeSalesStage" onclick="closeModal('salesStagePopup')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg id="closeCCategory" onclick="closeModal('sales_stagePopup')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M37.5 12.5L12.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
                     <path d="M12.5 12.5L37.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </div>
-            <form class="p-4" name="salesStageForm" action="../include/function.php" id="salesStageForm">
+            <form class="p-4" name="sales_stageform" action="../include/function.php" id="sales_stageform">
                 <div>
-                    <label for="sales_stage_name" class="text-gray-700 font-semibold">Add Sales Stage</label>
-                    <input type="text" name="<?php echo isset($_GET['sales_stage_id']) ? 'sales_stage_name_update' : 'salesStage' ?>" value="<?php echo isset($_GET['sales_stage_id']) ? $sales_stage_data['sales_stage_name'] : "" ?>" id="sales_stage_name" placeholder="Sales Stage" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
-                    <input type="hidden" name="sales_stage_id_update" value="<?php echo isset($_GET['sales_stage_id']) ? $_GET['sales_stage_id'] : "" ?>" id="sales_stage_id" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                    <label for="customer_type" class="text-gray-700 font-semibold">Sales_Stage</label>
+                    <input type="text" name="sales_stage" id="sales_stage" placeholder="Customer Type" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                 </div>
                 <div class="flex items-center justify-start gap-4 mt-32">
-                    <button class="text-white text-sm px-4 py-2 w-28" onclick="saveDataNow('salesStageForm', <?php echo isset($_GET['sales_stage_id']) ? 'sales_stage_name_update' : 'salesStage' ?>)" type="button" id="openButton" style="background-color: #007bff;"><?php echo isset($_GET['sales_stage_id']) ? 'Edit' : 'Save' ?></button>
-                    <button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('salesStagePopup')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
+                    <button class="text-white text-sm px-4 py-2 w-28" 
+                    onclick="savedatanow('sales_stageform', <?php echo isset($_GET['sales_stage_id']) ? 'sales_stage_update' : 'sales_stage' ?>)"
+                   type="button" id="openButton" style="background-color: #007bff;">Save</button>
+                    <button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('sales_stagePopup')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
+
+
     <script src="../assets/js/script.js"></script>
     <script>
+        
         $(document).ready(function() {
             if(window.location.href.includes("other_pages")) {
                 const otherPages = document.querySelector(".other_pages");
@@ -111,6 +116,25 @@
 
         function openModalhere(elementname){
             document.getElementById(elementname).style.display = 'block';
+        }
+        function savedatanow(formname,inputselecter) {
+            var form = $("#" + formname);
+            var url = form.attr('action');
+            var addtext = form.find("input[name='" + inputselecter + "']");
+            $.ajax({
+
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                success: function(data) {
+ 
+                    alert("Added  Successfully");
+                     window.location.href = "sales_stage.php";
+                },
+                error: function(data) {
+                    alert("some Error");
+                }
+            });
         }
     </script>
     

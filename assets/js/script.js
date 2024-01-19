@@ -8,30 +8,6 @@ document.querySelectorAll("aside nav a").forEach(function (item) {
   });
 });
 
-// document.querySelectorAll("aside ul li a").forEach(function (submenuItem) {
-//   submenuItem.addEventListener("click", function (event) {
-//     document.querySelectorAll("aside ul li a").forEach(function (submenuLink) {
-//       submenuLink.classList.remove("active");
-//     });
-
-//     this.classList.add("active");
-//   });
-// });
-
-// function handleNavbarHover() {
-//   const sidebar = document.getElementById("sidebar");
-//   const navMenuImgs = document.querySelectorAll(".nav-menu-img");
-
-//   sidebar.classList.toggle("w-60");
-//   navMenuImgs.forEach((img) => {
-//     img.classList.toggle("mr-6");
-//   });
-// }
-
-// const navbar = document.querySelector("#sidebar");
-// navbar.addEventListener("mouseenter", handleNavbarHover);
-// navbar.addEventListener("mouseleave", handleNavbarHover);
-
 function toggleNavbarText() {
   const mediaQuery = window.matchMedia("(max-width: 768px)");
   const sidebar = document.getElementById("sidebar");
@@ -89,6 +65,7 @@ $(document).ready(function () {
 function addProduct() {
   ProductNumber++;
   let newProductDiv = document.createElement("div");
+  
   newProductDiv.innerHTML = `<div class="max-w-full mb-4">
         <div class="bg-white rounded-sm shadow-md mb-4">
             <div class="w-full border-b flex">
@@ -129,8 +106,7 @@ function addProduct() {
                     class="select2-init border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important"
                   >
                     <option value="Product Category">Product Group</option>
-                    <option value="Category 2">Category 2</option>
-                    <option value="Category 3">Category 3</option>
+                ${product_groupOptionsHTML}
                   </select>
                 </div>
                 <div>
@@ -145,11 +121,11 @@ function addProduct() {
             <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 p-4 pt-0 gap-4">
                 <div>
                     <label for="product_quantity${ProductNumber}" class="text-gray-700 font-semibold">Quantity</label>
-                    <input type="text" id="product_quantity${ProductNumber}" name="product_quantity${ProductNumber}" placeholder="Quantity" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                    <input type="text" id="product_quantity${ProductNumber}"  onchange="calculateAmount(${ProductNumber})" name="product_quantity${ProductNumber}" placeholder="Quantity" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                 </div>
                 <div>
                     <label for="product_rate${ProductNumber}" class="text-gray-700 font-semibold">Rate</label>
-                    <input type="text" id="product_rate${ProductNumber}" name="product_rate${ProductNumber}" placeholder="Rate" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                    <input type="text" id="product_rate${ProductNumber}"  onchange="calculateAmount(${ProductNumber})" name="product_rate${ProductNumber}" placeholder="Rate" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                 </div>
                 <div class="col-span-2">
                     <label for="product_amount${ProductNumber}" class="text-gray-700 font-semibold">Amount</label>
@@ -158,7 +134,9 @@ function addProduct() {
             </div>
         </div>
     </div>`;
+
   document.getElementById("add-product").appendChild(newProductDiv);
+  
   $(newProductDiv)
     .find(".select2-init")
     .each(function () {
@@ -168,13 +146,40 @@ function addProduct() {
         language: {
           noResults: function () {
             return $(
-              "<button class='w-full p-2 text-center text-white' style='background-color: #007bff;'>Add Product Category</button>"
+              "<button class='w-full p-2 text-center text-white' style='background-color: #007bff;'   onclick=\"openModal('product_groupPopup','#product_group"+ProductNumber+"')\" >Add Product Category</button>"
             );
           },
         },
       });
     });
+    document.getElementById("totalsection").style.display = "block";;
 }
+function calculateAmount(productNumber) {
+  let quantity = parseFloat(document.getElementById(`product_quantity${productNumber}`).value) || 0;
+  let rate = parseFloat(document.getElementById(`product_rate${productNumber}`).value) || 0;
+  let amount = quantity * rate;
+  document.getElementById(`product_amount${productNumber}`).value = amount.toFixed(2); 
+  calculateTotal();
+}
+
+function calculateTotal() {
+  let total = 0,total_quantity = 0;;
+
+  for (let i = 1; i <= ProductNumber; i++) {
+    let amount = parseFloat(document.getElementById(`product_amount${i}`).value) || 0;
+    total += amount;
+  }
+  for (let i = 1; i <= ProductNumber; i++) {
+    let quantity = parseFloat(document.getElementById(`product_quantity${i}`).value) || 0;
+    total_quantity += quantity;
+  }
+
+  document.getElementById("total").value = total.toFixed(2); 
+  document.getElementById("total_quantity_nos").value = total_quantity.toFixed(2); 
+  document.getElementById("total_in_word").value =  numberToWords.toWords(total); 
+
+}
+
 
 function removeProduct(button) {
   let deleteProduct = button.parentNode.parentNode.parentNode;

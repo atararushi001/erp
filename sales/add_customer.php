@@ -9,6 +9,7 @@ if (isset($_GET['customer_id'])) {
 }
 
 ?>
+
 <?php
 $countryOptionsHTML = '';
 $query = mysqli_query($conn, "SELECT * FROM country");
@@ -21,6 +22,8 @@ while ($row = mysqli_fetch_array($query)) {
 echo '<script>';
 echo 'var countryOptionsHTML = `' . $countryOptionsHTML . '`;';
 echo '</script>';
+
+
 
 $country_taxOptionsHTML = '';
 $query = mysqli_query($conn, "SELECT * FROM country_tax");
