@@ -65,6 +65,15 @@ if (isset($_GET['enquiry_id'])) {
                 }
             });
             $("#currency").select2({});
+            $("#assign_user_to").select2({
+                width: '100%',
+                placeholder: 'Add User',
+                language: {
+                    noResults: function() {
+                        return $("<button class='w-full p-2 text-center text-white' onclick=\"openModal('sales_stagePopup','#sales_stage')\"  style='background-color: #007bff;'>Add User</button>");
+                    }
+                }
+            });
             $('.select2-init').each(function() {
                 $(this).select2({});
             });
@@ -126,9 +135,9 @@ if (isset($_GET['enquiry_id'])) {
                             <input type="text" id="enquiry_name" placeholder="Enquiry Name" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_name'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_name">
                         </div>
                         <div>
-                            <label for="enquiry_sales_stage" class="text-gray-700 font-semibold">Stage</label>
+                            <label for="enquiry_sales_stage" class="text-gray-700 font-semibold">Sales Stage</label>
                             <select name="enquiry_sales_stage" id="sales_stage" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
-                                <option value="Stage">Stage</option>
+                                <option value="Sales Stage">Sales Stage</option>
                                 <?php
                                 getoptionwithstatus('enquiry_stage', 'stage_id', 'stage_name','stage_status');
                                 ?>
@@ -173,6 +182,21 @@ if (isset($_GET['enquiry_id'])) {
                         <div class="col-span-1">
                             <label for="sales_version" class="text-gray-700 font-semibold">Version</label>
                             <input type="text" id="sales_version" placeholder="Version" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_code'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_description">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="bg-white rounded-sm shadow-md mb-4">
+                    <div class="w-full border-b">
+                        <h2 class="text-gray-800 font-semibold p-4 text-lg">Assign User Information</h3>
+                    </div>
+                    <div class="grid lg:grid-cols-4 md:grid-cols-1 sm:grid-cols-1 p-4 gap-4">
+                        <div>
+                            <label for="assign_user_to" class="text-gray-700 font-semibold">Assign To</label>
+                            <select name="assign_user_to" id="assign_user_to" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
+                                <option value="Assign To">Assign To</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -238,6 +262,27 @@ address_email                                <input type="text" id="product_desc
                 echo    $count > 0 ?  'var ProductNumber = ' . ($count + 1) . ';' :  'var addresscount = ' . '1' . ';';
                 echo '</script>';
                 ?>
+            </div>
+            <div>
+                <div class="bg-white rounded-sm shadow-md mb-4">
+                    <div class="w-full border-b">
+                        <h2 class="text-gray-800 font-semibold p-4 text-lg">Total</h3>
+                    </div>
+                    <div class="grid lg:grid-cols-4 md:grid-cols-1 sm:grid-cols-1 p-4 gap-4">
+                        <div class="md:col-span-2 sm:col-span-1">
+                            <label for="total_in_word" class="text-gray-700 font-semibold">In word</label>
+                            <input type="text" id="total_in_word" placeholder="" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_name">
+                        </div>
+                        <div>
+                            <label for="total_quantity_nos" class="text-gray-700 font-semibold">Total Quantity NOs.</label>
+                            <input type="text" id="total_quantity_nos" placeholder="" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_name">
+                        </div>
+                        <div>
+                            <label for="total" class="text-gray-700 font-semibold">Total</label>
+                            <input type="text" id="total" placeholder="" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_name">
+                        </div>
+                    </div>
+                </div>
             </div>
             <button class="flex p-4" onclick="addProduct()" type="button">
                 <svg class="ml-3 mr-3 mb-1" width="23" height="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

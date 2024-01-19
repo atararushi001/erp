@@ -85,51 +85,60 @@
                 <span id="spantext" class="whitespace-nowrap">Other Pages</span>
                 </a>
                 <ul id="otherPagesSubmenu" class="hidden">
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/customer_category.php">Customer Category</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/industry.php">Industry</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/customer_type.php">Customer Type</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/source_referred_by.php">Source / Referred By</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/sales_enquiry_stage.php">Sales Enquiry Stage</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/terms_and_condition.php">Terms and Condition</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/branch_warehouse.php">Branch/Warehouse</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/mode_of_delivery.php">Mode of Delivery</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/product_category.php">Product Category</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/product_unit.php">Product List</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/material_list.php">Material</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/job_title.php">Job Title</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/department.php">Department</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/country_tax.php">Country Tax</a>
-                </li>
-                <li class="ml-14 mt-5 mb-5 mr-5">
-                    <a href="/erp/other_pages/communication_preference.php">Communication Preference</a>
-                </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/customer_category.php">Customer Category</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/industry.php">Industry</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/customer_type.php">Customer Type</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/source_referred_by.php">Source / Referred By</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/sales_enquiry_stage.php">Sales Enquiry Stage</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/terms_and_condition.php">Terms and Condition</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/branch_warehouse.php">Branch/Warehouse</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/mode_of_delivery.php">Mode of Delivery</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/product_category.php">Product Category</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/product_unit.php">Product List</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/material_list.php">Material</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/job_title.php">Job Title</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/department.php">Department</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/communication_preference.php">Communication Preference</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/company_category.php">Company Category</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/sales_stage.php">Sales Stage</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/sales_product_category.php">Sales Product Category</a>
+                    </li>
+                    <li class="ml-14 mt-5 mb-5 mr-5">
+                        <a href="/erp/other_pages/sales_product_group.php">Sales Product Group</a>
+                    </li>
                 </ul>
             </div>
         </nav>

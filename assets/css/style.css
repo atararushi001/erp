@@ -104,6 +104,7 @@ aside nav ul li a.active {
     margin-top: 20px;
   }
 }
+
 .close {
   position: absolute;
   top: 10px;
@@ -112,5 +113,76 @@ aside nav ul li a.active {
   cursor: pointer;
 }
 
+@media (max-width: 648px) {
+  #bw_popup {
+    width: 90% !important;
+  }
 
+  #cp_popup {
+    width: 90% !important;
+  }
 
+  #cc_popup {
+    width: 90% !important;
+  }
+
+  #cuc_popup {
+    width: 90% !important;
+  }
+
+  #ct_popup {
+    width: 90% !important;
+  }
+
+  #department_popup {
+    width: 90% !important;
+  }
+
+  #industry {
+    width: 90% !important;
+  }
+
+  #jt_popup {
+    width: 90% !important;
+  }
+
+  #ml_popup {
+    width: 90% !important;
+  }
+
+  #md_popup {
+    width: 90% !important;
+  }
+
+  #pc_popup {
+    width: 90% !important;
+  }
+
+  #pu_popup {
+    width: 90% !important;
+  }
+
+  #sns_popup {
+    width: 90% !important;
+  }
+
+  #spc_popup {
+    width: 90% !important;
+  }
+
+  #spg_popup {
+    width: 90% !important;
+  }
+
+  #ss_popup {
+    width: 90% !important;
+  }
+
+  #srb_popup {
+    width: 90% !important;
+  }
+
+  #tc_popup {
+    width: 90% !important;
+  }
+}

@@ -117,7 +117,7 @@
 
         sales.classList.add("active");
 
-        const customerLink = document.querySelector('a[href="/erp/sales/customer.php"]');
+        const customerLink = document.querySelector('a[href="/erp/sales/contact.php"]');
         if (customerLink) {
           customerLink.classList.add('font-bold', 'text-black');
         }

@@ -128,4 +128,4 @@
 
 </body>
 
-</html>sales/customer.phpsales/customer.php
+</html>

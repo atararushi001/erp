@@ -65,8 +65,7 @@ function removeCustomer(button) {
   let currentId = "customeraddress" + countdata;
 
   while (document.querySelector("#" + currentId)) {
-
-    let newname = countdata-1;
+    let newname = countdata - 1;
     document.querySelector("#" + currentId).innerHTML =
       "Customer Address " + newname;
     console.log(newname);
@@ -116,20 +115,34 @@ function addProduct() {
                     <option value="Category 3">Category 3</option>
                   </select>
                 </div>
-                <div class="lg:col-span-2">
+                <div class="lg:col-span-3">
                     <label for="product_description${ProductNumber}" class="text-gray-700 font-semibold">Product Description</label>
                     <input type="text" id="product_description${ProductNumber}" name="product_description${ProductNumber}" placeholder="Product Description" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                </div>
+            </div>
+            <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 p-4 pt-0 gap-4">
+                <div class="col-span-2">
+                  <label for="product_group${ProductNumber}" class="text-gray-700 font-semibold">Product Group</label>
+                  <select
+                    name="product_group${ProductNumber}"
+                    id="product_group${ProductNumber}"
+                    class="select2-init border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important"
+                  >
+                    <option value="Product Category">Product Group</option>
+                    <option value="Category 2">Category 2</option>
+                    <option value="Category 3">Category 3</option>
+                  </select>
                 </div>
                 <div>
                     <label for="part_number${ProductNumber}" class="text-gray-700 font-semibold">Part Number</label>
                     <input type="text" id="part_number${ProductNumber}" name="part_number${ProductNumber}" placeholder="Part Number" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                 </div>
-            </div>
-            <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 p-4 pt-0 gap-4">
                 <div>
                     <label for="product_hsn_code${ProductNumber}" class="text-gray-700 font-semibold">HSN Code</label>
                     <input type="text" id="product_hsn_code${ProductNumber}" name="product_hsn_code${ProductNumber}" placeholder="HSN Code" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                 </div>
+            </div>
+            <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 p-4 pt-0 gap-4">
                 <div>
                     <label for="product_quantity${ProductNumber}" class="text-gray-700 font-semibold">Quantity</label>
                     <input type="text" id="product_quantity${ProductNumber}" name="product_quantity${ProductNumber}" placeholder="Quantity" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
@@ -138,7 +151,7 @@ function addProduct() {
                     <label for="product_rate${ProductNumber}" class="text-gray-700 font-semibold">Rate</label>
                     <input type="text" id="product_rate${ProductNumber}" name="product_rate${ProductNumber}" placeholder="Rate" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                 </div>
-                <div>
+                <div class="col-span-2">
                     <label for="product_amount${ProductNumber}" class="text-gray-700 font-semibold">Amount</label>
                     <input type="text" id="product_amount${ProductNumber}" name="product_amount${ProductNumber}" placeholder="Amount" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                 </div>

@@ -81,7 +81,7 @@
     </div>
    
     <div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300" style="    z-index: 99;" id="departmentdataPopup" style="display: BLOCK;">
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width: 600px;">
+        <div id="department_popup" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width: 600px;">
             <div class="flex justify-between border-b">
                 <h2 class="text-gray-800 font-semibold p-4 text-xl">Create Department</h2>
                 <svg id="closeCCategory" onclick="closeModal('departmentdataPopup')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
