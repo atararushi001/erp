@@ -1,19 +1,21 @@
 <?php
-include 'config.php';
+
 session_start();
+include 'config.php';
+
 
 if (isset($_POST['login'])) {
 
-  $email = $_POST['email'];
-  $password = $_POST['password'];
-  $loginsql = "SELECT * FROM `user` WHERE user_email = '" . $email . "' and user_password= '" . $password . "'";
+  $user_email = $_POST['user_email'];
+  $user_password = $_POST['user_password'];
+  echo $loginsql = "SELECT * FROM `user` WHERE user_email = '" . $user_email . "' and user_password= '" . $user_password . "'";
   $resultlogin = $conn->query($loginsql);
 
   if ($resultlogin->num_rows >= 1) {
-    session_start();
+    // session_start();
     $rowlogin = $resultlogin->fetch_array();
     $_SESSION['user_id'] = $rowlogin['user_id'];
-    header("Location: ../index.php");
+    //  header("Location: ../index.php");
   }
 }
 function getoptionwithcode($table, $field, $value, $value2)
@@ -1747,4 +1749,11 @@ if (isset($_POST['communication_preferencedata'])) {
   }
   $stmt->close();
   $conn->close();
+}
+
+if(isset($_GET['user_emaildata'])){
+  $data = mysqli_query($conn, "SELECT * FROM user where user_email =  '" . $_GET['user_emaildata']."'");
+  $count = 0;
+  $datarow = mysqli_fetch_array($data);
+    echo $datarow['company_name'];
 }

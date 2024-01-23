@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+
+    <div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300"
+        style="z-index: 99;">
+        <div
+            class="absolute w-[300px] sm:w-[600px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg">
+            <div class="flex flex-col items-center gap-4 p-4">
+                <svg class="cursor-pointer ml-auto mr-2 close-button" width="35" height="35" viewBox="0 0 50 50"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M37.5 12.5L12.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    <path d="M12.5 12.5L37.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                </svg>
+                <img src="assets/icons/alert-triangle.svg" alt="" class="h-[80px] w-[80px] sm:h-[134px] sm:w-[134px]">
+                <h2 class="text-lg sm:text-2xl font-semibold text-[#031a61]">Are you sure you want to delete it?</h2>
+                <div class="flex items-center gap-4">
+                    <button class="text-white text-sm px-4 py-2 w-28 bg-[#ff0000]" type="button">Delete</button>
+                    <button type="button"
+                        class="border border-[#808080] bg-white text-[#808080] text-sm px-4 py-2 w-28">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

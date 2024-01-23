@@ -1,6 +1,7 @@
 <?php
-@include '../include/config.php';
+
 @include '../include/function.php';
+
 if (isset($_GET['enquiry_id'])) {
 
     $customerquery = mysqli_query($conn, "SELECT * FROM sales_enquiry where enquiry_id = " . $_GET['enquiry_id']);

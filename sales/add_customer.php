@@ -1,5 +1,5 @@
 <?php
-@include '../include/config.php';
+
 @include '../include/function.php';
 
 if (isset($_GET['customer_id'])) {
@@ -203,16 +203,6 @@ require_once('../include/config.php');
                                 <option value="Source / Referred by">Source / Referred by</option>
                                 <?php
                                 getoptionwithstatus('source', 'source_id', 'source_name', 'source_status');
-
-                                ?>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="customer_branch_warehouse" class="text-gray-700 font-semibold">Branch/Warehouse</label>
-                            <select name="customer_branch_warehouses" id="customer_branch_warehouse" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
-                                <option value="Branch/Warehouse">Branch/Warehouse</option>
-                                <?php
-                                getoptionwithstatus('warehouse', 'warehouse_id', 'warehouse_name', 'warehouse_status');
 
                                 ?>
                             </select>

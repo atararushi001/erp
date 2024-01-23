@@ -1,5 +1,5 @@
 <?php
-@include '../include/config.php';
+
 @include '../include/function.php';
 
 if (isset($_GET['contact_quotation_id'])) {

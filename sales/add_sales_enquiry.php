@@ -1,6 +1,7 @@
 <?php
-@include '../include/config.php';
+
 @include '../include/function.php';
+
 if (isset($_GET['enquiry_id'])) {
 
     $customerquery = mysqli_query($conn, "SELECT * FROM sales_enquiry where enquiry_id = " . $_GET['enquiry_id']);
@@ -124,22 +125,12 @@ echo '</script>';
                             <label for="customer_code" class="text-gray-700 font-semibold">Enquiry Code</label>
                             <input type="text" id="enquiry_code" name="enquiry_code" placeholder="Enquiry Code" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_code'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                         </div>
-                        <div class="md:col-span-2 sm:col-span-1">
+                        <div class="md:col-span-3 sm:col-span-1">
                             <label for="enquiry_customer_name" class="text-gray-700 font-semibold">Customer Name</label>
                             <select name="enquiry_customer_name" id="customer_name" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important"= >
                                 <option value="Customer Name">Customer Name</option>
                                 <?php
                                 getoptionwithcodestatus('customer', 'customer_id', 'customer_company_name', 'customer_code','customer_status');
-
-                                ?>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="sales_branch_warehouse" class="text-gray-700 font-semibold">Branch/Warehouse</label>
-                            <select name="sales_branch_warehouse" id="sales_branch_warehouse" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
-                                <option value="Branch/Warehouse">Branch/Warehouse</option>
-                                <?php
-                                getoptionwithstatus('warehouse', 'warehouse_id', 'warehouse_name','warehouse_status');
 
                                 ?>
                             </select>
@@ -324,6 +315,9 @@ address_email                                <input type="text" id="product_desc
             </div>
         </div>
     </form>
+    <div class="addpopup" id="addpopup">
+
+    </div>
     <div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300" style="  z-index: 99;" id="customer_branch_warehousePopup" style="display: BLOCK;">
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width: 600px;">
             <div class="flex justify-between border-b">
