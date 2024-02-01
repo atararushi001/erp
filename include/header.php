@@ -5,8 +5,11 @@
 if (!isset($_SESSION['user_id'])) {
      
   echo "<script>window.location.href='login/login.php'</script>";
-
+ 
 }
+$datarow = getuserdata ($_SESSION['user_id']);
+// print_r($datarow);
+// die();
 ?>
 <main>
     <nav class="fixed top-0 left-0 w-full h-20 bg-white shadow-md z-50 flex justify-between items-center">
@@ -37,11 +40,14 @@ if (!isset($_SESSION['user_id'])) {
         </svg>
       </div>
       <div class="ml-auto mr-5">
+        
         <div class="flex items-center gap-4">
+          <a href="../login/logout.php">Logout</a>
+          
           <img src="../assets/icons/bell.svg" alt="" class="h-6 w-6">
-          <div class="flex items-center gap-4 pl-4 border-l border-[#666]">
+          <div class="flex items-center gap-4 pl-4 border-l border-[#666]"> 
             <img src="../assets/img/person.png" alt="" class="h-9 w-9 rounded-full">
-            <p class="text-md sm:text-lg font-semibold text-gray-800">John</p>
+            <p class="text-md sm:text-lg font-semibold text-gray-800"><?php echo $datarow['user_username'] ?></p>
           </div>
         </div>
       </div>

@@ -1,9 +1,8 @@
-
 <?php
 
-    @include '../include/function.php';
-    
-    ?>
+@include '../include/function.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,15 +11,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Layout</title>
   <?php include '../include/script.php' ?>
-  
+
 </head>
 
 <body class="bg-gray-100">
-<?php include '../include/sidebar.php' ?>
+  <?php include '../include/sidebar.php' ?>
 
 
-<?php include '../include/header.php' ?>
-  
+  <?php include '../include/header.php' ?>
+
   <div id="mydiv" class="max-w-full mx-auto mt-20 ml-16 p-4 text-sm transition-all duration-300">
     <div class="bg-white shadow-sm p-4">
       <div class="flex justify-between">
@@ -36,11 +35,8 @@
         <div class="flex bg-white text-gray-700 border rounded-sm p-2">
           <input type="search" placeholder="Search" class="border-none outline-none" id="search-input" />
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
-              stroke="#8A8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M21.0004 21.0004L16.6504 16.6504" stroke="#8A8A8A" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" />
+            <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="#8A8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M21.0004 21.0004L16.6504 16.6504" stroke="#8A8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </div>
       </div>
@@ -52,13 +48,13 @@
                 #
               </th>
               <th class="px-6 py-3 text-left text-sm leading-4 font-medium text-gray-500 tracking-wider">
-                Company | Customer Code
+                Enquiry code
               </th>
               <th class="px-6 py-3 text-left text-sm leading-4 font-medium text-gray-500 tracking-wider">
                 Customer Name
               </th>
               <th class="px-6 py-3 text-left text-sm leading-4 font-medium text-gray-500 tracking-wider">
-                Branch/Warehouse
+              Customer Name
               </th>
               <th class="px-6 py-3 text-left text-sm leading-4 font-medium text-gray-500 tracking-wider">
                 Creator
@@ -81,7 +77,7 @@
 
           <tbody>
             <?php getsales_enquiry(); ?>
-           <!-- <tr>
+            <!-- <tr>
               <td class="px-6 py-4 whitespace-no-wrap">1</td>
               <td class="px-6 py-4 whitespace-no-wrap">india pvt ltd</td>
               <td class="px-6 py-4 whitespace-no-wrap">Jay Parmar</td>
@@ -184,7 +180,7 @@
   <script>
     new DataTable('#salesEnquiryTable');
     $(document).ready(function() {
-      if(window.location.href.includes("sales")) {
+      if (window.location.href.includes("sales")) {
         const sales = document.querySelector(".sales");
         sales.classList.add("active");
 
@@ -195,7 +191,7 @@
       }
     });
   </script>
-  
+
 </body>
 
 </html>

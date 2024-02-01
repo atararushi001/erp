@@ -25,8 +25,9 @@
 <body>
 
   <div class="h-screen grid place-items-center">
-    <div class="bg-white px-14 py-6">
-      <form class="w-[350px] flex flex-col gap-4" action="../include/function.php" name="logindata" method="post" enctype="multipart/form-data">
+    <div class="bg-white px-10 sm:px-14 py-6">
+
+      <form class="min-w-[150px] sm:w-[350px] flex flex-col gap-4" action="../include/function.php" name="logindata" method="post" enctype="multipart/form-data">
         <div>
           <a href="../index.php">
             <img src="../assets/img/logo1.svg" alt="" class="w-[150px] h-auto mx-auto mb-6">

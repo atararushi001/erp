@@ -19,6 +19,18 @@ echo '<script>';
 echo 'var product_groupOptionsHTML = `' . $product_groupOptionsHTML . '`;';
 echo '</script>';
 
+$product_categoryOptionsHTML = '';
+$query = mysqli_query($conn, "SELECT * FROM product_category");
+while ($row = mysqli_fetch_array($query)) {
+    if (isset($_GET['customer_id'])) {
+    }
+    $product_categoryOptionsHTML .= '<option value="' . $row['product_category_id'] . '">' . $row['product_category_name'] . '</option>';
+}
+
+echo '<script>';
+echo 'var product_categoryOptionsHTML = `' . $product_categoryOptionsHTML . '`;';
+echo '</script>';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,6 +89,15 @@ echo '</script>';
                     }
                 }
             });
+            // $("#enquiry_source").select2({
+            //     width: '100%',
+            //     placeholder: 'Add Source / Referred by',
+            //     language: {
+            //         noResults: function() {
+            //             return $("<button class='w-full p-2 text-center text-white' onclick=\"openModal('enquiry_sourcePopup','#enquiry_source')\" style='background-color: #007bff;'>Add Source / Referred by</button>");
+            //         }
+            //     }
+            // });
             $("#currency").select2({});
             $("#assign_user_to").select2({
                 width: '100%',
@@ -96,14 +117,13 @@ echo '</script>';
         #customer_branch_warehousePopup,
         #aadcustomerPopup,
         #sales_stagePopup,
-        #company_categoryPopup,#product_groupPopup {
+        #company_categoryPopup,
+        #product_groupPopup {
             display: none;
             z-index: 99;
         }
-        #totalsection{
-            display: none;
-        }
     </style>
+
 </head>
 
 <body class="bg-gray-100">
@@ -127,10 +147,10 @@ echo '</script>';
                         </div>
                         <div class="md:col-span-3 sm:col-span-1">
                             <label for="enquiry_customer_name" class="text-gray-700 font-semibold">Customer Name</label>
-                            <select name="enquiry_customer_name" id="customer_name" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important"= >
+                            <select name="enquiry_customer_name" id="customer_name" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important"=>
                                 <option value="Customer Name">Customer Name</option>
                                 <?php
-                                getoptionwithcodestatus('customer', 'customer_id', 'customer_company_name', 'customer_code','customer_status');
+                                getoptionwithcodestatus('customer', 'customer_id', 'customer_company_name', 'customer_code', 'customer_status');
 
                                 ?>
                             </select>
@@ -146,7 +166,7 @@ echo '</script>';
                             <select name="enquiry_sales_stage" id="sales_stage" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
                                 <option value="Sales Stage">Sales Stage</option>
                                 <?php
-                                getoptionwithstatus('enquiry_stage', 'stage_id', 'stage_name','stage_status');
+                                getoptionwithstatus('enquiry_stage', 'stage_id', 'stage_name', 'stage_status');
                                 ?>
                             </select>
                         </div>
@@ -155,7 +175,7 @@ echo '</script>';
                             <select name="sales_company_category" id="sales_company_category" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
                                 <option value="About Company Category">About Company Category</option>
                                 <?php
-                                getoptionwithstatus('sales_company_category','company_category_id', 'company_category_name', 'company_category_status');
+                                getoptionwithstatus('sales_company_category', 'company_category_id', 'company_category_name', 'company_category_status');
 
                                 ?>
                             </select>
@@ -171,7 +191,7 @@ echo '</script>';
                             <select name="enquiry_currency" id="currency" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
                                 <option value="Currency">Currency</option>
                                 <?php
-                                getoptionwithcode('currency', 'currency_id', 'country', 'currency');
+                                getoptionwithcode('currency', 'currency', 'country', 'currency');
 
                                 ?>
                             </select>
@@ -183,6 +203,13 @@ echo '</script>';
                         <div>
                             <label for="sales_sr_by" class="text-gray-700 font-semibold">Source / Referred By</label>
                             <input type="text" id="sales_sr_by" placeholder="Source / Referred By" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_code'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_source">
+                            <!-- <select name="enquiry_source" id="enquiry_source" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
+                                <option value="Source / Referred By">Source / Referred By</option>
+                                <?php
+                                getoptionwithstatus('source', 'source_id', 'source_name', 'source_status');
+
+                                ?>
+                            </select> -->
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-4 p-4 pt-0 gap-4">
@@ -192,7 +219,7 @@ echo '</script>';
                         </div>
                         <div class="col-span-1">
                             <label for="sales_version" class="text-gray-700 font-semibold">Version</label>
-                            <input type="text" id="sales_version" placeholder="Version" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_code'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_description">
+                            <input type="text" id="sales_version" placeholder="Version" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_code'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="sales_version">
                         </div>
                     </div>
                 </div>
@@ -218,7 +245,7 @@ echo '</script>';
             </div>
             <div id="add-product">
 
-            <?php
+                <?php
                 $count = 0;
                 if (isset($_GET['enquiry_id'])) {
 
@@ -226,59 +253,79 @@ echo '</script>';
                     while ($productdata = mysqli_fetch_array($addressrquery)) {
                         $count++;
                 ?>
-                <div class="max-w-full mb-4">
-                    <div class="bg-white rounded-sm shadow-md mb-4">
-                        <div class="w-full border-b flex">
-                            <h2 class="text-gray-700 font-semibold p-4 text-lg">Product <?php echo  $count; ?></h2>
-                            <button class="ml-auto mr-4 flex mt-auto mb-auto" onclick="removeProduct(this)">
-                                <svg class="mr-2 mt-1" width="23" height="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M15 9L9 15" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M9 9L15 15" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <p class="text-red-500 text-lg">Remove Product</p>
-                            </button>
-                        </div>
-                        <div class="grid lg:grid-cols-4 md:grid-cols-1 sm:grid-cols-1 p-4 gap-4">
-                            <div class="lg:col-span-3">
-                                <label for="product_description<?php echo  $count; ?>" class="text-gray-700 font-semibold">Product Description</label>
-address_email                                <input type="text" id="product_description<?php echo  $count; ?>" name="product_description<?php echo  $count; ?>"  value="<?php echo $productdata['enquiry_p_product_description']; ?>" placeholder="Product Description" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
-                            </div>
-                            <div>
-                                <label for="part_number<?php echo  $count; ?>" class="text-gray-700 font-semibold">Part Number</label>
-                                <input type="text" id="part_number<?php echo  $count; ?>" name="part_number<?php echo  $count; ?>" value="<?php echo $productdata['enquiry_p_part_number']; ?>" placeholder="Part Number" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
-                            </div>
+                        <div class="max-w-full mb-4">
+                            <div class="bg-white rounded-sm shadow-md mb-4">
+                                <div class="w-full border-b flex">
+                                    <h2 class="text-gray-700 font-semibold p-4 text-lg">Product <?php echo  $count; ?></h2>
+                                    <button class="ml-auto mr-4 flex mt-auto mb-auto" onclick="removeProduct(this)">
+                                        <svg class="mr-2 mt-1" width="23" height="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M15 9L9 15" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M9 9L15 15" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                        <p class="text-red-500 text-lg">Remove Product</p>
+                                    </button>
+                                </div>
+                                <div class="grid lg:grid-cols-4 md:grid-cols-1 sm:grid-cols-1 p-4 gap-4">
+                                    <div>
+                                        <label for="product_category<?php echo  $count; ?>" class="text-gray-700 font-semibold">Product Category</label>
+                                        <select name="product_category<?php echo  $count; ?>" id="product_category<?php echo  $count; ?>" class="select2-init border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
+                                            <option value="Product Category">Product Category</option>
+                                            <?php echo $product_categoryOptionsHTML; ?>
+                                        </select>
+                                    </div>
+                                    <div class="lg:col-span-3">
+                                        <label for="product_description<?php echo  $count; ?>" class="text-gray-700 font-semibold">Product Description</label>
+                                        <input type="text" value="<?php echo $productdata['enquiry_p_product_description'] ?>" id="product_description<?php echo  $count; ?>" name="product_description<?php echo  $count; ?>" placeholder="Product Description" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                                    </div>
+                                </div>
+                                <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 p-4 pt-0 gap-4">
+                                    <div class="col-span-2">
+                                        <label for="product_group<?php echo  $count; ?>" class="text-gray-700 font-semibold">Product Group</label>
+                                        <select name="product_group<?php echo  $count; ?>" id="product_group<?php echo  $count; ?>" class="select2-init border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
+                                            <option value="Product Category">Product Group</option>
+                                            <?php echo $product_groupOptionsHTML; ?>
 
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="part_number<?php echo  $count; ?>" class="text-gray-700 font-semibold">Part Number</label>
+                                        <input type="text" value="<?php echo $productdata['enquiry_p_product_description'] ?>" id="part_number<?php echo  $count; ?>" name="part_number<?php echo  $count; ?>" placeholder="Part Number" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                                    </div>
+                                    <div>
+                                        <label for="product_hsn_code<?php echo  $count; ?>" class="text-gray-700 font-semibold">HSN Code</label>
+                                        <input type="text" value="<?php echo $productdata['enquiry_p_product_hsn_code'] ?>" id="product_hsn_code<?php echo  $count; ?>" name="product_hsn_code<?php echo  $count; ?>" placeholder="HSN Code" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                                    </div>
+                                </div>
+                                <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 p-4 pt-0 gap-4">
+                                    <div>
+                                        <label for="product_quantity<?php echo  $count; ?>" class="text-gray-700 font-semibold">Quantity</label>
+                                        <input type="text" value="<?php echo $productdata['enquiry_p_product_quantity'] ?>" id="product_quantity<?php echo  $count; ?>" onchange="calculateAmount(<?php echo  $count; ?>)" name="product_quantity<?php echo  $count; ?>" placeholder="Quantity" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                                    </div>
+                                    <div>
+                                        <label for="product_rate<?php echo  $count; ?>" class="text-gray-700 font-semibold">Rate</label>
+                                        <input type="text" value="<?php echo $productdata['enquiry_p_product_rate'] ?>" id="product_rate<?php echo  $count; ?>" onchange="calculateAmount(<?php echo  $count; ?>)" name="product_rate<?php echo  $count; ?>" placeholder="Rate" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                                    </div>
+                                    <div class="col-span-2">
+                                        <label for="product_amount<?php echo  $count; ?>" class="text-gray-700 font-semibold">Amount</label>
+                                        <input type="text" value="<?php echo $productdata['enquiry_p_product_amount'] ?>" id="product_amount<?php echo  $count; ?>" name="product_amount<?php echo  $count; ?>" placeholder="Amount" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 p-4 pt-0 gap-4">
-                            <div>
-                                <label for="product_hsn_code<?php echo  $count; ?>" class="text-gray-700 font-semibold">HSN Code</label>
-                                <input type="text" id="product_hsn_code<?php echo  $count; ?>" name="product_hsn_code<?php echo  $count; ?>" value="<?php echo $productdata['enquiry_p_product_hsn_code']; ?>" placeholder="HSN Code" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
-                            </div>
-                            <div>
-                                <label for="product_quantity<?php echo  $count; ?>" class="text-gray-700 font-semibold">Quantity</label>
-                                <input type="text" id="product_quantity<?php echo  $count; ?>" name="product_quantity<?php echo  $count; ?>"  value="<?php echo $productdata['enquiry_p_product_quantity']; ?>" placeholder="Quantity" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
-                            </div>
-                            <div>
-                                <label for="product_rate<?php echo  $count; ?>" class="text-gray-700 font-semibold">Rate</label>
-                                <input type="text" id="product_rate<?php echo  $count; ?>" name="product_rate<?php echo  $count; ?>" value="<?php echo $productdata['enquiry_p_product_rate']; ?>"  placeholder="Rate" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
-                            </div>
-                            <div>
-                                <label for="product_amount<?php echo  $count; ?>" class="text-gray-700 font-semibold">Amount</label>
-                                <input type="text" id="product_amount<?php echo  $count; ?>" name="product_amount<?php echo  $count; ?>" value="<?php echo $productdata['enquiry_p_product_amount']; ?>"  placeholder="Amount" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <?php
+                        getselecterdata($productdata['enquiry_p_product_category'], '#product_category' . $count);
+                        getselecterdata($productdata['enquiry_p_Group'], '#product_group' . $count);
                     }
                 }
                 echo '<script>';
-                echo    $count > 0 ?  'var ProductNumber = ' . ($count + 1) . ';' :  'var addresscount = ' . '1' . ';';
+
+                echo    $count > 0 ?  'var ProductNumber = ' . ($count) . ';' :  'var ProductNumber = ' . '0' . ';';
+                echo 'console.log(ProductNumber)';
                 echo '</script>';
                 ?>
             </div>
-            <div  id="totalsection">
+            <div id="totalsections">
                 <div class="bg-white rounded-sm shadow-md mb-4">
                     <div class="w-full border-b">
                         <h2 class="text-gray-800 font-semibold p-4 text-lg">Total</h3>
@@ -307,12 +354,56 @@ address_email                                <input type="text" id="product_desc
                 </svg>
                 <p class="" style="color: #007bff;">Add New Product</p>
             </button>
+            <div>
+                <div class="bg-white rounded-sm shadow-md mb-4">
+                    <div class="w-full border-b">
+                        <h2 class="text-gray-800 font-semibold p-4 text-lg">Assign User Information</h3>
+                    </div>
+                    <div class="">
 
+                        <table id="contactTable" class="min-w-full table-auto">
+                            <thead style="background-color: #F9FAFF; color:#031A61;">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                        Select
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                        Contact Name
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                        Job Title
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                        Email
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                        Phone
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                        Mobile
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                        Billing Address
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                        Shipping Address
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-no-wrap"></td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
             <div class="flex flex-wrap gap-5">
-                <button class="text-white text-sm px-4 py-2 w-28" type="submit" style="background-color: #007bff;"value="<?php echo isset($_GET['enquiry_id']) ? $_GET['enquiry_id'] : "0" ?>"  name="<?php echo isset($_GET['enquiry_id']) ? "edit_sales_enquiry" : "add_sales_enquiry" ?>" >Save</button>
+                <button class="text-white text-sm px-4 py-2 w-28" type="submit" style="background-color: #007bff;" value="<?php echo isset($_GET['enquiry_id']) ? $_GET['enquiry_id'] : "0" ?>" name="<?php echo isset($_GET['enquiry_id']) ? "edit_sales_enquiry" : "add_sales_enquiry" ?>">Save</button>
                 <button class="text-white text-sm px-4 py-2" style="background-color: #007bff;">Save & Create Quotation</button>
                 <button class="border text-sm px-4 py-2 w-28" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
             </div>
+
         </div>
     </form>
     <div class="addpopup" id="addpopup">
@@ -403,6 +494,110 @@ address_email                                <input type="text" id="product_desc
             </form>
         </div>
     </div>
+
+    <script src="https://unpkg.com/number-to-words"></script>
+
+
+    <script src="../assets/js/script.js"></script>
+    <script>
+        $(document).ready(function() {
+            if (window.location.href.includes("sales")) {
+                const sales = document.querySelector(".sales");
+                const salesMenu = document.getElementById("salesSubmenu");
+
+                sales.classList.add("active");
+
+                const customerLink = document.querySelector('a[href="/erp/sales/sales_enquiry.php"]');
+                if (customerLink) {
+                    customerLink.classList.add('font-bold', 'text-black');
+                }
+            }
+        });
+        $('#customer_name').on('select2:select', function(e) {
+            var data = e.params.data;
+
+            $.ajax({
+                url: '../include/function.php',
+                method: 'GET',
+                data: {
+                    customerdata: data.id
+                },
+                success: function(response) {
+                    // console.log(response);
+                    var customerData = JSON.parse(response);
+
+                    var customerId = customerData.customer_id;
+
+ 
+                    $('#enquiry_customer_type').val(customerData.customer_type).prop('readonly', true);
+                    $('#sales_sr_by').val(customerData.source_name).prop('readonly', true);
+                    $('#enquiry_customer_type').css('background-color', '#eeeeee');
+                    $('#sales_sr_by').css('background-color', '#eeeeee');
+
+                },
+                error: function(error) {
+                    console.error('AJAX request failed: ' + error);
+                }
+            });
+
+            $.ajax({
+                url: '../include/function.php',
+                method: 'GET',
+                data: {
+                    getcontacts: data.id
+                },
+                success: function(response) {
+                    var contactData = JSON.parse(response);
+                    // console.log(contactData);
+                    let table = document.getElementById('contactTable');
+
+                    contactData.forEach(item => {
+                        let row = table.insertRow();
+
+                        let cell1 = row.insertCell();
+                        cell1.classList.add("px-6", "py-4", "whitespace-no-wrap");
+                        let checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.name = "contact_id";
+                        checkbox.value = item.contact_quotation_id;
+                        cell1.appendChild(checkbox);
+
+                        let cell2 = row.insertCell();
+                        cell2.classList.add("px-6", "py-4", "whitespace-no-wrap");
+                        cell2.textContent = item.first_name + ' ' + item.last_name;
+
+                        let cell3 = row.insertCell();
+                        cell3.classList.add("px-6", "py-4", "whitespace-no-wrap");
+                        cell3.textContent = item.job_title;
+
+                        let cell4 = row.insertCell();
+                        cell4.classList.add("px-6", "py-4", "whitespace-no-wrap");
+                        cell4.textContent = item.email1;
+
+                        let cell5 = row.insertCell();
+                        cell5.classList.add("px-6", "py-4", "whitespace-no-wrap");
+                        cell5.textContent = item.mobile_no1;
+
+                        let cell6 = row.insertCell();
+                        cell6.classList.add("px-6", "py-4", "whitespace-no-wrap");
+                        cell6.textContent = item.mobile_no2;
+
+                        let cell7 = row.insertCell();
+                        cell7.classList.add("px-6", "py-4", "whitespace-no-wrap");
+                        cell7.textContent = item.billing_address;
+
+                        let cell8 = row.insertCell();
+                        cell8.classList.add("px-6", "py-4", "whitespace-no-wrap");
+                        cell8.textContent = item.shipping_address;
+                    });
+
+                },
+                error: function(error) {
+                    console.error('AJAX request failed: ' + error);
+                }
+            });
+        });
+    </script>
     <?php
 
 
@@ -410,59 +605,24 @@ address_email                                <input type="text" id="product_desc
 
 
         getselecterdata($customerdata['enquiry_customer_name'], '#customer_name');
+       
         getselecterdata($customerdata['sales_branch_warehouse'], '#sales_branch_warehouse');
         getselecterdata($customerdata['sales_stage'], '#sales_stage');
         getselecterdata($customerdata['enquiry_currency'], '#currency');
+        getselecterdata($customerdata['assign_user_to'], '#assign_user_to');
+        echo '<script>document.getElementById("totalsections").style.display = "block";</script>';
+        echo '<script>calculateAmount(ProductNumber); </script>';
+?>
+<script> $('#enquiry_customer_name').trigger("change");</script>
+<?php
+
+    } else {
+
+        echo '<script>document.getElementById("totalsections").style.display = "none";</script>';
     }
- 
-    
+
+
     ?>
-    <script src="https://unpkg.com/number-to-words"></script>
-
-    <script src="../assets/js/script.js"></script>
-<script>
-    $(document).ready(function() {
-        if (window.location.href.includes("sales")) {
-            const sales = document.querySelector(".sales");
-            const salesMenu = document.getElementById("salesSubmenu");
-
-            sales.classList.add("active");
-
-            const customerLink = document.querySelector('a[href="/erp/sales/sales_enquiry.php"]');
-            if (customerLink) {
-                customerLink.classList.add('font-bold', 'text-black');
-            }
-        }
-    });
-$('#customer_name').on('select2:select', function (e) {
-    var data = e.params.data;
-
-    $.ajax({
-        url: '../include/function.php',
-        method: 'GET',
-        data: {
-            customerdata: data.id
-        },
-        success: function(response) {
-//    console.log(response);
-            var customerData = JSON.parse(response);
-
-            var customerId = customerData.customer_id;
-       
-// $(' #sales_branch_warehouse').val(customerData.warehouse_id ); 
-// $(' #sales_branch_warehouse').trigger('change'); 
-$('#company_name').val(customerData.customer_company_name); 
-$('#enquiry_customer_type').val(customerData.cu_ty_name);
-$('#sales_sr_by').val(customerData.source_name);
-
-        },  
-        error: function(error) {
-            console.error('AJAX request failed: ' + error);
-        }
-    });
-});
-
-</script>
 </body>
 
 </html>

@@ -15,7 +15,7 @@ if (isset($_POST['login'])) {
     // session_start();
     $rowlogin = $resultlogin->fetch_array();
     $_SESSION['user_id'] = $rowlogin['user_id'];
-    //  header("Location: ../index.php");
+    header("Location: ../index.php");
   }
 }
 function getoptionwithcode($table, $field, $value, $value2)
@@ -46,8 +46,8 @@ function getoption($table, $field, $value)
 function getuseroption($table, $field, $value)
 {
   include 'config.php';
-    $_SESSION['user_id'] = 1;
-  $data = mysqli_query($conn, "SELECT * FROM " . $table ." where admin_user = ".   $_SESSION['user_id']." ORDER BY " . $value);
+  $_SESSION['user_id'] = 1;
+  $data = mysqli_query($conn, "SELECT * FROM " . $table . " where admin_user = " .   $_SESSION['user_id'] . " ORDER BY " . $value);
   print_r($data);
   while ($datarow = mysqli_fetch_array($data)) {
     echo '<option value="' . $datarow[$field] . '">' . $datarow[$value] . '</option>';
@@ -91,30 +91,29 @@ if (isset($_POST['addctomerform'])) {
   $customer_Industry = mysqli_real_escape_string($conn, $_POST['customer_Industry']);
   $customer_type = mysqli_real_escape_string($conn, $_POST['customer_types']);
   $customer_source = mysqli_real_escape_string($conn, $_POST['customer_sources']);
-  $customer_branch = mysqli_real_escape_string($conn, $_POST['customer_branch_warehouses']);
+  // $customer_branch = mysqli_real_escape_string($conn, $_POST['customer_branch_warehouses']);
   $customer_phone = mysqli_real_escape_string($conn, $_POST['customer_phone']);
   $customer_email = mysqli_real_escape_string($conn, $_POST['customer_email']);
   $custom_field1 = mysqli_real_escape_string($conn, $_POST['custom_field1']);
 
   $stmt = $conn->prepare("INSERT INTO `customer`( `customer_code`, `customer_category`, 
-  `customer_company_name`, `customer_Industry`, `customer_type`, `customer_source`, `customer_branch`, `customer_custom_1`,
+  `customer_company_name`, `customer_Industry`, `customer_type`, `customer_source`, `customer_custom_1`,
 `customer_created_by`, `customer_phone`, `customer_email`) 
-   VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+   VALUES (?,?,?,?,?,?,?,?,?,?)");
 
-$stmt->bind_param(
-    "sssssssssss",
+  $stmt->bind_param(
+    "ssssssssss",
     $customer_code,
     $customer_category,
     $customer_company_name,
     $customer_Industry,
     $customer_type,
     $customer_source,
-    $customer_branch,
     $custom_field1,
     $_SESSION['user_id'],
     $customer_phone,
     $customer_email,
-);
+  );
 
   if ($stmt->execute()) {
     // die();
@@ -222,7 +221,7 @@ if (isset($_POST['editctomerform'])) {
     while ($numofaddress > 0) {
 
 
-   
+
 
       if (isset($_POST['addressid' . $count])) {
         $address = mysqli_real_escape_string($conn, $_POST['address' . $count]);
@@ -232,17 +231,17 @@ if (isset($_POST['editctomerform'])) {
         $postal_code = mysqli_real_escape_string($conn, $_POST['postal_code' . $count]);
         $country_tax = mysqli_real_escape_string($conn, $_POST['country_tax' . $count]);
         $tax_no = mysqli_real_escape_string($conn, $_POST['tax_no' . $count]);
-  
+
         $addressdata = mysqli_fetch_array($address_datanew);
 
-     
+
         $address_id = $addressdata['address_id'];
 
         $stmt = $conn->prepare("UPDATE `customer_address` SET`address_address`=?,`address_country`=?,`address_state`=?,`address_city`=?
           ,`address_zip_code`=?,`country_tax`=?,`tax_no`=? WHERE `address_id` = ?");
         $stmt->bind_param("sssssssi", $address, $address_country, $address_state, $address_city, $postal_code, $country_tax, $tax_no, $address_id);
         $stmt->execute();
-      } elseif(isset($_POST['address' . $count])) {
+      } elseif (isset($_POST['address' . $count])) {
 
         $address = mysqli_real_escape_string($conn, $_POST['address' . $count]);
         $address_country = mysqli_real_escape_string($conn, $_POST['country' . $count]);
@@ -251,7 +250,7 @@ if (isset($_POST['editctomerform'])) {
         $postal_code = mysqli_real_escape_string($conn, $_POST['postal_code' . $count]);
         $country_tax = mysqli_real_escape_string($conn, $_POST['country_tax' . $count]);
         $tax_no = mysqli_real_escape_string($conn, $_POST['tax_no' . $count]);
-  
+
         $stmt = $conn->prepare("INSERT INTO `customer_address`(`address_address`, `address_country`,
           `address_state`, `address_city`, `address_zip_code`, `country_tax`, `tax_no`, `customer_id`) 
           VALUES(?,?,?,?,?,?,?,?)");
@@ -261,57 +260,12 @@ if (isset($_POST['editctomerform'])) {
       $count++;
       $numofaddress--;
     }
- header("Location:  ../sales/customer.php");
-
+    header("Location:  ../sales/customer.php");
   }
 }
 
 
-//     $address_data1 = mysqli_query($conn, "SELECT * FROM `customer_address` WHERE `customer_id` =" . $_POST['editctomerform']);
 
-//     while (isset($_POST['address' . $count])) {
-
-
-//       if (isset($_POST['address' . $count])) {
-
-//         $address = mysqli_real_escape_string($conn, $_POST['address' . $count]);
-//         $address_country = mysqli_real_escape_string($conn, $_POST['country' . $count]);
-//         $address_state = mysqli_real_escape_string($conn, $_POST['state' . $count]);
-//         $address_city = mysqli_real_escape_string($conn, $_POST['city' . $count]);
-//         $postal_code = mysqli_real_escape_string($conn, $_POST['postal_code' . $count]);
-//         $country_tax = mysqli_real_escape_string($conn, $_POST['country_tax' . $count]);
-//         $tax_no = mysqli_real_escape_string($conn, $_POST['tax_no' . $count]);
-
-
-//         if (isset($_POST['address' . $count])) {
-//           $addressdata = mysqli_fetch_array($address_data1);
-//           $address_id = $addressdata['address_id'];
-
-//           $stmt = $conn->prepare("UPDATE `customer_address` SET`address_address`=?,`address_country`=?,`address_state`=?,`address_city`=?
-//           ,`address_zip_code`=?,`country_tax`=?,`tax_no`=? WHERE `address_id` = ?");
-//           $stmt->bind_param("sssssssi", $address, $address_country, $address_state, $address_city, $postal_code, $country_tax, $tax_no, $address_id);
-//           $stmt->execute();
-//           $numberofaddress--;
-//         } else {
-
-
-//           $stmt = $conn->prepare("INSERT INTO `customer_address`(`address_address`, `address_country`,
-//           `address_state`, `address_city`, `address_zip_code`, `country_tax`, `tax_no`, `customer_id`) 
-//           VALUES(?,?,?,?,?,?,?,?)");
-//           $stmt->bind_param("ssssssss", $address, $address_country, $address_state, $address_city,  $postal_code, $country_tax, $tax_no, $last_id);
-//           $stmt->execute();
-//           $numberofaddress--;
-//         }
-//         $count++;
-//       }
-//     }
-
-
-//     $stmt->close();
-//     // die();
-//     // header("Location:  ../sales/customer.php");
-//   }
-// }
 if (isset($_POST['saveandnewcustomer'])) {
   // echo " rushi";
   // die();
@@ -389,7 +343,7 @@ if (isset($_POST['saveandnewcustomer'])) {
 function getcustomer()
 {
   include 'config.php';
-  $data = mysqli_query($conn, "SELECT * FROM customer join customer_type on customer.customer_type  = cu_ty_id join user on customer.customer_created_by = user.user_id join warehouse on  customer.customer_branch = warehouse.warehouse_id ");
+  $data = mysqli_query($conn, "SELECT * FROM customer join customer_type on customer.customer_type  = cu_ty_id join user on customer.customer_created_by = user.user_id  ");
   $count = 0;
   while ($datarow = mysqli_fetch_array($data)) {
     $count++;
@@ -451,7 +405,7 @@ function getcontact()
   Inactive
 </button>';
     echo ' <tr><td class="px-6 py-4 whitespace-no-wrap">' . $count . '</td>
-    <td class="px-6 py-4 whitespace-no-wrap">'. $datarow['prefix'].' '. $datarow['first_name'].' '.$datarow['last_name'] . '</td>
+    <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['prefix'] . ' ' . $datarow['first_name'] . ' ' . $datarow['last_name'] . '</td>
     <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['customer_company_name'] . '</td>
     <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['user_username'] . '</td>
     <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['created_date'] . '</td>
@@ -536,7 +490,7 @@ function getcustomercategory()
 function getsales_stage()
 {
   include 'config.php';
-  $data = mysqli_query($conn, "SELECT * FROM `enquiry_stage` where stage_status = 1");
+  $data = mysqli_query($conn, "SELECT * FROM `enquiry_stage` ");
   $count = 0;
   while ($datarow = mysqli_fetch_array($data)) {
     $count++;
@@ -544,14 +498,14 @@ function getsales_stage()
     Active
   </a>' : '<a  style="cursor: pointer;" href=" ../include/function.php?stage_id_status=' . $datarow['stage_id'] . '"  class="text-red-900 border border-red-600 bg-red-300 w-16 p-2">
   Inactive
-</a>';  
+</a>';
     echo ' <tr><td class="px-6 py-4 whitespace-no-wrap">' . $count . '</td>
     <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['stage_name'] . '</td>
     <td class="px-6 py-4 whitespace-no-wrap">
    ' . $activebtn . '
     </td>
     <td class="px-6 py-4 whitespace-no-wrap flex justify-between">
-    <a href="industry.php?stage_id=' . $datarow['stage_id'] . '">
+    <a href="sales_stage.php?stage_id=' . $datarow['stage_id'] . '">
       <svg class="mt-2" width="18" height="18" viewBox="0 0 24 24" fill="none"
         xmlns="http://www.w3.org/2000/svg">
         <path d="M12 20H21" stroke="#8A8A8A" stroke-width="2" stroke-linecap="round"
@@ -763,7 +717,7 @@ function getsource_referred()
 function getsales_enquiry()
 {
   include 'config.php';
-  $data = mysqli_query($conn, "SELECT * FROM sales_enquiry join customer on customer.customer_id   = sales_enquiry.enquiry_customer_name join user on sales_enquiry.enquiry_user_id = user.user_id join warehouse on  sales_enquiry.sales_branch_warehouse = warehouse.warehouse_id ");
+  $data = mysqli_query($conn, "SELECT * FROM sales_enquiry join customer on customer.customer_id   = sales_enquiry.enquiry_customer_name join user on sales_enquiry.enquiry_user_id = user.user_id  ");
   $count = 0;
   while ($datarow = mysqli_fetch_array($data)) {
     $activebtn = $datarow['enquiry_id_status'] == 1 ? ' <a style="cursor: pointer;" href=" ../include/function.php?enquiry_id_status=' . $datarow['enquiry_id'] . '" class="text-green-900 border border-green-600 bg-green-300 w-16 p-2">
@@ -774,9 +728,9 @@ function getsales_enquiry()
     $count++;
     echo ' <tr>
     <td class="px-6 py-4 whitespace-no-wrap">' . $count . '</td>
-    <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['enquiry_company_name'] . '<br>' . $datarow['customer_code'] . '</td>
+    <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['enquiry_code'] . '</td>
     <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['customer_name'] . '</td>
-    <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['warehouse_name'] . '</td>
+    <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['customer_name'] . '</td>
     <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['user_username'] . '</td>
     <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['enquiry_close_date'] . '</td>
     <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['enquiry_version'] . '</td>
@@ -986,6 +940,17 @@ if (isset($_POST['customer_category_name_update'])) {
   $stmt->close();
   $conn->close();
 }
+if (isset($_POST['sales_stage_update'])) {
+  $sql = "UPDATE `enquiry_stage` SET `stage_name`=? WHERE `stage_id`= ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("ss", $_POST['sales_stage_update'], $_POST['sales_stage_update_id']);
+  if ($stmt->execute()) {
+
+    echo $conn->insert_id;
+  }
+  $stmt->close();
+  $conn->close();
+}
 if (isset($_POST['customer_type_update'])) {
   $sql = "UPDATE `customer_type` SET `cu_ty_name`=? WHERE `cu_ty_id`= ?";
   $stmt = $conn->prepare($sql);
@@ -1162,6 +1127,17 @@ if (isset($_POST['product_group'])) {
   $stmt->close();
   $conn->close();
 }
+if (isset($_POST['product_category'])) {
+  $sql = "INSERT INTO `product_category`(`product_category_name`) VALUES (?)";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("s", $_POST['product_category']);
+  if ($stmt->execute()) {
+
+    echo $conn->insert_id;
+  }
+  $stmt->close();
+  $conn->close();
+}
 if (isset($_GET['customercode'])) {
   $data = mysqli_query($conn, "SELECT * FROM `customer` WHERE  customer_code  = " . $_GET['customercode']);
   echo mysqli_num_rows($data);
@@ -1172,7 +1148,7 @@ if (isset($_POST['add_sales_enquiry'])) {
 
   $enquiry_code = mysqli_real_escape_string($conn, $_POST['enquiry_code']);
   $enquiry_customer_name = mysqli_real_escape_string($conn, $_POST['enquiry_customer_name']);
-  $sales_branch_warehouse = mysqli_real_escape_string($conn, $_POST['sales_branch_warehouse']);
+  // $sales_branch_warehouse = mysqli_real_escape_string($conn, $_POST['sales_branch_warehouse']);
   $enquiry_name = mysqli_real_escape_string($conn, $_POST['enquiry_name']);
   $sales_stage = mysqli_real_escape_string($conn, $_POST['enquiry_sales_stage']);
   $sales_company_category = mysqli_real_escape_string($conn, $_POST['sales_company_category']);
@@ -1181,21 +1157,22 @@ if (isset($_POST['add_sales_enquiry'])) {
   $enquiry_customer_type = mysqli_real_escape_string($conn, $_POST['enquiry_customer_type']);
   $enquiry_source = mysqli_real_escape_string($conn, $_POST['enquiry_source']);
   $enquiry_description = mysqli_real_escape_string($conn, $_POST['enquiry_description']);
-  $enquiry_version = mysqli_real_escape_string($conn, $_POST['enquiry_version']);
+  $enquiry_version = mysqli_real_escape_string($conn, $_POST['sales_version']);
   $assign_user_to = mysqli_real_escape_string($conn, $_POST['assign_user_to']);
+  $contact_id = mysqli_real_escape_string($conn, $_POST['contact_id']);
 
 
   $stmt = $conn->prepare("INSERT INTO `sales_enquiry`
-  ( `enquiry_code`, `enquiry_customer_name`, `sales_branch_warehouse`,
-   `enquiry_name`, `sales_stage`,`sales_company_category`,`enquiry_version`,`enquiry_close_date`, 
-   `enquiry_currency`, `enquiry_customer_type`,`enquiry_source`, `enquiry_description`
-   ,`assign_user_to`,`enquiry_user_id`)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    ( `enquiry_code`, `enquiry_customer_name`,
+     `enquiry_name`, `sales_stage`,`sales_company_category`,`enquiry_version`,`enquiry_close_date`, 
+     `enquiry_currency`, `enquiry_customer_type`,`enquiry_source`, `enquiry_description`
+     ,`assign_user_to`,`enquiry_user_id`,`contact_id`)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
   $stmt->bind_param(
-    "ssssssssssssss",
+    "sssssssssssssi",
     $enquiry_code,
     $enquiry_customer_name,
-    $sales_branch_warehouse,
     $enquiry_name,
     $sales_stage,
     $sales_company_category,
@@ -1206,7 +1183,8 @@ if (isset($_POST['add_sales_enquiry'])) {
     $enquiry_source,
     $enquiry_description,
     $assign_user_to,
-    $_SESSION['user_id']
+    $_SESSION['user_id'],
+    $contact_id
   );
 
   if ($stmt->execute()) {
@@ -1223,11 +1201,25 @@ if (isset($_POST['add_sales_enquiry'])) {
         $product_quantity = mysqli_real_escape_string($conn, $_POST['product_quantity' . $count]);
         $product_rate = mysqli_real_escape_string($conn, $_POST['product_rate' . $count]);
         $product_amount = mysqli_real_escape_string($conn, $_POST['product_amount' . $count]);
+        $enquiry_p_product_category = mysqli_real_escape_string($conn, $_POST['product_category' . $count]);
+        $enquiry_p_Group = mysqli_real_escape_string($conn, $_POST['product_group' . $count]);
 
 
-        $stmt = $conn->prepare("INSERT INTO  `enquiry_product`(`enquiry_p_product_description`, `enquiry_p_part_number`, `enquiry_p_product_hsn_code`, `enquiry_p_product_quantity`, `enquiry_p_product_rate`, `enquiry_p_product_amount`,`enquiry_id`) 
-                VALUES (?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssssss", $product_description, $part_number, $product_hsn_code, $product_quantity, $product_rate, $product_amount, $last_id);
+        $stmt = $conn->prepare("INSERT INTO  `enquiry_product`(`enquiry_p_product_description`, `enquiry_p_part_number`, `enquiry_p_product_hsn_code`, `enquiry_p_product_quantity`,
+         `enquiry_p_product_rate`, `enquiry_p_product_amount`,`enquiry_p_product_category`,``,`enquiry_id`) 
+                VALUES (?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param(
+          "sssssssss",
+          $product_description,
+          $part_number,
+          $product_hsn_code,
+          $product_quantity,
+          $product_rate,
+          $product_amount,
+          $enquiry_p_product_category,
+          $enquiry_p_Group,
+          $last_id
+        );
         $stmt->execute();
         $count++;
       }
@@ -1245,35 +1237,47 @@ if (isset($_POST['add_sales_enquiry'])) {
 if (isset($_POST['edit_sales_enquiry'])) {
   $count = 1;
   $_SESSION['user_id'] = 1;
-  // echo $_POST['edit_sales_enquiry'];
+
   $enquiry_code = mysqli_real_escape_string($conn, $_POST['enquiry_code']);
   $enquiry_customer_name = mysqli_real_escape_string($conn, $_POST['enquiry_customer_name']);
-  $enquiry_company_name = mysqli_real_escape_string($conn, $_POST['enquiry_company_name']);
-  $sales_branch_warehouse = mysqli_real_escape_string($conn, $_POST['sales_branch_warehouse']);
+  // $sales_branch_warehouse = mysqli_real_escape_string($conn, $_POST['sales_branch_warehouse']);
   $enquiry_name = mysqli_real_escape_string($conn, $_POST['enquiry_name']);
   $sales_stage = mysqli_real_escape_string($conn, $_POST['enquiry_sales_stage']);
-  $enquiry_version = mysqli_real_escape_string($conn, $_POST['enquiry_version']);
+  $sales_company_category = mysqli_real_escape_string($conn, $_POST['sales_company_category']);
   $enquiry_close_date = mysqli_real_escape_string($conn, $_POST['enquiry_close_date']);
   $enquiry_currency = mysqli_real_escape_string($conn, $_POST['enquiry_currency']);
   $enquiry_customer_type = mysqli_real_escape_string($conn, $_POST['enquiry_customer_type']);
   $enquiry_source = mysqli_real_escape_string($conn, $_POST['enquiry_source']);
   $enquiry_description = mysqli_real_escape_string($conn, $_POST['enquiry_description']);
-  $stmt = $conn->prepare("UPDATE `sales_enquiry` SET `enquiry_code`=?,`enquiry_customer_name`=?,`enquiry_company_name`=?,`sales_branch_warehouse`=?,`enquiry_name`=?,`sales_stage`=?,`enquiry_version`=?,`enquiry_close_date`=?,`enquiry_currency`=?,`enquiry_customer_type`=?,`enquiry_source`=?,`enquiry_description`=?,`enquiry_user_id`=? WHERE `enquiry_id`=?");
+  $enquiry_version = mysqli_real_escape_string($conn, $_POST['sales_version']);
+  $assign_user_to = mysqli_real_escape_string($conn, $_POST['assign_user_to']);
+  $contact_id = mysqli_real_escape_string($conn, $_POST['contact_id']);
+
+
+  $stmt = $conn->prepare("UPDATE `sales_enquiry` SET
+  `enquiry_code`=?,`enquiry_customer_name`=?,`enquiry_name`=?,`sales_stage`=?,
+  `enquiry_version`=?,`enquiry_close_date`=?,`enquiry_currency`=?,
+  `enquiry_customer_type`=?,`enquiry_source`=?,`enquiry_description`=?
+  ,`assign_user_to`=?,`enquiry_user_id`=?,
+  `contact_id`=?, WHERE `enquiry_id`=?");
+
+
   $stmt->bind_param(
     "ssssssssssssss",
     $enquiry_code,
     $enquiry_customer_name,
-    $enquiry_company_name,
-    $sales_branch_warehouse,
     $enquiry_name,
     $sales_stage,
+    $sales_company_category,
     $enquiry_version,
     $enquiry_close_date,
     $enquiry_currency,
     $enquiry_customer_type,
     $enquiry_source,
     $enquiry_description,
+    $assign_user_to,
     $_SESSION['user_id'],
+    $contact_id,
     $_POST['edit_sales_enquiry']
   );
 
@@ -1283,17 +1287,18 @@ if (isset($_POST['edit_sales_enquiry'])) {
     $count = 0;
     while ($addressdata = mysqli_fetch_array($address_data)) {
       $count++;
-      $enquiry_p_id = $addressdata['enquiry_p_id'];
       $product_description = mysqli_real_escape_string($conn, $_POST['product_description' . $count]);
-      $part_number = mysqli_real_escape_string($conn, $_POST['part_number' . $count]);
-      $product_hsn_code = mysqli_real_escape_string($conn, $_POST['product_hsn_code' . $count]);
-      $product_quantity = mysqli_real_escape_string($conn, $_POST['product_quantity' . $count]);
-      $product_rate = mysqli_real_escape_string($conn, $_POST['product_rate' . $count]);
-      $product_amount = mysqli_real_escape_string($conn, $_POST['product_amount' . $count]);
+  $part_number = mysqli_real_escape_string($conn, $_POST['part_number' . $count]);
+  $product_hsn_code = mysqli_real_escape_string($conn, $_POST['product_hsn_code' . $count]);
+  $product_quantity = mysqli_real_escape_string($conn, $_POST['product_quantity' . $count]);
+  $product_rate = mysqli_real_escape_string($conn, $_POST['product_rate' . $count]);
+  $product_amount = mysqli_real_escape_string($conn, $_POST['product_amount' . $count]);
+  $enquiry_p_product_category = mysqli_real_escape_string($conn, $_POST['product_category' . $count]);
+  $enquiry_p_Group = mysqli_real_escape_string($conn, $_POST['product_group' . $count]);
 
-      $stmt = $conn->prepare("UPDATE `enquiry_product` SET `enquiry_p_product_description`=?,`enquiry_p_part_number`=?,`enquiry_p_product_hsn_code`=?,`enquiry_p_product_quantity`=?,`enquiry_p_product_rate`=?,`enquiry_p_product_amount`=?,`enquiry_id`=? WHERE `enquiry_p_id`= ?");
+      $stmt = $conn->prepare("UPDATE `enquiry_product` SET `enquiry_p_product_description`=?,`enquiry_p_part_number`=?,`enquiry_p_product_hsn_code`=?,`enquiry_p_product_quantity`=?,`enquiry_p_product_rate`=?,`enquiry_p_product_amount`=?,`enquiry_p_product_category`,`enquiry_p_Group`,`enquiry_id`=? WHERE `enquiry_p_id`= ?");
 
-      $stmt->bind_param("ssssssss", $product_description, $part_number, $product_hsn_code, $product_quantity, $product_rate, $product_amount, $last_id,  $enquiry_p_id);
+      $stmt->bind_param("ssssssssss", $product_description, $part_number, $product_hsn_code, $product_quantity, $product_rate, $product_amount,$enquiry_p_product_category,$enquiry_p_Group, $last_id,  $enquiry_p_id);
       $stmt->execute();
       $count++;
     }
@@ -1309,38 +1314,30 @@ if (isset($_POST['add_sales_quotation'])) {
   $count = 1;
   $_SESSION['user_id'] = 1;
 
-  $qsales_quotation_number = mysqli_real_escape_string($conn, $_POST['qsales_quotation_number']);
-  $sales_quotation_cc_name = mysqli_real_escape_string($conn, $_POST['sales_quotation_cc_name']);
-  $qsales_quotation_subject = mysqli_real_escape_string($conn, $_POST['qsales_quotation_subject']);
-  $sales_quotation_enquiry = mysqli_real_escape_string($conn, $_POST['sales_quotation_enquiry']);
-  $sales_quotation_branch_warehouse = mysqli_real_escape_string($conn, $_POST['sales_quotation_branch_warehouse']);
-  $sales_quotation_contact = mysqli_real_escape_string($conn, $_POST['sales_quotation_contact']);
-  $sales_quotation_version = mysqli_real_escape_string($conn, $_POST['sales_quotation_version']);
-  $sales_quotation_valid_till = mysqli_real_escape_string($conn, $_POST['sales_quotation_valid_till']);
-  $sales_quotation_currency = mysqli_real_escape_string($conn, $_POST['sales_quotation_currency']);
-  $sales_quotation_type = mysqli_real_escape_string($conn, $_POST['sales_quotation_type']);
-  $sales_quotation_sr_by = mysqli_real_escape_string($conn, $_POST['sales_quotation_sr_by']);
-  $sales_quotation_description = mysqli_real_escape_string($conn, $_POST['sales_quotation_description']);
+  $product_description = mysqli_real_escape_string($conn, $_POST['product_description' . $count]);
+  $part_number = mysqli_real_escape_string($conn, $_POST['part_number' . $count]);
+  $product_hsn_code = mysqli_real_escape_string($conn, $_POST['product_hsn_code' . $count]);
+  $product_quantity = mysqli_real_escape_string($conn, $_POST['product_quantity' . $count]);
+  $product_rate = mysqli_real_escape_string($conn, $_POST['product_rate' . $count]);
+  $product_amount = mysqli_real_escape_string($conn, $_POST['product_amount' . $count]);
+  $enquiry_p_product_category = mysqli_real_escape_string($conn, $_POST['product_category' . $count]);
+  $enquiry_p_Group = mysqli_real_escape_string($conn, $_POST['product_group' . $count]);
 
 
-
-  $stmt = $conn->prepare("INSERT INTO `quotation`( `qsales_quotation_number`, `sales_quotation_cc_name`, `qsales_quotation_subject`, `sales_quotation_enquiry`, `sales_branch_warehouse`, `sales_quotation_contact`, `qsales_quotation_version`, `sales_quotation_valid_till`, `sales_quotation_currency`, `sales_quotation_type`, `sales_quotation_sr_by`, `sales_quotation_description`,`sales_quotation_cerated_bye`) VALUES
-   (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+  $stmt = $conn->prepare("INSERT INTO  `enquiry_product`(`enquiry_p_product_description`, `enquiry_p_part_number`, `enquiry_p_product_hsn_code`, `enquiry_p_product_quantity`,
+   `enquiry_p_product_rate`, `enquiry_p_product_amount`,`enquiry_p_product_category`,``,`enquiry_id`) 
+          VALUES (?,?,?,?,?,?,?,?,?)");
   $stmt->bind_param(
-    "sssssssssssss",
-    $qsales_quotation_number,
-    $sales_quotation_cc_name,
-    $qsales_quotation_subject,
-    $sales_quotation_enquiry,
-    $sales_quotation_branch_warehouse,
-    $sales_quotation_contact,
-    $sales_quotation_version,
-    $sales_quotation_valid_till,
-    $sales_quotation_currency,
-    $sales_quotation_type,
-    $sales_quotation_sr_by,
-    $sales_quotation_description,
-    $_SESSION['user_id']
+    "sssssssss",
+    $product_description,
+    $part_number,
+    $product_hsn_code,
+    $product_quantity,
+    $product_rate,
+    $product_amount,
+    $enquiry_p_product_category,
+    $enquiry_p_Group,
+    $last_id
   );
 
   if ($stmt->execute()) {
@@ -1413,9 +1410,20 @@ $('" . $selecter . "').val('" . $data . "');
 $('" . $selecter . "').trigger('change'); </script> ";
 }
 if (isset($_GET['customerdata'])) {
-  $customerquery = mysqli_query($conn, "SELECT * FROM customer join customer_type on customer.customer_type  = cu_ty_id join user on customer.customer_created_by = user.user_id join source on source.source_id  = customer.customer_source  join warehouse on  customer.customer_branch = warehouse.warehouse_id where customer_id = " . $_GET['customerdata']);
+  $customerquery = mysqli_query($conn, "SELECT * FROM customer join customer_type on customer.customer_type  = cu_ty_id join user on customer.customer_created_by = user.user_id join source on source.source_id  = customer.customer_source  where customer_id = " . $_GET['customerdata']);
   $customerdata = mysqli_fetch_assoc($customerquery);
   echo json_encode($customerdata);
+}
+if (isset($_GET['getcontacts'])) {
+  $stmt = $conn->prepare("SELECT * FROM contact_quotation WHERE company_name = ?");
+  $stmt->bind_param("s", $_GET['getcontacts']);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $contacts = array();
+  while ($row = $result->fetch_assoc()) {
+    $contacts[] = $row;
+  }
+  echo json_encode($contacts);
 }
 if (isset($_GET['changestatus'])) {
   $stmt = $conn->prepare("UPDATE `customer` SET `customer_status` = 1- `customer_status`  WHERE `customer_id`=  ? ");
@@ -1467,28 +1475,33 @@ if (isset($_GET['enquiry_id_status'])) {
   echo '<script> window.location.href = "../sales/sales_enquiry.php" </script> ';
 }
 if (isset($_GET['job_title_status_id_status'])) {
- 
+
   $stmt = $conn->prepare("UPDATE `job_title` SET `job_title_status` = 1- `job_title_status`  WHERE `job_title_id`=  ? ");
   $stmt->bind_param("s", $_GET['job_title_status_id_status']);
   $stmt->execute();
-   echo '<script> window.location.href = "../other_pages/job_title.php" </script> ';
+  echo '<script> window.location.href = "../other_pages/job_title.php" </script> ';
 }
 
 if (isset($_GET['department_id_status'])) {
- 
+
   $stmt = $conn->prepare("UPDATE `department` SET `department_status` = 1- `department_status`  WHERE `department_id`=  ? ");
   $stmt->bind_param("s", $_GET['department_id_status']);
   $stmt->execute();
-   echo '<script> window.location.href = "../other_pages/department.php" </script> ';
+  echo '<script> window.location.href = "../other_pages/department.php" </script> ';
 }
 if (isset($_GET['communication_preference_id_status'])) {
- 
+
   $stmt = $conn->prepare("UPDATE `communication_preference` SET `communication_preference_status` = 1- `communication_preference_status`  WHERE `communication_preference_id`=  ? ");
   $stmt->bind_param("s", $_GET['communication_preference_id_status']);
   $stmt->execute();
-   echo '<script> window.location.href = "../other_pages/communication_preference.php" </script> ';
+  echo '<script> window.location.href = "../other_pages/communication_preference.php" </script> ';
 }
-
+if (isset($_GET['stage_id_status'])) {
+  $stmt = $conn->prepare("UPDATE `enquiry_stage` SET `stage_status` = 1- `stage_status`  WHERE `stage_id`=  ? ");
+  $stmt->bind_param("s", $_GET['stage_id_status']);
+  $stmt->execute();
+  echo '<script> window.location.href = "../other_pages/sales_stage.php" </script> ';
+}
 if (isset($_GET['deletejob_title_id'])) {
   $stmt = $conn->prepare("DELETE FROM `job_title` WHERE `job_title_id`=  ? ");
   $stmt->bind_param("s", $_GET['deletejob_title_id']);
@@ -1661,7 +1674,7 @@ if (isset($_POST['update_sales_quotation_contact'])) {
   $home_phone = mysqli_real_escape_string($conn, $_POST['home_phone']);
   $other_phone = mysqli_real_escape_string($conn, $_POST['other_phone']);
 
-  $modified_date= date("Y/m/d"); 
+  $modified_date = date("Y/m/d");
   $stmt = $conn->prepare("UPDATE `contact_quotation` SET `company_name`=?,`prefix`=?,`first_name`=?,`last_name`=?,`email1`=?,`email2`=?,
   `mobile_no1`=?,`mobile_no2`=?,`job_title`=?,`department`=?,`skype_id`=?,`communication_preference`=?,`website_link`=?,`linkedln_profile`=?,
   `shipping_address`=?,`shipping_country`=?,`shipping_state`=?,`shipping_city`=?,`shipping_postal_code`=?,`billing_address`=?,`billing_country`=?,
@@ -1696,14 +1709,14 @@ if (isset($_POST['update_sales_quotation_contact'])) {
     $fax,
     $home_phone,
     $other_phone,
-   
+
     $_SESSION['user_id'],
     $modified_date,
     $_POST['update_sales_quotation_contact']
- 
+
   );
   if ($stmt->execute()) {
-     echo '<script>window.location.href = "../sales/contact.php"; </script>';
+    echo '<script>window.location.href = "../sales/contact.php"; </script>';
   }
 }
 if (isset($_POST['prefixdata'])) {
@@ -1751,9 +1764,18 @@ if (isset($_POST['communication_preferencedata'])) {
   $conn->close();
 }
 
-if(isset($_GET['user_emaildata'])){
-  $data = mysqli_query($conn, "SELECT * FROM user where user_email =  '" . $_GET['user_emaildata']."'");
+if (isset($_GET['user_emaildata'])) {
+  $data = mysqli_query($conn, "SELECT * FROM user where user_email =  '" . $_GET['user_emaildata'] . "'");
   $count = 0;
   $datarow = mysqli_fetch_array($data);
-    echo $datarow['company_name'];
+  echo $datarow['company_name'];
+}
+
+
+function getuserdata($data)
+{
+  include 'config.php';
+  $data = mysqli_query($conn, "SELECT * FROM user where user_id =  '" . $data . "'");
+  $count = 0;
+  return $datarow = mysqli_fetch_array($data);
 }
