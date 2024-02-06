@@ -98,7 +98,7 @@
                 </div>
                 <div class="flex items-center justify-start gap-4 mt-32">
                     <button class="text-white text-sm px-4 py-2 w-28" 
-                    onclick="savedatanow('sales_stageform', <?php echo isset($_GET['stage_id']) ? 'sales_stage_update' : 'sales_stage' ?>)"
+                    onclick="savedatanow('sales_stageform','<?php echo isset($_GET['stage_id']) ? 'sales_stage_update' : 'sales_stage' ?>')"
                    type="button" id="openButton" style="background-color: #007bff;">Save</button>
                     <button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('sales_stagePopup')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
                 </div>

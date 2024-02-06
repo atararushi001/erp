@@ -4,7 +4,7 @@
 
 if (isset($_GET['enquiry_id'])) {
 
-    $customerquery = mysqli_query($conn, "SELECT * FROM sales_enquiry where enquiry_id = " . $_GET['enquiry_id']);
+    $customerquery = mysqli_query($conn, "SELECT * FROM sales_enquiry join sales_company_category on sales_company_category.company_category_id = sales_enquiry.sales_company_category where enquiry_id = " . $_GET['enquiry_id']);
     $customerdata = mysqli_fetch_array($customerquery);
 }
 $product_groupOptionsHTML = '';
@@ -147,7 +147,7 @@ echo '</script>';
                         </div>
                         <div class="md:col-span-3 sm:col-span-1">
                             <label for="enquiry_customer_name" class="text-gray-700 font-semibold">Customer Name</label>
-                            <select name="enquiry_customer_name" id="customer_name" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important"=>
+                            <select name="enquiry_customer_name" onchange="" id="customer_name" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important"=>
                                 <option value="Customer Name">Customer Name</option>
                                 <?php
                                 getoptionwithcodestatus('customer', 'customer_id', 'customer_company_name', 'customer_code', 'customer_status');
@@ -206,7 +206,7 @@ echo '</script>';
                             <!-- <select name="enquiry_source" id="enquiry_source" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
                                 <option value="Source / Referred By">Source / Referred By</option>
                                 <?php
-                                getoptionwithstatus('source', 'source_id', 'source_name', 'source_status');
+                                // getoptionwithstatus('source', 'source_id', 'source_name', 'source_status');
 
                                 ?>
                             </select> -->
@@ -219,7 +219,7 @@ echo '</script>';
                         </div>
                         <div class="col-span-1">
                             <label for="sales_version" class="text-gray-700 font-semibold">Version</label>
-                            <input type="text" id="sales_version" placeholder="Version" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_code'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="sales_version">
+                            <input type="text" id="sales_version" placeholder="Version" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_version'] : '1' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="sales_version">
                         </div>
                     </div>
                 </div>
@@ -231,7 +231,7 @@ echo '</script>';
                     </div>
                     <div class="grid lg:grid-cols-4 md:grid-cols-1 sm:grid-cols-1 p-4 gap-4">
                         <div>
-                            <label for="assign_user_to" class="text-gray-700 font-semibold">Assign To</label>
+                            <label for="assign_user_to" class="text-gray-700 font-semibold">Customer Contacts</label>
                             <select name="assign_user_to" id="assign_user_to" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
                                 <option value="Assign To">Assign To</option>
                                 <?php
@@ -610,10 +610,20 @@ echo '</script>';
         getselecterdata($customerdata['sales_stage'], '#sales_stage');
         getselecterdata($customerdata['enquiry_currency'], '#currency');
         getselecterdata($customerdata['assign_user_to'], '#assign_user_to');
+        getselecterdata($customerdata['sales_company_category'], '#sales_company_category');
         echo '<script>document.getElementById("totalsections").style.display = "block";</script>';
-        echo '<script>calculateAmount(ProductNumber); </script>';
+        echo "<script>calculateAmount(ProductNumber); 
+        
+        $('#customer_name').trigger('select2:select', {
+            params: {
+                data: {
+                    id: ".$customerdata['enquiry_customer_name']."
+                }
+            }
+        });
+        </script>";
 ?>
-<script> $('#enquiry_customer_name').trigger("change");</script>
+
 <?php
 
     } else {

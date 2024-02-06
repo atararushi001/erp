@@ -28,6 +28,19 @@
             Add Enquiry
           </button></a>
       </div>
+      <div class="container mx-auto px-4 mt-10 flex flex-col ">
+        <!-- <h1 class="text-3xl font-bold mb-4">Upload products</h1>
+        <p class="text-gray-600 mb-8">You can only upload CSV and .XLSX files.</p> -->
+        <form action="../include/function.php" method="post" enctype="multipart/form-data" class="flex  w-full max-w-md ">
+          <div class="mb-4">
+            <label for="file" class="block text-gray-700 text-sm font-bold mb-2">Choose file</label>
+            <input type="file" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="csv_file" name="csv_file" accept=".csv, .xlsx" required>
+          </div>
+          <div class="mb-4 inline-block align-baseline">
+            <button class="bg-blue-500 hover:bg-blue-700 h-8 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Upload</button>
+          </div>
+        </form>
+      </div>
       <div class="flex flex-wrap justify-end p-4 gap-4">
         <div>
           <input type="datetime-local" class="border rounded-sm text-gray-700 outline-none p-2" />
@@ -54,7 +67,7 @@
                 Customer Name
               </th>
               <th class="px-6 py-3 text-left text-sm leading-4 font-medium text-gray-500 tracking-wider">
-              Customer Name
+              Contact Name
               </th>
               <th class="px-6 py-3 text-left text-sm leading-4 font-medium text-gray-500 tracking-wider">
                 Creator
