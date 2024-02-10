@@ -71,9 +71,9 @@
                     </li>
                     <li>
                         <a href="/erp/other_pages/sales_stage.php">Sales Stage</a>
-                    </li>
+                    </li>   
                     <li>
-                        <a href="/erp/other_pages/sales_product_category.php">Sales Product Category</a>
+                        <a href="/erp/other_pages/product_category.php">Sales Product Category</a>
                     </li>
                     <li>
                         <a href="/erp/other_pages/sales_product_group.php">Sales Product Group</a>

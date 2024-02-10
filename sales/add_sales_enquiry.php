@@ -3,8 +3,8 @@
 @include '../include/function.php';
 
 if (isset($_GET['enquiry_id'])) {
-
-    $customerquery = mysqli_query($conn, "SELECT * FROM sales_enquiry join sales_company_category on sales_company_category.company_category_id = sales_enquiry.sales_company_category where enquiry_id = " . $_GET['enquiry_id']);
+// echo "SELECT * FROM sales_enquiry join sales_company_category on sales_company_category.company_category_id = sales_enquiry.sales_company_category  join customer_type on cu_ty_id = sales_enquiry.enquiry_customer_type where enquiry_id = " . $_GET['enquiry_id'];
+    $customerquery = mysqli_query($conn, "SELECT * FROM sales_enquiry join sales_company_category on sales_company_category.company_category_id = sales_enquiry.sales_company_category  join customer_type on cu_ty_id = sales_enquiry.enquiry_customer_type where enquiry_id = " . $_GET['enquiry_id']);
     $customerdata = mysqli_fetch_array($customerquery);
 }
 $product_groupOptionsHTML = '';
@@ -159,7 +159,7 @@ echo '</script>';
                     <div class="grid lg:grid-cols-4 md:grid-cols-1 sm:grid-cols-1 p-4 pt-0 gap-4">
                         <div class="md:col-span-2 sm:col-span-1">
                             <label for="enquiry_name" class="text-gray-700 font-semibold">Enquiry Name</label>
-                            <input type="text" id="enquiry_name" placeholder="Enquiry Name" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_name'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_name">
+                            <input type="text" name="enquiry_name" id="enquiry_name" placeholder="Enquiry Name" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_name'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" >
                         </div>
                         <div>
                             <label for="enquiry_sales_stage" class="text-gray-700 font-semibold">Sales Stage</label>
@@ -198,28 +198,22 @@ echo '</script>';
                         </div>
                         <div>
                             <label for="sales_customer_type" class="text-gray-700 font-semibold">Customer Type</label>
-                            <input type="text" id="enquiry_customer_type" placeholder="Customer Type" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_code'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_customer_type">
+                            <input type="text" id="enquiry_customer_type" placeholder="Customer Type" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['cu_ty_name'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_customer_type">
                         </div>
                         <div>
                             <label for="sales_sr_by" class="text-gray-700 font-semibold">Source / Referred By</label>
-                            <input type="text" id="sales_sr_by" placeholder="Source / Referred By" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_code'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_source">
-                            <!-- <select name="enquiry_source" id="enquiry_source" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
-                                <option value="Source / Referred By">Source / Referred By</option>
-                                <?php
-                                // getoptionwithstatus('source', 'source_id', 'source_name', 'source_status');
+                            <input type="text" id="sales_sr_by" placeholder="Source / Referred By" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_source'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_source">
 
-                                ?>
-                            </select> -->
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-4 p-4 pt-0 gap-4">
                         <div class="col-span-3">
                             <label for="sales_description" class="text-gray-700 font-semibold">Description</label>
-                            <input type="text" id="sales_description" placeholder="Description" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_code'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_description">
+                            <input type="text" id="sales_description" placeholder="Description" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_description'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_description">
                         </div>
                         <div class="col-span-1">
                             <label for="sales_version" class="text-gray-700 font-semibold">Version</label>
-                            <input type="text" id="sales_version" placeholder="Version" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_version'] : '1' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="sales_version">
+                            <input type="text" id="sales_version" placeholder="Version" value="<?php echo isset($_GET['enquiry_id']) ? $customerdata['enquiry_version'] + 1 : '1' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="sales_version">
                         </div>
                     </div>
                 </div>
@@ -333,15 +327,15 @@ echo '</script>';
                     <div class="grid lg:grid-cols-4 md:grid-cols-1 sm:grid-cols-1 p-4 gap-4">
                         <div class="md:col-span-2 sm:col-span-1">
                             <label for="total_in_word" class="text-gray-700 font-semibold">In word</label>
-                            <input type="text" id="total_in_word" placeholder="" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_name">
+                            <input type="text" id="total_in_word" placeholder="" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="total_in_word">
                         </div>
                         <div>
                             <label for="total_quantity_nos" class="text-gray-700 font-semibold">Total Quantity NOs.</label>
-                            <input type="text" id="total_quantity_nos" placeholder="" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_name">
+                            <input type="text" id="total_quantity_nos" placeholder="" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="total_quantity_nos">
                         </div>
                         <div>
                             <label for="total" class="text-gray-700 font-semibold">Total</label>
-                            <input type="text" id="total" placeholder="" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="enquiry_name">
+                            <input type="text" id="total" placeholder="" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" name="total">
                         </div>
                     </div>
                 </div>
@@ -357,7 +351,7 @@ echo '</script>';
             <div>
                 <div class="bg-white rounded-sm shadow-md mb-4">
                     <div class="w-full border-b">
-                        <h2 class="text-gray-800 font-semibold p-4 text-lg">Assign User Information</h3>
+                        <h2 class="text-gray-800 font-semibold p-4 text-lg"> Customer Contacts</h3>
                     </div>
                     <div class="">
 
@@ -390,9 +384,26 @@ echo '</script>';
                                     </th>
                                 </tr>
                             </thead>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-no-wrap"></td>
-                            </tr>
+
+                            <?php
+                            if (isset($customerdata['enquiry_customer_name'])) {
+                                $cotactquery = mysqli_query($conn, "SELECT * FROM contact_quotation join job_title on contact_quotation.job_title = job_title.job_title_id   where company_name = " . $customerdata['enquiry_customer_name']);
+                                // $contactdata = mysqli_fetch_assoc($cotactquery);
+                                while ($contactdata = mysqli_fetch_assoc($cotactquery)) {
+                            ?> <tr>
+                                        <td class="px-6 py-4 whitespace-no-wrap"><input type="radio" name="contact_id" <?php echo $customerdata['contact_id'] == $contactdata['contact_quotation_id'] ? "checked" : " " ?> value="11"></td>
+                                        <td class="px-6 py-4 whitespace-no-wrap"><?php echo $contactdata['first_name'] . " " . $contactdata['last_name']; ?></td>
+                                        <td class="px-6 py-4 whitespace-no-wrap"><?php echo $contactdata['job_title_name']; ?></td>
+                                        <td class="px-6 py-4 whitespace-no-wrap"><?php echo $contactdata['email1']; ?></td>
+                                        <td class="px-6 py-4 whitespace-no-wrap"><?php echo $contactdata['mobile_no1']; ?></td>
+                                        <td class="px-6 py-4 whitespace-no-wrap"><?php echo $contactdata['mobile_no2']; ?></td>
+                                        <td class="px-6 py-4 whitespace-no-wrap"><?php echo $contactdata['billing_address']; ?></td>
+                                        <td class="px-6 py-4 whitespace-no-wrap"><?php echo $contactdata['shipping_address']; ?></td>
+
+
+                                    </tr>
+                            <?php }
+                            } ?>
                         </table>
 
                     </div>
@@ -401,7 +412,7 @@ echo '</script>';
             <div class="flex flex-wrap gap-5">
                 <button class="text-white text-sm px-4 py-2 w-28" type="submit" style="background-color: #007bff;" value="<?php echo isset($_GET['enquiry_id']) ? $_GET['enquiry_id'] : "0" ?>" name="<?php echo isset($_GET['enquiry_id']) ? "edit_sales_enquiry" : "add_sales_enquiry" ?>">Save</button>
                 <button class="text-white text-sm px-4 py-2" style="background-color: #007bff;">Save & Create Quotation</button>
-                <button class="border text-sm px-4 py-2 w-28" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
+                <a href="sales_enquiry.php"  class="btn border text-sm px-4 py-2" style="color: #007bff; border: 1px solid #007bff;">Cancel</a >
             </div>
 
         </div>
@@ -528,8 +539,8 @@ echo '</script>';
 
                     var customerId = customerData.customer_id;
 
- 
-                    $('#enquiry_customer_type').val(customerData.customer_type).prop('readonly', true);
+
+                    $('#enquiry_customer_type').val(customerData.cu_ty_name).prop('readonly', true);
                     $('#sales_sr_by').val(customerData.source_name).prop('readonly', true);
                     $('#enquiry_customer_type').css('background-color', '#eeeeee');
                     $('#sales_sr_by').css('background-color', '#eeeeee');
@@ -550,6 +561,17 @@ echo '</script>';
                     var contactData = JSON.parse(response);
                     // console.log(contactData);
                     let table = document.getElementById('contactTable');
+                    table.innerHTML = "";
+
+                    let headerRow = table.insertRow();
+                    let headers = ["Select", "Contact Name", "Job Title", "Email", "Phone", "Mobile", "Billing Address", "Shipping Address"];
+                    headers.forEach(header => {
+                        let th = document.createElement('th');
+                        th.classList.add("px-6", "py-3", "text-left", "text-sm", "leading-4", "font-medium", "tracking-wider");
+                        th.textContent = header;
+                        headerRow.appendChild(th);
+                    });
+
 
                     contactData.forEach(item => {
                         let row = table.insertRow();
@@ -557,7 +579,7 @@ echo '</script>';
                         let cell1 = row.insertCell();
                         cell1.classList.add("px-6", "py-4", "whitespace-no-wrap");
                         let checkbox = document.createElement('input');
-                        checkbox.type = 'checkbox';
+                        checkbox.type = 'radio';
                         checkbox.name = "contact_id";
                         checkbox.value = item.contact_quotation_id;
                         cell1.appendChild(checkbox);
@@ -568,7 +590,7 @@ echo '</script>';
 
                         let cell3 = row.insertCell();
                         cell3.classList.add("px-6", "py-4", "whitespace-no-wrap");
-                        cell3.textContent = item.job_title;
+                        cell3.textContent = item.job_title_name;
 
                         let cell4 = row.insertCell();
                         cell4.classList.add("px-6", "py-4", "whitespace-no-wrap");
@@ -605,7 +627,7 @@ echo '</script>';
 
 
         getselecterdata($customerdata['enquiry_customer_name'], '#customer_name');
-       
+
         getselecterdata($customerdata['sales_branch_warehouse'], '#sales_branch_warehouse');
         getselecterdata($customerdata['sales_stage'], '#sales_stage');
         getselecterdata($customerdata['enquiry_currency'], '#currency');
@@ -613,18 +635,11 @@ echo '</script>';
         getselecterdata($customerdata['sales_company_category'], '#sales_company_category');
         echo '<script>document.getElementById("totalsections").style.display = "block";</script>';
         echo "<script>calculateAmount(ProductNumber); 
-        
-        $('#customer_name').trigger('select2:select', {
-            params: {
-                data: {
-                    id: ".$customerdata['enquiry_customer_name']."
-                }
-            }
-        });
+    
         </script>";
-?>
+    ?>
 
-<?php
+    <?php
 
     } else {
 

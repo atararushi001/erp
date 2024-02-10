@@ -244,35 +244,6 @@ function calculateTotal() {
 }
 
 
-// function removeProduct(button) {
-//   let deleteProduct = button.parentNode.parentNode.parentNode;
-//   deleteProduct.remove();
-//   ProductNumber--;
-
-//   if(ProductNumber == 0){
-//     $(document).ready(function () {
-//       var totalSalesDiv = $("#totalsection");
-    
-//       if (ProductNumber > 0) {
-//         totalSalesDiv.show();
-//       } else {
-//         totalSalesDiv.hide();
-//       }
-//     });
-//   }
-//   let countdata = ProductNumber;
-//   let currentId = "product" + countdata;
-
-//   while (document.querySelector("#" + currentId)) {
-//     let newname = countdata - 1;
-//     document.querySelector("#" + currentId).innerHTML =
-//       "Product " + newname;
-//     console.log(newname);
-//     countdata++;
-//     currentId = "product" + countdata;
-//   }
-//   calculateAmount(productNumber);
-// }
 function removeProduct(button) {
   let deleteProduct = button.parentNode.parentNode.parentNode;
   deleteProduct.remove();
