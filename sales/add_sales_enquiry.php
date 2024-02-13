@@ -8,7 +8,7 @@ if (isset($_GET['enquiry_id'])) {
     $customerdata = mysqli_fetch_array($customerquery);
 }
 $product_groupOptionsHTML = '';
-$query = mysqli_query($conn, "SELECT * FROM product_group");
+$query = mysqli_query($conn, "SELECT * FROM product_group where product_group_status = 1");
 while ($row = mysqli_fetch_array($query)) {
     if (isset($_GET['customer_id'])) {
     }
@@ -20,7 +20,7 @@ echo 'var product_groupOptionsHTML = `' . $product_groupOptionsHTML . '`;';
 echo '</script>';
 
 $product_categoryOptionsHTML = '';
-$query = mysqli_query($conn, "SELECT * FROM product_category");
+$query = mysqli_query($conn, "SELECT * FROM product_category where  product_category_status  = 1");
 while ($row = mysqli_fetch_array($query)) {
     if (isset($_GET['customer_id'])) {
     }
@@ -634,9 +634,17 @@ echo '</script>';
         getselecterdata($customerdata['assign_user_to'], '#assign_user_to');
         getselecterdata($customerdata['sales_company_category'], '#sales_company_category');
         echo '<script>document.getElementById("totalsections").style.display = "block";</script>';
-        echo "<script>calculateAmount(ProductNumber); 
-    
+        echo "<script>
+
+        $('#enquiry_customer_type').prop('readonly', true);
+        $('#sales_sr_by').prop('readonly', true);
+        $('#enquiry_customer_type').css('background-color', '#eeeeee');
+        $('#sales_sr_by').css('background-color', '#eeeeee');
+
+
+
         </script>";
+                // calculateAmount(".$count."); 
     ?>
 
     <?php

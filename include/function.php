@@ -1,8 +1,8 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 session_start();
 include 'config.php';
-
 
 if (isset($_POST['login'])) {
 
@@ -579,7 +579,54 @@ function getproduct_category()
     </td> </tr>';
   }
 }
-function getcompany_category(){
+
+function getproduct_group()
+{
+  include 'config.php';
+  $data = mysqli_query($conn, "SELECT * FROM `product_group` ");
+  $count = 0;
+  while ($datarow = mysqli_fetch_array($data)) {
+    $count++;
+    $activebtn = $datarow['product_group_status'] == 1 ? ' <a style="cursor: pointer;" href=" ../include/function.php?product_group_id_status=' . $datarow['product_group_id'] . '" class="text-green-900 border border-green-600 bg-green-300 w-16 p-2">
+    Active
+  </a>' : '<a  style="cursor: pointer;" href=" ../include/function.php?product_group_id_status=' . $datarow['product_group_id'] . '"  class="text-red-900 border border-red-600 bg-red-300 w-16 p-2">
+  Inactive
+</a>';
+    echo ' <tr><td class="px-6 py-4 whitespace-no-wrap">' . $count . '</td>
+    <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['product_group_name'] . '</td>
+    <td class="px-6 py-4 whitespace-no-wrap">
+   ' . $activebtn . '
+    </td>
+    <td class="px-6 py-4 whitespace-no-wrap flex justify-between">
+    <a href="sales_product_group.php?product_group_id=' . $datarow['product_group_id'] . '">
+      <svg class="mt-2" width="18" height="18" viewBox="0 0 24 24" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 20H21" stroke="#8A8A8A" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path
+          d="M16.5 3.50023C16.8978 3.1024 17.4374 2.87891 18 2.87891C18.2786 2.87891 18.5544 2.93378 18.8118 3.04038C19.0692 3.14699 19.303 3.30324 19.5 3.50023C19.697 3.69721 19.8532 3.93106 19.9598 4.18843C20.0665 4.4458 20.1213 4.72165 20.1213 5.00023C20.1213 5.2788 20.0665 5.55465 19.9598 5.81202C19.8532 6.06939 19.697 6.30324 19.5 6.50023L7 19.0002L3 20.0002L4 16.0002L16.5 3.50023Z"
+          stroke="#8A8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      </a>
+      <a href="../include/function.php?delete_product_group_id=' . $datarow['product_group_id'] . '">
+      <svg class="mt-2" width="18" height="18" viewBox="0 0 24 24" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 6H5H21" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path
+          d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6"
+          stroke="#FF3B2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M10 11V17" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path d="M14 11V17" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+      </a>
+    </td> </tr>';
+  }
+}
+function getcompany_category()
+{
   include 'config.php';
   $data = mysqli_query($conn, "SELECT * FROM `sales_company_category` ");
   $count = 0;
@@ -622,8 +669,6 @@ function getcompany_category(){
       </a>
     </td> </tr>';
   }
-
-
 }
 function getcustomerindustry()
 {
@@ -1327,6 +1372,11 @@ if (isset($_POST['add_sales_enquiry'])) {
   $count = 1;
   $_SESSION['user_id'] = 1;
 
+
+  $customer_typequery = mysqli_query($conn, "SELECT * FROM customer_type where  cu_ty_name = '" . $_POST['enquiry_customer_type'] . "'");
+  $customer_typedata = mysqli_fetch_array($customer_typequery);
+
+  $enquiry_customer_type = mysqli_real_escape_string($conn, $customer_typedata['cu_ty_id']);
   $enquiry_code = mysqli_real_escape_string($conn, $_POST['enquiry_code']);
   $enquiry_customer_name = mysqli_real_escape_string($conn, $_POST['enquiry_customer_name']);
   // $sales_branch_warehouse = mysqli_real_escape_string($conn, $_POST['sales_branch_warehouse']);
@@ -1335,7 +1385,7 @@ if (isset($_POST['add_sales_enquiry'])) {
   $sales_company_category = mysqli_real_escape_string($conn, $_POST['sales_company_category']);
   $enquiry_close_date = mysqli_real_escape_string($conn, $_POST['enquiry_close_date']);
   $enquiry_currency = mysqli_real_escape_string($conn, $_POST['enquiry_currency']);
-  $enquiry_customer_type = mysqli_real_escape_string($conn, $_POST['enquiry_customer_type']);
+  // $enquiry_customer_type = mysqli_real_escape_string($conn, $_POST['enquiry_customer_type']);
   $enquiry_source = mysqli_real_escape_string($conn, $_POST['enquiry_source']);
   $enquiry_description = mysqli_real_escape_string($conn, $_POST['enquiry_description']);
   $enquiry_version = mysqli_real_escape_string($conn, $_POST['sales_version']);
@@ -1375,8 +1425,8 @@ if (isset($_POST['add_sales_enquiry'])) {
     if (isset($_POST['product_description1'])) {
 
       while (isset($_POST['product_description' . $count])) {
-
-        $product_description = mysqli_real_escape_string($conn, $_POST['product_description' . $count]);
+        // echo "asa";
+     $product_description = mysqli_real_escape_string($conn, $_POST['product_description' . $count]);
         $part_number = mysqli_real_escape_string($conn, $_POST['part_number' . $count]);
         $product_hsn_code = mysqli_real_escape_string($conn, $_POST['product_hsn_code' . $count]);
         $product_quantity = mysqli_real_escape_string($conn, $_POST['product_quantity' . $count]);
@@ -1386,11 +1436,12 @@ if (isset($_POST['add_sales_enquiry'])) {
         $enquiry_p_Group = mysqli_real_escape_string($conn, $_POST['product_group' . $count]);
 
 
-        $stmt = $conn->prepare("INSERT INTO  `enquiry_product`(`enquiry_p_product_description`, `enquiry_p_part_number`, `enquiry_p_product_hsn_code`, `enquiry_p_product_quantity`,
-         `enquiry_p_product_rate`, `enquiry_p_product_amount`,`enquiry_p_product_category`,``,`enquiry_id`) 
+        $stmt = $conn->prepare("INSERT INTO  `enquiry_product`
+        (`enquiry_p_product_description`, `enquiry_p_part_number`, `enquiry_p_product_hsn_code`, `enquiry_p_product_quantity`,
+         `enquiry_p_product_rate`, `enquiry_p_product_amount`,`enquiry_p_product_category`,`enquiry_p_Group`,`enquiry_id`) 
                 VALUES (?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param(
-          "sssssssss",
+          "ssssssssi",
           $product_description,
           $part_number,
           $product_hsn_code,
@@ -1404,6 +1455,7 @@ if (isset($_POST['add_sales_enquiry'])) {
         $stmt->execute();
         $count++;
       }
+   
     } else {
       // die();
 
@@ -1420,7 +1472,7 @@ if (isset($_POST['edit_sales_enquiry'])) {
   $_SESSION['user_id'] = 1;
 
   $enquiry_code = mysqli_real_escape_string($conn, $_POST['enquiry_code']);
-   $enquiry_customer_name = mysqli_real_escape_string($conn, $_POST['enquiry_customer_name']);
+  $enquiry_customer_name = mysqli_real_escape_string($conn, $_POST['enquiry_customer_name']);
   //  echo "aa";
   // $sales_branch_warehouse = mysqli_real_escape_string($conn, $_POST['sales_branch_warehouse']);
 
@@ -1432,8 +1484,8 @@ if (isset($_POST['edit_sales_enquiry'])) {
 
 
   // $enquiry_customer_type = mysqli_real_escape_string($conn, $_POST['enquiry_customer_type']);
-// echo  "SELECT * FROM customer_type where  cu_ty_name = ".$_POST['enquiry_customer_type'];
-  $customer_typequery = mysqli_query($conn, "SELECT * FROM customer_type where  cu_ty_name = '".$_POST['enquiry_customer_type']."'");
+  // echo  "SELECT * FROM customer_type where  cu_ty_name = ".$_POST['enquiry_customer_type'];
+  $customer_typequery = mysqli_query($conn, "SELECT * FROM customer_type where  cu_ty_name = '" . $_POST['enquiry_customer_type'] . "'");
   $customer_typedata = mysqli_fetch_array($customer_typequery);
 
   $enquiry_customer_type = mysqli_real_escape_string($conn, $customer_typedata['cu_ty_id']);
@@ -1494,6 +1546,7 @@ if (isset($_POST['edit_sales_enquiry'])) {
       $stmt->execute();
       $count++;
     }
+    
   } else {
     echo "Error: " . $stmt->error;
   }
@@ -1516,11 +1569,12 @@ if (isset($_POST['add_sales_quotation'])) {
   $enquiry_p_Group = mysqli_real_escape_string($conn, $_POST['product_group' . $count]);
 
 
-  $stmt = $conn->prepare("INSERT INTO  `enquiry_product`(`enquiry_p_product_description`, `enquiry_p_part_number`, `enquiry_p_product_hsn_code`, `enquiry_p_product_quantity`,
-   `enquiry_p_product_rate`, `enquiry_p_product_amount`,`enquiry_p_product_category`,``,`enquiry_id`) 
+  $stmt = $conn->prepare("INSERT INTO  `enquiry_product`
+  (`enquiry_p_product_description`, `enquiry_p_part_number`, `enquiry_p_product_hsn_code`, `enquiry_p_product_quantity`,
+   `enquiry_p_product_rate`, `enquiry_p_product_amount`,`enquiry_p_product_category`,`enquiry_p_Group`,`enquiry_id`) 
           VALUES (?,?,?,?,?,?,?,?,?)");
   $stmt->bind_param(
-    "sssssssss",
+    "ssssssssi",
     $product_description,
     $part_number,
     $product_hsn_code,
@@ -1706,6 +1760,13 @@ if (isset($_GET['company_category_id_status'])) {
   $stmt->execute();
   echo '<script> window.location.href = "../other_pages/company_category.php" </script> ';
 }
+if (isset($_GET['product_group_id_status'])) {
+  $stmt = $conn->prepare("UPDATE `product_group` SET `product_group_status` = 1- `product_group_status`  WHERE `product_group_id`=  ? ");
+  $stmt->bind_param("s", $_GET['product_group_id_status']);
+  $stmt->execute();
+  echo '<script> window.location.href = "../other_pages/sales_product_group.php" </script> ';
+}
+
 
 
 if (isset($_GET['deletejob_title_id'])) {
@@ -1781,6 +1842,20 @@ if (isset($_GET['delete_product_category_id'])) {
   $stmt->execute();
   echo '<script> window.location.href = "../other_pages/product_category.php" </script> ';
 }
+
+if (isset($_GET['delete_company_category_id'])) {
+  $stmt = $conn->prepare("DELETE FROM `sales_company_category` WHERE `company_category_id`=  ? ");
+  $stmt->bind_param("s", $_GET['delete_company_category_id']);
+  $stmt->execute();
+  echo '<script> window.location.href = "../other_pages/company_category.php" </script> ';
+}
+if (isset($_GET['deleteenquiry_id'])) {
+  $stmt = $conn->prepare("DELETE FROM `sales_enquiry` WHERE `enquiry_id`=  ? ");
+  $stmt->bind_param("s", $_GET['deleteenquiry_id']);
+  $stmt->execute();
+  echo '<script> window.location.href = "../sales/sales_enquiry.php" </script> ';
+}
+
 
 if (isset($_POST['add_sales_quotation_contact'])) {
 

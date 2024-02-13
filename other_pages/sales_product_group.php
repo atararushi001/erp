@@ -1,6 +1,12 @@
 <?php
     @include '../include/config.php';
     @include '../include/function.php';
+    if(isset($_GET['product_group_id'])){
+        // echo $_GET['cu_cat_id'];
+        $product_groupquery = mysqli_query($conn, "SELECT * FROM `product_group`  where product_group_id = " .$_GET['product_group_id']);
+          $product_groupdata = mysqli_fetch_assoc($product_groupquery);
+          // echo "<script> openModalhere('customerCategoryPopup') </script>";
+            }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +24,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
-        #salesProductGroupPopup {
+        #product_groupPopup {
             display: none;
             z-index: 99;
         }
@@ -31,9 +37,9 @@
     <div id="mydiv" class="max-w-full mx-auto mt-20 ml-16 p-4 text-sm transition-all duration-300">
         <div class="bg-white shadow-sm p-4">
             <div class="flex justify-between">
-                <h1 class="text-xl font-semibold">Sales Product Group</h1>
-                <button class="text-white text-sm px-4 py-2" style="background-color: #007bff;" onclick="openModalhere('salesProductGroupPopup')">
-                    Add Sales Product Group
+                <h1 class="text-xl font-semibold">product category</h1>
+                <button class="text-white text-sm px-4 py-2" style="background-color: #007bff;" onclick="openModalhere('product_categoryPopup')">
+                    Add Product Category
                 </button>
             </div>
             <div class="flex flex-wrap justify-end p-4 gap-4">
@@ -56,7 +62,7 @@
                     #
                   </th>
                   <th class="px-6 py-3 text-left text-sm leading-4 font-medium text-gray-500 tracking-wider">
-                  Sales Product Group 
+                  Sales Stage
                   </th> 
                   <th class="px-6 py-3 text-left text-sm leading-4 font-medium text-gray-500 tracking-wider">
                     Status
@@ -68,41 +74,48 @@
               </thead>
 
               <tbody>
+                <?php  getproduct_group(); ?>
               </tbody>
             </table>
           </div>
         </div>
     </div>
-    <div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300" style="z-index: 99;" id="salesProductGroupPopup" style="display: none;">
-        <div id="spg_popup" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width: 600px;">
+    <div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300" style="  z-index: 99;" id="product_groupPopup" style="display: BLOCK;">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width: 600px;">
             <div class="flex justify-between border-b">
-                <h2 class="text-gray-800 font-semibold p-4 text-xl">Create Sales Product Group</h2>
-                <svg id="closeSalesProductGroup" onclick="closeModal('salesProductGroupPopup')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <h2 class="text-gray-800 font-semibold p-4 text-xl">Create product group</h2>
+                <svg id="closeCCategory" onclick="closeModal('product_groupPopup')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M37.5 12.5L12.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
                     <path d="M12.5 12.5L37.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </div>
-            <form class="p-4" name="salesProductGroupForm" action="../include/function.php" id="salesProductGroupForm">
+            <form class="p-4" name="product_groupform" action="../include/function.php" id="product_groupform">
                 <div>
-                    <label for="sales_product_group_name" class="text-gray-700 font-semibold">Add Sales Product Group</label>
-                    <input type="text" name="<?php echo isset($_GET['sales_product_group_id']) ? 'sales_product_group_name_update' : 'salesProductGroup' ?>" value="<?php echo isset($_GET['sales_product_group_id']) ? $sales_product_group_data['sales_product_group_name'] : "" ?>" id="sales_product_group_name" placeholder="Sales Product Group" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
-                    <input type="hidden" name="sales_product_group_id_update" value="<?php echo isset($_GET['sales_product_group_id']) ? $_GET['sales_product_group_id'] : "" ?>" id="sales_product_group_id" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                    <label for="customer_type" class="text-gray-700 font-semibold">Product Group</label>
+                    <input type="text"  name="<?php echo  isset($_GET['product_group_id']) ?  'product_group_update' : 'product_group' ?>" id="product_group" value="<?php echo  isset($_GET['product_group_id']) ? $product_groupdata['product_group_name'] : "" ?>" placeholder="Product Category" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                    <input type="hidden" name="product_group_update_id" value="<?php echo  isset($_GET['product_group_id']) ? $_GET['product_group_id'] : "" ?>" id="getproduct_group_name"  class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                
                 </div>
                 <div class="flex items-center justify-start gap-4 mt-32">
-                    <button class="text-white text-sm px-4 py-2 w-28" onclick="saveDataNow('salesProductGroupForm', <?php echo isset($_GET['sales_product_group_id']) ? 'sales_product_group_name_update' : 'salesProductGroup' ?>)" type="button" id="openButton" style="background-color: #007bff;"><?php echo isset($_GET['sales_product_group_id']) ? 'Edit' : 'Save' ?></button>
-                    <button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('salesProductGroupPopup')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
+                    <button class="text-white text-sm px-4 py-2 w-28" 
+                    onclick="savedatanow('product_groupform','<?php echo isset($_GET['product_group_id']) ? 'product_group_update' : 'product_group' ?>')"
+                   type="button" id="openButton" style="background-color: #007bff;">Save</button>
+                    <button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('product_groupPopup')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
+
+
     <script src="../assets/js/script.js"></script>
     <script>
+        
         $(document).ready(function() {
             if(window.location.href.includes("other_pages")) {
                 const otherPages = document.querySelector(".other_pages");
                 otherPages.classList.add("active");
 
-                const Link = document.querySelector('a[href="/erp/other_pages/sales_product_group.php"]');
+                const Link = document.querySelector('a[href="/erp/other_pages/product_category.php"]');
                 if (Link) {
                     Link.classList.add('font-bold', 'text-black');
                 }
@@ -112,8 +125,32 @@
         function openModalhere(elementname){
             document.getElementById(elementname).style.display = 'block';
         }
+        function savedatanow(formname,inputselecter) {
+            var form = $("#" + formname);
+            var url = form.attr('action');
+            var addtext = form.find("input[name='" + inputselecter + "']");
+            $.ajax({
+
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                success: function(data) {
+ 
+                    alert("Added  Successfully");
+                     window.location.href = "product_category.php";
+                },
+                error: function(data) {
+                    alert("some Error");
+                }
+            });
+        }
     </script>
-    
+    <?php 
+    if(isset($_GET['product_group_id'])){
+   
+        echo "<script> openModalhere('product_groupPopup') </script>";
+          }
+    ?>
 </body>
 
 </html>
