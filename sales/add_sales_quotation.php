@@ -56,15 +56,6 @@ if (isset($_GET['enquiry_id'])) {
                     }
                 }
             });
-            $("#sales_quotation_contact").select2({
-                width: '100%',
-                placeholder: 'Add Contact',
-                language: {
-                    noResults: function() {
-                        return $("<button class='w-full p-2 text-center text-white' style='background-color: #007bff;'>Add Contact</button>");
-                    }
-                }
-            });
             $("#sales_quotation_currency").select2({});
         })
     </script>
@@ -126,33 +117,14 @@ if (isset($_GET['enquiry_id'])) {
                         <input type="text" id="qsales_quotation_subject" placeholder="Quotation Subject" name="qsales_quotation_subject"
                             class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
-                    <div>
-                        <label for="sales_quotation_branch_warehouse" class="text-gray-700 font-semibold">Branch/Warehouse</label>
-                        <select
-                            name="sales_quotation_branch_warehouse"
-                            id="sales_quotation_branch_warehouse"
-                            class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important"
-                        >
-                            <option value="Branch/Warehouse">Branch/Warehouse</option>
-                            <?php
-                                getoption('warehouse', 'warehouse_id', 'warehouse_name');
-
-                                ?>
-                        </select>
-                    </div>
-                    <div>
+                    <div class="col-span-1 sm:col-span-2">
                         <label for="sales_quotation_contact" class="text-gray-700 font-semibold">Contact</label>
-                        <select
+                        <input
                             name="sales_quotation_contact"
                             id="sales_quotation_contact"
-                            class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important"
-                        >
-                            <option value="Contact">Contact</option>
-                            <?php
-                                getoption('contact', 'Contact_id ', 'Contact_name');
-
-                                ?>
-                        </select>
+                            class="border rounded-sm outline-none mt-2 p-2 w-full focus:ring focus:ring-blue-400"
+                            placeholder="Add Contact"
+                        />
                     </div>
                     <div>
                         <label for="sales_quotation_type" class="text-gray-700 font-semibold">Version</label>

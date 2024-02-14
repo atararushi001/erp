@@ -37,8 +37,8 @@
     <div id="mydiv" class="max-w-full mx-auto mt-20 ml-16 p-4 text-sm transition-all duration-300">
         <div class="bg-white shadow-sm p-4">
             <div class="flex justify-between">
-                <h1 class="text-xl font-semibold">product category</h1>
-                <button class="text-white text-sm px-4 py-2" style="background-color: #007bff;" onclick="openModalhere('product_categoryPopup')">
+                <h1 class="text-xl font-semibold">Product Group</h1>
+                <button class="text-white text-sm px-4 py-2" style="background-color: #007bff;" onclick="openModalhere('product_groupPopup')">
                     Add Product Category
                 </button>
             </div>
@@ -115,7 +115,7 @@
                 const otherPages = document.querySelector(".other_pages");
                 otherPages.classList.add("active");
 
-                const Link = document.querySelector('a[href="/erp/other_pages/product_category.php"]');
+                const Link = document.querySelector('a[href="/erp/other_pages/sales_product_group.php"]');
                 if (Link) {
                     Link.classList.add('font-bold', 'text-black');
                 }
@@ -137,7 +137,7 @@
                 success: function(data) {
  
                     alert("Added  Successfully");
-                     window.location.href = "product_category.php";
+                     window.location.href = "sales_product_group.php";
                 },
                 error: function(data) {
                     alert("some Error");

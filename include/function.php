@@ -1242,6 +1242,18 @@ if (isset($_POST['company_category_update'])) {
   $stmt->close();
   $conn->close();
 }
+
+if (isset($_POST['product_group_update'])) {
+  $sql = "UPDATE `product_group` SET `product_group_name`=? WHERE `product_group_id`= ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("ss", $_POST['product_group_update'], $_POST['product_group_update_id']);
+  if ($stmt->execute()) {
+
+    echo $conn->insert_id;
+  }
+  $stmt->close();
+  $conn->close();
+}
 if (isset($_POST['customerIndustry'])) {
   $sql = "INSERT INTO `industry`(`Industry_name`) VALUES (?)";
   $stmt = $conn->prepare($sql);
@@ -1525,10 +1537,11 @@ if (isset($_POST['edit_sales_enquiry'])) {
 
   if ($stmt->execute()) {
     $last_id = $_POST['edit_sales_enquiry'];
-    $address_data = mysqli_query($conn, "SELECT * FROM `enquiry_product` WHERE `enquiry_id` =" . $_POST['edit_sales_enquiry']);
+    $address_data_query = mysqli_query($conn, "SELECT * FROM `enquiry_product` WHERE `enquiry_id` =" . $_POST['edit_sales_enquiry']);
     $count = 0;
-    while ($addressdata = mysqli_fetch_array($address_data)) {
+    while ($addressdata = mysqli_fetch_array($address_data_query)) {
       $count++;
+      if(isset($_POST['product_description' . $count])){
       $product_description = mysqli_real_escape_string($conn, $_POST['product_description' . $count]);
       $part_number = mysqli_real_escape_string($conn, $_POST['part_number' . $count]);
       $product_hsn_code = mysqli_real_escape_string($conn, $_POST['product_hsn_code' . $count]);
@@ -1537,13 +1550,19 @@ if (isset($_POST['edit_sales_enquiry'])) {
       $product_amount = mysqli_real_escape_string($conn, $_POST['product_amount' . $count]);
       $enquiry_p_product_category = mysqli_real_escape_string($conn, $_POST['product_category' . $count]);
       $enquiry_p_Group = mysqli_real_escape_string($conn, $_POST['product_group' . $count]);
-
+      $enquiry_p_id = $addressdata['enquiry_p_id'];
       $stmt = $conn->prepare("UPDATE `enquiry_product` SET `enquiry_p_product_description`=?,`enquiry_p_part_number`=?,`enquiry_p_product_hsn_code`=?,`enquiry_p_product_quantity`=?,`enquiry_p_product_rate`=?,
       `enquiry_p_product_amount`=?,
       `enquiry_p_product_category`=?,`enquiry_p_Group`=?,`enquiry_id`=? WHERE `enquiry_p_id`= ?");
 
       $stmt->bind_param("ssssssssss", $product_description, $part_number, $product_hsn_code, $product_quantity, $product_rate, $product_amount, $enquiry_p_product_category, $enquiry_p_Group, $last_id,  $enquiry_p_id);
       $stmt->execute();
+      }
+      else{
+        $stmt = $conn->prepare("DELETE FROM `enquiry_product` WHERE `enquiry_p_id`= ?");
+        $stmt->bind_param("i",$addressdata['enquiry_p_id']);
+        $stmt->execute();
+      }
       $count++;
     }
     
