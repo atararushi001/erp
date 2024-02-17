@@ -175,42 +175,27 @@ document.getElementById("addpopup").innerHTML += `<div class="fixed inset-0 item
 `</form>`+
 `</div>`+
 `</div>`;
-// $(newProductDiv)
-// .find(".select2-init")
-// .each(function () {
-//   $(this).select2({
-//     width: "100%",
-//     placeholder: "Add Product Category",
-//     language: {
-//       noResults: function () {
-//         return $(
-//           `<button class='w-full p-2 text-center text-white' style='background-color: #007bff;' onclick="openModal('product_groupPopup${ProductNumber}','#product_group${ProductNumber}')">Add Product Category</button>`
-//         );
-//       },
-//     },
-//   });
-// });
 
   $(`#product_category${ProductNumber}`).select2({
     width: "100%",
     placeholder: "Add Product Category",
     language: {
-      noResults: function () {
-        return $(
-          `<button class='w-full p-2 text-center text-white' style='background-color: #007bff;' onclick="openModal('product_categoryPopup${ProductNumber}','#product_category${ProductNumber}')">Add Product Category</button>`
-        );
-      },
+      // noResults: function () {
+      //   return $(
+      //     `<button class='w-full p-2 text-center text-white' style='background-color: #007bff;' onclick="openModal('product_categoryPopup${ProductNumber}','#product_category${ProductNumber}')">Add Product Category</button>`
+      //   );
+      // },
     },
   });
   $(`#product_group${ProductNumber}`).select2({
     width: "100%",
     placeholder: "Add Product Group",
     language: {
-      noResults: function () {
-        return $(
-          `<button class='w-full p-2 text-center text-white' style='background-color: #007bff;' onclick="openModal('product_categoryPopup${ProductNumber}','#product_category${ProductNumber}')">Add Product Category</button>`
-        );
-      },
+      // noResults: function () {
+      //   return $(
+      //     `<button class='w-full p-2 text-center text-white' style='background-color: #007bff;' onclick="openModal('product_categoryPopup${ProductNumber}','#product_category${ProductNumber}')">Add Product Category</button>`
+      //   );
+      // },
     },
   });
 //  console.log(`product_groupPopup${ProductNumber}`);
@@ -243,7 +228,6 @@ function calculateTotal() {
 
 }
 
-
 function removeProduct(button) {
   let deleteProduct = button.parentNode.parentNode.parentNode;
   deleteProduct.remove();
@@ -260,7 +244,6 @@ function removeProduct(button) {
       }
     });
   }
-  // console.log(ProductNumber);
   calculateTotal();
   let productDivs = document.querySelectorAll('.max-w-full.mb-4');
   productDivs.forEach((productDiv, index) => {
@@ -278,8 +261,56 @@ function removeProduct(button) {
     removeButton.setAttribute('onclick', `removeProduct(this)`);
   });
 
+  // Update the customer address
+  let countdata = 1;
+  let currentId = "customeraddress" + countdata;
+  while (document.querySelector("#" + currentId)) {
+    let newname = countdata - 1;
+    document.querySelector("#" + currentId).innerHTML =
+      "Customer Address " + newname;
+    console.log(newname);
+    countdata++;
+    currentId = "customeraddress" + countdata;
+  }
 }
-//Close all mdoel
+
+// function removeProduct(button) {
+//   let deleteProduct = button.parentNode.parentNode.parentNode;
+//   deleteProduct.remove();
+//   ProductNumber--;
+
+//   if(ProductNumber == 0){
+//     $(document).ready(function () {
+//       var totalSalesDiv = $("#totalsections");
+    
+//       if (ProductNumber > 0) {
+//         totalSalesDiv.show();
+//       } else {
+//         totalSalesDiv.hide();
+//       }
+//     });
+//   }
+//   calculateTotal();
+//   let productDivs = document.querySelectorAll('.max-w-full.mb-4');
+//   productDivs.forEach((productDiv, index) => {
+//     let newProductNumber = index + 1;
+//     productDiv.querySelector('h2').textContent = `Product ${newProductNumber}`;
+//     productDiv.querySelectorAll('input, select').forEach(input => {
+//       let id = input.id;
+//       let name = input.name;
+//       let newId = id.replace(/\d+$/, newProductNumber);
+//       let newName = name.replace(/\d+$/, newProductNumber);
+//       input.id = newId;
+//       input.name = newName;
+//     });
+//     let removeButton = productDiv.querySelector('button');
+//     removeButton.setAttribute('onclick', `removeProduct(this)`);
+//   });
+
+// }
+
+
+
 function closeModal(elementname) {
   // console.log(elementname);
   document.getElementById(elementname).style.display = "none";

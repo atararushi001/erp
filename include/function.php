@@ -219,10 +219,6 @@ if (isset($_POST['editctomerform'])) {
 
     $numofaddress = $_POST['numaddress'];
     while ($numofaddress > 0) {
-
-
-
-
       if (isset($_POST['addressid' . $count])) {
         $address = mysqli_real_escape_string($conn, $_POST['address' . $count]);
         $address_country = mysqli_real_escape_string($conn, $_POST['country' . $count]);
@@ -1438,7 +1434,7 @@ if (isset($_POST['add_sales_enquiry'])) {
 
       while (isset($_POST['product_description' . $count])) {
         // echo "asa";
-     $product_description = mysqli_real_escape_string($conn, $_POST['product_description' . $count]);
+        $product_description = mysqli_real_escape_string($conn, $_POST['product_description' . $count]);
         $part_number = mysqli_real_escape_string($conn, $_POST['part_number' . $count]);
         $product_hsn_code = mysqli_real_escape_string($conn, $_POST['product_hsn_code' . $count]);
         $product_quantity = mysqli_real_escape_string($conn, $_POST['product_quantity' . $count]);
@@ -1467,7 +1463,6 @@ if (isset($_POST['add_sales_enquiry'])) {
         $stmt->execute();
         $count++;
       }
-   
     } else {
       // die();
 
@@ -1485,9 +1480,6 @@ if (isset($_POST['edit_sales_enquiry'])) {
 
   $enquiry_code = mysqli_real_escape_string($conn, $_POST['enquiry_code']);
   $enquiry_customer_name = mysqli_real_escape_string($conn, $_POST['enquiry_customer_name']);
-  //  echo "aa";
-  // $sales_branch_warehouse = mysqli_real_escape_string($conn, $_POST['sales_branch_warehouse']);
-
   $enquiry_name = mysqli_real_escape_string($conn, $_POST['enquiry_name']);
   $sales_stage = mysqli_real_escape_string($conn, $_POST['enquiry_sales_stage']);
   $sales_company_category = mysqli_real_escape_string($conn, $_POST['sales_company_category']);
@@ -1495,20 +1487,17 @@ if (isset($_POST['edit_sales_enquiry'])) {
   $enquiry_currency = mysqli_real_escape_string($conn, $_POST['enquiry_currency']);
 
 
-  // $enquiry_customer_type = mysqli_real_escape_string($conn, $_POST['enquiry_customer_type']);
-  // echo  "SELECT * FROM customer_type where  cu_ty_name = ".$_POST['enquiry_customer_type'];
+
   $customer_typequery = mysqli_query($conn, "SELECT * FROM customer_type where  cu_ty_name = '" . $_POST['enquiry_customer_type'] . "'");
   $customer_typedata = mysqli_fetch_array($customer_typequery);
-
   $enquiry_customer_type = mysqli_real_escape_string($conn, $customer_typedata['cu_ty_id']);
-
   $enquiry_source = mysqli_real_escape_string($conn, $_POST['enquiry_source']);
   $enquiry_description = mysqli_real_escape_string($conn, $_POST['enquiry_description']);
   $enquiry_version = mysqli_real_escape_string($conn, $_POST['sales_version']);
   $assign_user_to = mysqli_real_escape_string($conn, $_POST['assign_user_to']);
   $contact_id = mysqli_real_escape_string($conn, $_POST['contact_id']);
 
-  // die();
+
   $stmt = $conn->prepare("UPDATE `sales_enquiry` SET
   `enquiry_code`=?,`enquiry_customer_name`=?,`enquiry_name`=?,`sales_stage`=?,`sales_company_category`= ?,
   `enquiry_version`=?,`enquiry_close_date`=?,`enquiry_currency`=?,
@@ -1541,36 +1530,53 @@ if (isset($_POST['edit_sales_enquiry'])) {
     $count = 0;
     while ($addressdata = mysqli_fetch_array($address_data_query)) {
       $count++;
-      if(isset($_POST['product_description' . $count])){
-      $product_description = mysqli_real_escape_string($conn, $_POST['product_description' . $count]);
-      $part_number = mysqli_real_escape_string($conn, $_POST['part_number' . $count]);
-      $product_hsn_code = mysqli_real_escape_string($conn, $_POST['product_hsn_code' . $count]);
-      $product_quantity = mysqli_real_escape_string($conn, $_POST['product_quantity' . $count]);
-      $product_rate = mysqli_real_escape_string($conn, $_POST['product_rate' . $count]);
-      $product_amount = mysqli_real_escape_string($conn, $_POST['product_amount' . $count]);
-      $enquiry_p_product_category = mysqli_real_escape_string($conn, $_POST['product_category' . $count]);
-      $enquiry_p_Group = mysqli_real_escape_string($conn, $_POST['product_group' . $count]);
-      $enquiry_p_id = $addressdata['enquiry_p_id'];
-      $stmt = $conn->prepare("UPDATE `enquiry_product` SET `enquiry_p_product_description`=?,`enquiry_p_part_number`=?,`enquiry_p_product_hsn_code`=?,`enquiry_p_product_quantity`=?,`enquiry_p_product_rate`=?,
-      `enquiry_p_product_amount`=?,
-      `enquiry_p_product_category`=?,`enquiry_p_Group`=?,`enquiry_id`=? WHERE `enquiry_p_id`= ?");
 
-      $stmt->bind_param("ssssssssss", $product_description, $part_number, $product_hsn_code, $product_quantity, $product_rate, $product_amount, $enquiry_p_product_category, $enquiry_p_Group, $last_id,  $enquiry_p_id);
+      $stmt = $conn->prepare("DELETE FROM `enquiry_product` WHERE `enquiry_p_id`= ?");
+      $stmt->bind_param("i", $addressdata['enquiry_p_id']);
       $stmt->execute();
-      }
-      else{
-        $stmt = $conn->prepare("DELETE FROM `enquiry_product` WHERE `enquiry_p_id`= ?");
-        $stmt->bind_param("i",$addressdata['enquiry_p_id']);
-        $stmt->execute();
-      }
-      $count++;
     }
+    $count2 = 1;
+
+    if (isset($_POST['product_description1'])) {
     
+      while (isset($_POST['product_description' . $count2])) {
+        // echo "a";
+        $product_description = mysqli_real_escape_string($conn, $_POST['product_description' . $count2]);
+        $part_number = mysqli_real_escape_string($conn, $_POST['part_number' . $count2]);
+        $product_hsn_code = mysqli_real_escape_string($conn, $_POST['product_hsn_code' . $count2]);
+        $product_quantity = mysqli_real_escape_string($conn, $_POST['product_quantity' . $count2]);
+        $product_rate = mysqli_real_escape_string($conn, $_POST['product_rate' . $count2]);
+        $product_amount = mysqli_real_escape_string($conn, $_POST['product_amount' . $count2]);
+        $enquiry_p_product_category = mysqli_real_escape_string($conn, $_POST['product_category' . $count2]);
+        $enquiry_p_Group = mysqli_real_escape_string($conn, $_POST['product_group' . $count2]);
+
+       
+        $stmt = $conn->prepare("INSERT INTO  `enquiry_product`
+        (`enquiry_p_product_description`, `enquiry_p_part_number`, `enquiry_p_product_hsn_code`, `enquiry_p_product_quantity`,
+         `enquiry_p_product_rate`, `enquiry_p_product_amount`,`enquiry_p_product_category`,`enquiry_p_Group`,`enquiry_id`) 
+                VALUES (?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param(
+          "ssssssssi",
+          $product_description,
+          $part_number,
+          $product_hsn_code,
+          $product_quantity,
+          $product_rate,
+          $product_amount,
+          $enquiry_p_product_category,
+          $enquiry_p_Group,
+          $last_id
+        );
+        $stmt->execute();
+        $count2++;
+      }
+    }
   } else {
     echo "Error: " . $stmt->error;
   }
 
   $stmt->close();
+  die();
   header("Location:  ../sales/sales_enquiry.php");
 }
 
@@ -1874,7 +1880,12 @@ if (isset($_GET['deleteenquiry_id'])) {
   $stmt->execute();
   echo '<script> window.location.href = "../sales/sales_enquiry.php" </script> ';
 }
-
+if (isset($_GET['delete_product_group_id'])) {
+  $stmt = $conn->prepare("DELETE FROM `product_group` WHERE `product_group_id`=  ? ");
+  $stmt->bind_param("s", $_GET['delete_product_group_id']);
+  $stmt->execute();
+  echo '<script> window.location.href = "../other_pages/sales_product_group.php" </script> ';
+}
 
 if (isset($_POST['add_sales_quotation_contact'])) {
 
