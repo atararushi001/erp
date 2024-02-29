@@ -50,7 +50,6 @@ function removeCustomer(button) {
   }
 }
 
-
 // $(document).ready(function () {
 //   var totalSalesDiv = $("#totalsections");
 
@@ -64,8 +63,8 @@ function addProduct() {
   ProductNumber++;
   // console.log(ProductNumber);
   let newProductDiv = document.createElement("div");
-  
-  newProductDiv.innerHTML = `<div class="max-w-full mb-4">
+
+  newProductDiv.innerHTML = `<div class="max-w-full mb-4" id="productsdiv">
         <div class="bg-white rounded-sm shadow-md mb-4">
             <div class="w-full border-b flex">
                 <h2 class="text-gray-700 font-semibold p-4 text-lg">Product ${ProductNumber}</h2>
@@ -134,47 +133,49 @@ function addProduct() {
     </div>`;
 
   document.getElementById("add-product").appendChild(newProductDiv);
-  
-  document.getElementById("addpopup").innerHTML += `<div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300" style="  z-index: 99; display: none;" id="product_groupPopup${ProductNumber}"> <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width: 600px;">`+
-  `<div class="flex justify-between border-b">`+
-    `<h2 class="text-gray-800 font-semibold p-4 text-xl">Create product group</h2>`+
-    `<svg id="closeCCategory" onclick="closeModal('product_groupPopup${ProductNumber}')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">`+
-      `<path d="M37.5 12.5L12.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>`+
-      `<path d="M12.5 12.5L37.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>`+
-    `</svg>`+
-  `</div>`+
-  `<form class="p-4" name="product_groupform" action="../include/function.php" id="product_groupform">`+
-    `<div>`+
-      `<label for="customer_type" class="text-gray-700 font-semibold">Product group</label>`+
-      `<input type="text" name="product_group" id="product_group" placeholder="Product group" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">`+
-    `</div>`+
-    `<div class="flex items-center justify-start gap-4 mt-32">`+
-      `<button class="text-white text-sm px-4 py-2 w-28" onclick="savedata3('product_groupform','#product_group${ProductNumber}','product_group','product_groupPopup${ProductNumber}')" type="button" id="openButton" style="background-color: #007bff;">Save</button>`+
-      `<button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('product_groupPopup${ProductNumber}')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>`+
-    `</div>`+
-  `</form>`+
-`</div>`+
-`</div>`;
-document.getElementById("addpopup").innerHTML += `<div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300" style="  z-index: 99; display: none;" id="product_categoryPopup${ProductNumber}"> <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width: 600px;">`+
-`<div class="flex justify-between border-b">`+
-  `<h2 class="text-gray-800 font-semibold p-4 text-xl">Create product category</h2>`+
-  `<svg id="closeCCategory" onclick="closeModal('product_categoryPopup${ProductNumber}')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">`+
-    `<path d="M37.5 12.5L12.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>`+
-    `<path d="M12.5 12.5L37.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>`+
-  `</svg>`+
-`</div>`+
-`<form class="p-4" name="product_categoryform" action="../include/function.php" id="product_categoryform">`+
-  `<div>`+
-    `<label for="customer_type" class="text-gray-700 font-semibold">Product category</label>`+
-    `<input type="text" name="product_category" id="product_category" placeholder="Product category" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">`+
-  `</div>`+
-  `<div class="flex items-center justify-start gap-4 mt-32">`+
-    `<button class="text-white text-sm px-4 py-2 w-28" onclick="savedata3('product_categoryform','#product_category${ProductNumber}','product_category','product_categoryPopup${ProductNumber}')" type="button" id="openButton" style="background-color: #007bff;">Save</button>`+
-    `<button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('product_categoryPopup${ProductNumber}')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>`+
-  `</div>`+
-`</form>`+
-`</div>`+
-`</div>`;
+
+  document.getElementById("addpopup").innerHTML +=
+    `<div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300" style="  z-index: 99; display: none;" id="product_groupPopup${ProductNumber}"> <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width: 600px;">` +
+    `<div class="flex justify-between border-b">` +
+    `<h2 class="text-gray-800 font-semibold p-4 text-xl">Create product group</h2>` +
+    `<svg id="closeCCategory" onclick="closeModal('product_groupPopup${ProductNumber}')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">` +
+    `<path d="M37.5 12.5L12.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>` +
+    `<path d="M12.5 12.5L37.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>` +
+    `</svg>` +
+    `</div>` +
+    `<form class="p-4" name="product_groupform" action="../include/function.php" id="product_groupform">` +
+    `<div>` +
+    `<label for="customer_type" class="text-gray-700 font-semibold">Product group</label>` +
+    `<input type="text" name="product_group" id="product_group" placeholder="Product group" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">` +
+    `</div>` +
+    `<div class="flex items-center justify-start gap-4 mt-32">` +
+    `<button class="text-white text-sm px-4 py-2 w-28" onclick="savedata3('product_groupform','#product_group${ProductNumber}','product_group','product_groupPopup${ProductNumber}')" type="button" id="openButton" style="background-color: #007bff;">Save</button>` +
+    `<button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('product_groupPopup${ProductNumber}')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>` +
+    `</div>` +
+    `</form>` +
+    `</div>` +
+    `</div>`;
+  document.getElementById("addpopup").innerHTML +=
+    `<div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300" style="  z-index: 99; display: none;" id="product_categoryPopup${ProductNumber}"> <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width: 600px;">` +
+    `<div class="flex justify-between border-b">` +
+    `<h2 class="text-gray-800 font-semibold p-4 text-xl">Create product category</h2>` +
+    `<svg id="closeCCategory" onclick="closeModal('product_categoryPopup${ProductNumber}')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">` +
+    `<path d="M37.5 12.5L12.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>` +
+    `<path d="M12.5 12.5L37.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>` +
+    `</svg>` +
+    `</div>` +
+    `<form class="p-4" name="product_categoryform" action="../include/function.php" id="product_categoryform">` +
+    `<div>` +
+    `<label for="customer_type" class="text-gray-700 font-semibold">Product category</label>` +
+    `<input type="text" name="product_category" id="product_category" placeholder="Product category" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">` +
+    `</div>` +
+    `<div class="flex items-center justify-start gap-4 mt-32">` +
+    `<button class="text-white text-sm px-4 py-2 w-28" onclick="savedata3('product_categoryform','#product_category${ProductNumber}','product_category','product_categoryPopup${ProductNumber}')" type="button" id="openButton" style="background-color: #007bff;">Save</button>` +
+    `<button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('product_categoryPopup${ProductNumber}')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>` +
+    `</div>` +
+    `</form>` +
+    `</div>` +
+    `</div>`;
 
   $(`#product_category${ProductNumber}`).select2({
     width: "100%",
@@ -198,34 +199,49 @@ document.getElementById("addpopup").innerHTML += `<div class="fixed inset-0 item
       // },
     },
   });
-//  console.log(`product_groupPopup${ProductNumber}`);
- document.getElementById(`product_groupPopup${ProductNumber}`).style.display = "none";;
-    document.getElementById("totalsections").style.display = "block";
+  //  console.log(`product_groupPopup${ProductNumber}`);
+  document.getElementById(`product_groupPopup${ProductNumber}`).style.display =
+    "none";
+  document.getElementById("totalsections").style.display = "block";
+  
 }
 function calculateAmount(productNumber) {
-  let quantity = parseFloat(document.getElementById(`product_quantity${productNumber}`).value) || 0;
-  let rate = parseFloat(document.getElementById(`product_rate${productNumber}`).value) || 0;
+  let quantity =
+    parseFloat(
+      document.getElementById(`product_quantity${productNumber}`).value
+    ) || 0;
+  let rate =
+    parseFloat(document.getElementById(`product_rate${productNumber}`).value) ||
+    0;
   let amount = quantity * rate;
-  document.getElementById(`product_amount${productNumber}`).value = amount.toFixed(2); 
+  document.getElementById(`product_amount${productNumber}`).value =
+    amount.toFixed(2);
   calculateTotal();
 }
 
 function calculateTotal() {
-  let total = 0,total_quantity = 0;;
+  let total = 0,
+    total_quantity = 0;
 
   for (let i = 1; i <= ProductNumber; i++) {
-    let amount = parseFloat(document.getElementById(`product_amount${i}`).value) || 0;
-    total += amount;
+    if (document.getElementById(`product_amount${i}`)) {
+      let amount =
+        parseFloat(document.getElementById(`product_amount${i}`).value) || 0;
+      total += amount;
+    }
   }
   for (let i = 1; i <= ProductNumber; i++) {
-    let quantity = parseFloat(document.getElementById(`product_quantity${i}`).value) || 0;
-    total_quantity += quantity;
+    if (document.getElementById(`product_quantity${i}`)) {
+      let quantity =
+        parseFloat(document.getElementById(`product_quantity${i}`).value) || 0;
+      total_quantity += quantity;
+    }
   }
 
-  document.getElementById("total").value = total.toFixed(2); 
-  document.getElementById("total_quantity_nos").value = total_quantity.toFixed(2); 
-  document.getElementById("total_in_word").value =  numberToWords.toWords(total); 
-
+  document.getElementById("total").value = total.toFixed(2);
+  document.getElementById("total_quantity_nos").value =
+    total_quantity.toFixed(2);
+  document.getElementById("total_in_word").value = numberToWords.toWords(total);
 }
 
 function removeProduct(button) {
@@ -233,10 +249,10 @@ function removeProduct(button) {
   deleteProduct.remove();
   ProductNumber--;
 
-  if(ProductNumber == 0){
+  if (ProductNumber == 0) {
     $(document).ready(function () {
       var totalSalesDiv = $("#totalsections");
-    
+
       if (ProductNumber > 0) {
         totalSalesDiv.show();
       } else {
@@ -244,12 +260,11 @@ function removeProduct(button) {
       }
     });
   }
-  calculateTotal();
-  let productDivs = document.querySelectorAll('.max-w-full.mb-4');
+  let productDivs = document.querySelectorAll("#productsdiv");
   productDivs.forEach((productDiv, index) => {
     let newProductNumber = index + 1;
-    productDiv.querySelector('h2').textContent = `Product ${newProductNumber}`;
-    productDiv.querySelectorAll('input, select').forEach(input => {
+    productDiv.querySelector("h2").textContent = `Product ${newProductNumber}`;
+    productDiv.querySelectorAll("input, select").forEach((input) => {
       let id = input.id;
       let name = input.name;
       let newId = id.replace(/\d+$/, newProductNumber);
@@ -257,59 +272,11 @@ function removeProduct(button) {
       input.id = newId;
       input.name = newName;
     });
-    let removeButton = productDiv.querySelector('button');
-    removeButton.setAttribute('onclick', `removeProduct(this)`);
+    let removeButton = productDiv.querySelector("button");
+    removeButton.setAttribute("onclick", `removeProduct(this)`);
   });
-
-  // Update the customer address
-  let countdata = 1;
-  let currentId = "customeraddress" + countdata;
-  while (document.querySelector("#" + currentId)) {
-    let newname = countdata - 1;
-    document.querySelector("#" + currentId).innerHTML =
-      "Customer Address " + newname;
-    console.log(newname);
-    countdata++;
-    currentId = "customeraddress" + countdata;
-  }
+  calculateTotal();
 }
-
-// function removeProduct(button) {
-//   let deleteProduct = button.parentNode.parentNode.parentNode;
-//   deleteProduct.remove();
-//   ProductNumber--;
-
-//   if(ProductNumber == 0){
-//     $(document).ready(function () {
-//       var totalSalesDiv = $("#totalsections");
-    
-//       if (ProductNumber > 0) {
-//         totalSalesDiv.show();
-//       } else {
-//         totalSalesDiv.hide();
-//       }
-//     });
-//   }
-//   calculateTotal();
-//   let productDivs = document.querySelectorAll('.max-w-full.mb-4');
-//   productDivs.forEach((productDiv, index) => {
-//     let newProductNumber = index + 1;
-//     productDiv.querySelector('h2').textContent = `Product ${newProductNumber}`;
-//     productDiv.querySelectorAll('input, select').forEach(input => {
-//       let id = input.id;
-//       let name = input.name;
-//       let newId = id.replace(/\d+$/, newProductNumber);
-//       let newName = name.replace(/\d+$/, newProductNumber);
-//       input.id = newId;
-//       input.name = newName;
-//     });
-//     let removeButton = productDiv.querySelector('button');
-//     removeButton.setAttribute('onclick', `removeProduct(this)`);
-//   });
-
-// }
-
-
 
 function closeModal(elementname) {
   // console.log(elementname);
@@ -348,7 +315,7 @@ function savedata(formname, selecter, inputselecter) {
   });
 }
 
-function savedata3(formname, selecter, inputselecter,popupname) {
+function savedata3(formname, selecter, inputselecter, popupname) {
   var form = $("#" + formname);
   var url = form.attr("action");
   var addtext = form.find("input[name='" + inputselecter + "']");

@@ -247,7 +247,7 @@
                         while ($productdata = mysqli_fetch_array($addressrquery)) {
                             $count++;
                     ?>
-                            <div class="max-w-full mb-4">
+                            <div class="max-w-full mb-4" id="productsdiv">
                                 <div class="bg-white rounded-sm shadow-md mb-4">
                                     <div class="w-full border-b flex">
                                         <h2 class="text-gray-700 font-semibold p-4 text-lg">Product <?php echo  $count; ?></h2>
@@ -347,6 +347,7 @@
                         <path d="M8 12H16" stroke="#007BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                     <p class="" style="color: #007bff;">Add New Product</p>
+                    <input type="hidden" class="totalnumproduct" name="totalnumproduct">
                 </button>
                 <div>
                     <div class="bg-white rounded-sm shadow-md mb-4">
@@ -391,7 +392,7 @@
                                     // $contactdata = mysqli_fetch_assoc($cotactquery);
                                     while ($contactdata = mysqli_fetch_assoc($cotactquery)) {
                                 ?> <tr>
-                                            <td class="px-6 py-4 whitespace-no-wrap"><input type="radio" name="contact_id" <?php echo $customerdata['contact_id'] == $contactdata['contact_quotation_id'] ? "checked" : " " ?> value="11"></td>
+                                            <td class="px-6 py-4 whitespace-no-wrap"><input type="radio" name="contact_id" <?php echo $customerdata['contact_id'] == $contactdata['contact_quotation_id'] ? "checked" : " " ?> value=<?php echo $contactdata['contact_quotation_id']; ?> ></td>
                                             <td class="px-6 py-4 whitespace-no-wrap"><?php echo $contactdata['first_name'] . " " . $contactdata['last_name']; ?></td>
                                             <td class="px-6 py-4 whitespace-no-wrap"><?php echo $contactdata['job_title_name']; ?></td>
                                             <td class="px-6 py-4 whitespace-no-wrap"><?php echo $contactdata['email1']; ?></td>
@@ -640,11 +641,11 @@
             $('#sales_sr_by').prop('readonly', true);
             $('#enquiry_customer_type').css('background-color', '#eeeeee');
             $('#sales_sr_by').css('background-color', '#eeeeee');
-
+console.log('a');
+calculateTotal(); 
 
 
             </script>";
-                    // calculateAmount(".$count."); 
         ?>
 
         <?php

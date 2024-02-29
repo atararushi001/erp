@@ -83,12 +83,13 @@ if (isset($_GET['enquiry_id'])) {
                         <input type="text" id="qsales_quotation_number" placeholder="Quotation number" name="qsales_quotation_number"
                             class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
-                    <div class="md:col-span-2 sm:col-span-1">
+                    <div>
                         <label for="sales_quotation_cc_name" class="text-gray-700 font-semibold">Company name / Customer Name</label>
                         <select
                             name="sales_quotation_cc_name"
                             id="sales_quotation_cc_name"
                             class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important"
+                            onchange="getenquirydata(this.value)"
                         >
                             <option value="">Formura</option>
                             <?php
@@ -96,28 +97,29 @@ if (isset($_GET['enquiry_id'])) {
                             ?>
                         </select>
                     </div>
-                    <div>
+                    <div class="md:col-span-2 sm:col-span-1">
                         <label for="sales_quotation_enquiry" class="text-gray-700 font-semibold">Enquiry</label>
                         <select
                             name="sales_quotation_enquiry"
                             id="sales_quotation_enquiry"
                             class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important"
-                        >
+                            onchange="getcontactdata(this.value)"
+                            >
                             <option value="Enquiry">Enquiry</option>
                             <?php 
-                                getoptionwithcode('sales_enquiry', 'enquiry_id', 'enquiry_name', 'enquiry_id');
+                                // getoptionwithcode('sales_enquiry', 'enquiry_id', 'enquiry_name', 'enquiry_id');
                             
                             ?>
                         </select>
                     </div>
                 </div>
                 <div class="grid lg:grid-cols-4 md:grid-cols-1 sm:grid-cols-1 p-4 pt-0 gap-4">
-                    <div>
+                    <div class="md:col-span-2 sm:col-span-1">
                         <label for="qsales_quotation_subject" class="text-gray-700 font-semibold">Quotation Subject</label>
                         <input type="text" id="qsales_quotation_subject" placeholder="Quotation Subject" name="qsales_quotation_subject"
                             class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
-                    <div class="col-span-1 sm:col-span-2">
+                    <div>
                         <label for="sales_quotation_contact" class="text-gray-700 font-semibold">Contact</label>
                         <input
                             name="sales_quotation_contact"
@@ -202,8 +204,64 @@ if (isset($_GET['enquiry_id'])) {
 
     <script src="../assets/js/script.js"></script>
     <script>
+         function getenquirydata(e){
+                // var data = e.params.data;
+
+                $.ajax({
+                    url: '../include/function.php',
+                    method: 'GET',
+                    data: {
+                        Enquirydata: e
+                    },
+                    success: function(response) {
+                         console.log(response);
+                      
+            let data = JSON.parse(response);
+            let select = document.getElementById('sales_quotation_enquiry');
+            data.forEach(item => {
+                let option = document.createElement('option');
+                option.value = item.enquiry_id;
+                option.text = item.enquiry_name;
+                select.appendChild(option);
+            });
+
+                    },
+                    error: function(error) {
+                        console.error('AJAX request failed: ' + error);
+                    }
+                });
+
+                }
+                function getcontactdata(e){
+                // var data = e.params.data;
+
+                $.ajax({
+                    url: '../include/function.php',
+                    method: 'GET',
+                    data: {
+                        contactdata: e
+                    },
+                    success: function(response) {
+                         console.log(response);
+                      
+            let data = JSON.parse(response);
+            let select = document.getElementById('sales_quotation_enquiry');
+            data.forEach(item => {
+                let option = document.createElement('option');
+                option.value = item.enquiry_id;
+                option.text = item.enquiry_name;
+                select.appendChild(option);
+            });
+
+                    },
+                    error: function(error) {
+                        console.error('AJAX request failed: ' + error);
+                    }
+                });
+
+                }
             $(document).ready(function() {
-        
+              
 
         if(window.location.href.includes("sales")) {
           const sales = document.querySelector(".sales");

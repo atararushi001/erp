@@ -46,7 +46,7 @@ function getoption($table, $field, $value)
 function getuseroption($table, $field, $value)
 {
   include 'config.php';
-  $_SESSION['user_id'] = 1;
+  // $_SESSION['user_id'] = 1;
   $data = mysqli_query($conn, "SELECT * FROM " . $table . " where admin_user = " .   $_SESSION['user_id'] . " ORDER BY " . $value);
   print_r($data);
   while ($datarow = mysqli_fetch_array($data)) {
@@ -83,7 +83,7 @@ if (isset($_GET['state'])) {
 if (isset($_POST['addctomerform'])) {
   $count = 1;
 
-  $_SESSION['user_id'] = 1;
+  // $_SESSION['user_id'] = 1;
   $customer_code = mysqli_real_escape_string($conn, $_POST['customer_code']);
   $customer_category = mysqli_real_escape_string($conn, $_POST['customer_category']);
   // $customer_name = mysqli_real_escape_string($conn, $_POST['customer_name']);
@@ -166,7 +166,7 @@ if (isset($_POST['addctomerform'])) {
 }
 if (isset($_POST['editctomerform'])) {
   $count = 1;
-  $_SESSION['user_id'] = 1;
+  // $_SESSION['user_id'] = 1;
   $customer_code = mysqli_real_escape_string($conn, $_POST['customer_code']);
   $customer_category = mysqli_real_escape_string($conn, $_POST['customer_category']);
   $customer_company_name = mysqli_real_escape_string($conn, $_POST['company_name']);
@@ -256,6 +256,7 @@ if (isset($_POST['editctomerform'])) {
       $count++;
       $numofaddress--;
     }
+    
     header("Location:  ../sales/customer.php");
   }
 }
@@ -269,7 +270,7 @@ if (isset($_POST['saveandnewcustomer'])) {
 
 
   $count = 1;
-  $_SESSION['user_id'] = 1;
+  // $_SESSION['user_id'] = 1;
 
   $customer_code = mysqli_real_escape_string($conn, $_POST['customer_code']);
   $customer_category = mysqli_real_escape_string($conn, $_POST['customer_category']);
@@ -1378,7 +1379,7 @@ if (isset($_GET['customercode'])) {
 }
 if (isset($_POST['add_sales_enquiry'])) {
   $count = 1;
-  $_SESSION['user_id'] = 1;
+  // $_SESSION['user_id'] = 1;
 
 
   $customer_typequery = mysqli_query($conn, "SELECT * FROM customer_type where  cu_ty_name = '" . $_POST['enquiry_customer_type'] . "'");
@@ -1476,7 +1477,7 @@ if (isset($_POST['add_sales_enquiry'])) {
 }
 if (isset($_POST['edit_sales_enquiry'])) {
   $count = 1;
-  $_SESSION['user_id'] = 1;
+  // $_SESSION['user_id'] = 1;
 
   $enquiry_code = mysqli_real_escape_string($conn, $_POST['enquiry_code']);
   $enquiry_customer_name = mysqli_real_escape_string($conn, $_POST['enquiry_customer_name']);
@@ -1576,13 +1577,13 @@ if (isset($_POST['edit_sales_enquiry'])) {
   }
 
   $stmt->close();
-  die();
+  // die();
   header("Location:  ../sales/sales_enquiry.php");
 }
 
 if (isset($_POST['add_sales_quotation'])) {
   $count = 1;
-  $_SESSION['user_id'] = 1;
+  // $_SESSION['user_id'] = 1;
 
   $product_description = mysqli_real_escape_string($conn, $_POST['product_description' . $count]);
   $part_number = mysqli_real_escape_string($conn, $_POST['part_number' . $count]);
@@ -2161,4 +2162,12 @@ if (isset($_FILES['csv_file'])) {
     $row++;
   }
   fclose($handle);
+}
+if(isset($_GET['Enquirydata'])){
+  $data = mysqli_query($conn, "SELECT * FROM sales_enquiry where enquiry_id  =  '".$_GET['Enquirydata'] ."'");
+  $datarow = mysqli_fetch_all($data, MYSQLI_ASSOC);
+
+  $json = json_encode($datarow);
+
+  echo $json;
 }
