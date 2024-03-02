@@ -2171,3 +2171,19 @@ if(isset($_GET['Enquirydata'])){
 
   echo $json;
 }
+if(isset($_GET['Productdata'])){
+  $data = mysqli_query($conn, "SELECT * FROM `enquiry_product`  WHERE enquiry_id  = '".$_GET['Productdata'] ."'");
+  $datarow = mysqli_fetch_all($data, MYSQLI_ASSOC);
+
+  $json = json_encode($datarow);
+
+  echo $json;
+}
+if(isset($_GET['Enquirydetaildata'])){
+    $data = mysqli_query($conn, "SELECT * FROM `sales_enquiry`  join contact_quotation on contact_quotation.contact_quotation_id = sales_enquiry.contact_id    WHERE enquiry_id   = '".$_GET['Enquirydetaildata'] ."'");
+    $datarow = mysqli_fetch_all($data, MYSQLI_ASSOC);
+  
+    $json = json_encode($datarow);
+  
+    echo $json;
+  }
