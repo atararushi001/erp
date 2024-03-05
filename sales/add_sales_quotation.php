@@ -167,7 +167,7 @@ if (isset($_GET['enquiry_id'])) {
                         <thead style="background-color: #F9FAFF; color:#031A61;">
                             <tr>
                                 <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
-                                    <input type="checkbox" name="" id="" checked disabled>
+                                    <input type="checkbox" name="termheaderCheckbox" id="termheaderCheckbox"  >
                                 </th>
                                 <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
                                     #
@@ -202,8 +202,51 @@ if (isset($_GET['enquiry_id'])) {
                                 </th>
                             </tr>
                         </thead>
-
+                      
                     </table>
+
+                </div>
+            </div>
+            <div class="bg-white rounded-sm shadow-md mb-4">
+                <div class="w-full border-b">
+                    <h2 class="text-gray-800 font-semibold p-4 text-lg">Terms and Condition</h3>
+                </div>
+                <div class="">
+
+                    <table id="termtable" class="min-w-full table-auto">
+                        <thead style="background-color: #F9FAFF; color:#031A61;">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                    <input type="checkbox" name="headerCheckbox" id="headerCheckbox">
+                                </th>
+                                <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                    #
+                                </th>
+                                <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                    Title
+                                </th>
+                                <th class="px-6 py-3 text-left text-sm leading-4 font-medium  tracking-wider">
+                                    Term And Condition
+                                </th>
+                            </tr>
+                        </thead>
+                        <?php
+                        $count = 0;
+                        $terms_conditionquery = mysqli_query($conn, "SELECT * FROM `terms_condition` ");
+                        while ($terms_conditiondata = mysqli_fetch_array($terms_conditionquery)) {
+                            $count++;
+                        ?>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-no-wrap"><input type="checkbox" name="terms_condition[]" value="<?php echo $terms_conditiondata['Terms_Condition_description']; ?>"></td>
+                                <td class="px-6 py-4 whitespace-no-wrap"><?php echo $count; ?></td>
+                                <td class="px-6 py-4 whitespace-no-wrap"><?php echo $terms_conditiondata['Terms_Condition_description']; ?></td>
+                                <td class="px-6 py-4 whitespace-no-wrap"><?php echo $terms_conditiondata['Terms_Condition_Condition']; ?></td>
+                            </tr>
+                        <?php } ?>
+                    </table>
+
+      
+                  
 
                 </div>
             </div>
@@ -217,6 +260,19 @@ if (isset($_GET['enquiry_id'])) {
     </form>
 
     <script src="../assets/js/script.js"></script>
+    <script>
+                        $(document).ready(function() {
+           
+                          
+                            $('#headerCheckbox').click(function() {
+                                $('input[name="terms_condition[]"]').prop('checked', this.checked);
+                            });
+
+                            $('#termheaderCheckbox').click(function() {
+                                $('input[name="Productheadercheckbox[]"]').prop('checked', this.checked);
+                            });
+                        });
+                    </script>
     <script>
         function getenquirydata(e) {
             // var data = e.params.data;
@@ -232,14 +288,27 @@ if (isset($_GET['enquiry_id'])) {
 
                     let data = JSON.parse(response);
                     let select = document.getElementById('sales_quotation_enquiry');
+
+                    // Empty the select element
+                    select.innerHTML = '';
+                    let option = document.createElement('option');
+                        option.value = "";
+                        option.text = "Select Enquiry";
+                        select.appendChild(option);
                     data.forEach(item => {
                         let option = document.createElement('option');
                         option.value = item.enquiry_id;
                         option.text = item.enquiry_name;
                         select.appendChild(option);
                     });
-
-
+                    let sales_quotation_contact = document.getElementById('sales_quotation_contact');
+                    sales_quotation_contact.value = "";
+                    $('#sales_quotation_currency').val(null); // Deselect all options
+                    $('#sales_quotation_currency').prop('disabled', false); // Disable the selector
+                    $('#sales_quotation_currency').trigger('change');
+                    let sales_quotation_sr_by = document.getElementById('sales_quotation_sr_by');
+                    sales_quotation_sr_by.value = "";
+                    sales_quotation_sr_by.disabled = true;
                 },
                 error: function(error) {
                     console.error('AJAX request failed: ' + error);
@@ -261,11 +330,20 @@ if (isset($_GET['enquiry_id'])) {
 
                     let data = JSON.parse(response);
                     let table = document.getElementById('Producttable');
-
+                    let totalQuantity = 0;
+                    let totalAmount = 0;
+                    let totalTaxAmount = 0;
+                    let taxRate = 0;
                     data.forEach((item, index) => {
                         let row = table.insertRow(-1);
+
+                        let quantity = Number(item.enquiry_p_product_quantity);
+                        let rate = Number(item.enquiry_p_product_rate);
+                        let amount = quantity * rate;
+                        let taxAmount = amount * taxRate;
+
                         row.innerHTML = `
-        <td class="px-6 py-4 whitespace-no-wrap"><input type="radio" ></td>
+        <td class="px-6 py-4 whitespace-no-wrap"><input type="checkbox" name="Productheadercheckbox[]"></td>
         <td class="px-6 py-4 whitespace-no-wrap">${index + 1}</td>
         <td class="px-6 py-4 whitespace-no-wrap">${item.enquiry_p_product_description}</td>
         <td   class="px-6 py-4 whitespace-no-wrap" >${item.enquiry_p_part_number}</td>
@@ -273,11 +351,29 @@ if (isset($_GET['enquiry_id'])) {
         <td   class="px-6 py-4 whitespace-no-wrap" >${item.enquiry_p_product_quantity}</td>
         <td   class="px-6 py-4 whitespace-no-wrap" >${item.enquiry_p_product_rate}</td>
         <td   class="px-6 py-4 whitespace-no-wrap" >${item.enquiry_p_product_amount}</td>
-        <td   class="px-6 py-4 whitespace-no-wrap" >Tax</td>
-        <td   class="px-6 py-4 whitespace-no-wrap" >Tax Amount</td>
+        <td   class="px-6 py-4 whitespace-no-wrap" >00</td>
+        <td   class="px-6 py-4 whitespace-no-wrap" >00</td>
         <td   class="px-6 py-4 whitespace-no-wrap" >Action</td>
     `;
+
+                        totalQuantity += quantity;
+                        totalAmount += amount;
+                        totalTaxAmount += taxAmount;
                     });
+
+
+                    let netAmount = totalAmount + totalTaxAmount;
+
+                    let footerRow = table.insertRow(-1);
+                    footerRow.innerHTML = `
+
+<td colspan="2" class="px-6 py-4 whitespace-no-wrap">
+Amount In Words:
+</td>
+    <td colspan="9" class="px-6 py-4 whitespace-no-wrap">
+        Amount In Words: INR ${netAmount.toFixed(2)} only Total Quantity NOs. ${totalQuantity} Total ${totalAmount.toFixed(2)} Tax Amount ${totalTaxAmount.toFixed(2)} Net Amount (INR) ${netAmount.toFixed(2)}
+    </td>
+`;
                 },
                 error: function(error) {
                     console.error('AJAX request failed: ' + error);
@@ -297,10 +393,13 @@ if (isset($_GET['enquiry_id'])) {
                     console.log(data[0]);
                     let sales_quotation_contact = document.getElementById('sales_quotation_contact');
                     sales_quotation_contact.value = data[0].first_name + ' ' + data[0].last_name;
+                    sales_quotation_contact.disabled = true; // Disable the input field
                     $('#sales_quotation_currency').val(data[0].enquiry_currency); // Select by value
+                    $('#sales_quotation_currency').prop('disabled', true); // Disable the selector
                     $('#sales_quotation_currency').trigger('change');
                     let sales_quotation_sr_by = document.getElementById('sales_quotation_sr_by');
-                    sales_quotation_sr_by   .value = data[0].enquiry_source;
+                    sales_quotation_sr_by.value = data[0].enquiry_source;
+                    sales_quotation_sr_by.disabled = true; 
                 },
                 error: function(error) {
                     console.error('AJAX request failed: ' + error);

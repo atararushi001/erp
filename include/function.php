@@ -757,6 +757,56 @@ function getcustomerbranch_warehouse()
     </td> </tr>';
   }
 }
+
+
+
+function getTerms_Condition()
+{
+  include 'config.php';
+  $data = mysqli_query($conn, "SELECT * FROM `terms_condition`");
+  $count = 0;
+  while ($datarow = mysqli_fetch_array($data)) {
+    $count++;
+    $activebtn = $datarow['terms_condition_status'] == 1 ? ' <a style="cursor: pointer;" href=" ../include/function.php?Terms_Condition_id_status=' . $datarow['Terms_Condition_id'] . '" class="text-green-900 border border-green-600 bg-green-300 w-16 p-2">
+    Active
+  </a>' : '<a  style="cursor: pointer;" href=" ../include/function.php?Terms_Condition_id_status=' . $datarow['Terms_Condition_id'] . '"  class="text-red-900 border border-red-600 bg-red-300 w-16 p-2">
+  Inactive
+</a>';
+    echo ' <tr><td class="px-6 py-4 whitespace-no-wrap">' . $count . '</td>
+    <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['Terms_Condition_description'] . '</td>
+    <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['Terms_Condition_Condition'] . '</td>
+    <td class="px-6 py-4 whitespace-no-wrap">
+    ' . $activebtn . '
+    </td>
+    <td class="px-6 py-4 whitespace-no-wrap flex justify-between">
+    <a href="branch_warehouse.php?Terms_Condition_id=' . $datarow['Terms_Condition_id'] . '">
+      <svg class="mt-2" width="18" height="18" viewBox="0 0 24 24" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 20H21" stroke="#8A8A8A" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path
+          d="M16.5 3.50023C16.8978 3.1024 17.4374 2.87891 18 2.87891C18.2786 2.87891 18.5544 2.93378 18.8118 3.04038C19.0692 3.14699 19.303 3.30324 19.5 3.50023C19.697 3.69721 19.8532 3.93106 19.9598 4.18843C20.0665 4.4458 20.1213 4.72165 20.1213 5.00023C20.1213 5.2788 20.0665 5.55465 19.9598 5.81202C19.8532 6.06939 19.697 6.30324 19.5 6.50023L7 19.0002L3 20.0002L4 16.0002L16.5 3.50023Z"
+          stroke="#8A8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      </a>
+      <a href="../include/function.php?deleteTerms_Condition_id=' . $datarow['Terms_Condition_id'] . '">
+      <svg class="mt-2" width="18" height="18" viewBox="0 0 24 24" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 6H5H21" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path
+          d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6"
+          stroke="#FF3B2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M10 11V17" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path d="M14 11V17" stroke="#FF3B2D" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+      </a>
+    </td> </tr>';
+  }
+}
+
 function getcustomertype()
 {
   include 'config.php';
@@ -1792,6 +1842,12 @@ if (isset($_GET['product_group_id_status'])) {
   $stmt->execute();
   echo '<script> window.location.href = "../other_pages/sales_product_group.php" </script> ';
 }
+if (isset($_GET['Terms_Condition_id_status'])) {
+  $stmt = $conn->prepare("UPDATE `terms_condition` SET `terms_condition_status` = 1- `terms_condition_status`  WHERE `Terms_Condition_id`=  ? ");
+  $stmt->bind_param("s", $_GET['Terms_Condition_id_status']);
+  $stmt->execute();
+  echo '<script> window.location.href = "../other_pages/sales_product_group.php" </script> ';
+}
 
 
 
@@ -1886,6 +1942,12 @@ if (isset($_GET['delete_product_group_id'])) {
   $stmt->bind_param("s", $_GET['delete_product_group_id']);
   $stmt->execute();
   echo '<script> window.location.href = "../other_pages/sales_product_group.php" </script> ';
+}
+if (isset($_GET['deleteTerms_Condition_id'])) {
+  $stmt = $conn->prepare("DELETE FROM `terms_condition` WHERE `Terms_Condition_id`=  ? ");
+  $stmt->bind_param("s", $_GET['deleteTerms_Condition_id']);
+  $stmt->execute();
+  echo '<script> window.location.href = "../other_pages/Terms_Condition.php" </script> ';
 }
 
 if (isset($_POST['add_sales_quotation_contact'])) {
@@ -2087,6 +2149,19 @@ if (isset($_POST['communication_preferencedata'])) {
   $conn->close();
 }
 
+if (isset($_POST['Terms_Condition_Condition'])) {
+  $sql = "INSERT INTO `terms_condition`( `Terms_Condition_description`, `Terms_Condition_Condition`) VALUES (?,?)";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("ss", $_POST['Terms_Condition_description'],$_POST['Terms_Condition_Condition']);
+  if ($stmt->execute()) {
+
+    echo $conn->insert_id;
+  }
+  $stmt->close();
+  $conn->close();
+}
+
+
 if (isset($_GET['user_emaildata'])) {
   $data = mysqli_query($conn, "SELECT * FROM user where user_email =  '" . $_GET['user_emaildata'] . "'");
   $count = 0;
@@ -2164,7 +2239,7 @@ if (isset($_FILES['csv_file'])) {
   fclose($handle);
 }
 if(isset($_GET['Enquirydata'])){
-  $data = mysqli_query($conn, "SELECT * FROM sales_enquiry where enquiry_id  =  '".$_GET['Enquirydata'] ."'");
+  $data = mysqli_query($conn, "SELECT * FROM sales_enquiry where enquiry_customer_name  =  '".$_GET['Enquirydata'] ."'");
   $datarow = mysqli_fetch_all($data, MYSQLI_ASSOC);
 
   $json = json_encode($datarow);
