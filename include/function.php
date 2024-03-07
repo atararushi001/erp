@@ -2262,3 +2262,11 @@ if(isset($_GET['Enquirydetaildata'])){
   
     echo $json;
   }
+  if(isset($_GET['ProductId'])){
+
+    $data = mysqli_query($conn, "SELECT * FROM `enquiry_product`  WHERE enquiry_p_id    = '".$_GET['ProductId'] ."'");
+    $datarow = mysqli_fetch_all($data, MYSQLI_ASSOC);
+    $json = json_encode($datarow);
+    echo $json;
+
+  }

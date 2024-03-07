@@ -290,16 +290,16 @@ if (isset($_GET['enquiry_id'])) {
                         <input type="text" name="hsn_code" id="hsn_code" placeholder="HSN Code" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
                     <div>
-                        <label for="customer_type" class="text-gray-700 font-semibold">Part Number</label>
-                        <input type="text" name="part_number" id="part_number" placeholder="Terms Condition Condition" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <label for="customer_type" class="text-gray-700 font-semibold">Quantity</label>
+                        <input type="text" name="quantity" id="quantity" placeholder="Quantity" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
                     <div>
-                        <label for="customer_type" class="text-gray-700 font-semibold">Part Number</label>
-                        <input type="text" name="" id="Terms_Condition_Condition" placeholder="Terms Condition Condition" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <label for="customer_type" class="text-gray-700 font-semibold">Rate</label>
+                        <input type="text" name="rate" id="rate" placeholder="Rate" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
                     <div>
-                        <label for="customer_type" class="text-gray-700 font-semibold">Part Number</label>
-                        <input type="text" name="" id="Terms_Condition_Condition" placeholder="Terms Condition Condition" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <label for="customer_type" class="text-gray-700 font-semibold">Amount</label>
+                        <input type="text" name="amount" id="amount" placeholder="amount" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
 
                     <input type="hidden" name="Product_id" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
@@ -307,19 +307,19 @@ if (isset($_GET['enquiry_id'])) {
                 <div class="grid lg:grid-cols-4 md:grid-cols-1 sm:grid-cols-1 p-4 gap-4">
                     <div>
                         <label for="customer_type" class="text-gray-700 font-semibold">CGST</label>
-                        <input type="text" name="" id="Terms_Condition_description" placeholder="Terms_Condition_description" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <input type="text" name="cgst" id="cgst" placeholder="cgst"  class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
                     <div>
                         <label for="customer_type" class="text-gray-700 font-semibold">SGST</label>
-                        <input type="text" name="" id="Terms_Condition_Condition" placeholder="Terms Condition Condition" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <input type="text" name="sgst" id="sgst" placeholder="sgst" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
                     <div>
                         <label for="customer_type" class="text-gray-700 font-semibold">IGST</label>
-                        <input type="text" name="" id="Terms_Condition_Condition" placeholder="Terms Condition Condition" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <input type="text" name="igst" id="igst" placeholder="igst" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
                     <div>
                         <label for="customer_type" class="text-gray-700 font-semibold">Tax Amount</label>
-                        <input type="text" name="" id="Terms_Condition_Condition" placeholder="Terms Condition Condition" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <input type="text" name="tax_amount" id="tax_amount" placeholder="Tax Amount" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
 
                     <input type="hidden" name="Product_id" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
@@ -489,11 +489,32 @@ Amount In Words: INR ${netAmount.toFixed(2)} only Total Quantity NOs. ${totalQua
         }
 
         function editproduct(id) {
-            console.log(id);
-
+            // console.log(id);
+            var id  = id;
             document.getElementById('productPopup').style.display = 'block';
 
             document.querySelector('input[name="quotation_Product_id"]').value = id;
+
+            // Fetch data using AJAX
+            $.ajax({
+                url: '../include/function.php',
+                method: 'GET',
+                data: {
+                    ProductId: id
+                },
+                success: function(response) {
+                    let data = JSON.parse(response);
+                    // Add data to input fields in the productPopup div
+                    document.querySelector('input[name="Product_Description"]').value = data.enquiry_p_product_description;
+                    document.querySelector('input[name="part_number"]').value = data.enquiry_p_part_number;
+                    document.querySelector('input[name="hsn_code"]').value = data.enquiry_p_product_hsn_code;
+                    document.querySelector('input[name="quantity"]').value = data.enquiry_p_product_quantity;
+                    document.querySelector('input[name="rate"]').value = data.enquiry_p_product_rate;
+                },
+                error: function(error) {
+                    console.error('AJAX request failed: ' + error);
+                }
+            });
         }
         $(document).ready(function() {
 
