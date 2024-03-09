@@ -62,7 +62,7 @@ if (isset($_GET['enquiry_id'])) {
                     }
                 }
             });
-            $("#sales_quotation_currency").select2({});
+
         })
     </script>
 
@@ -129,19 +129,21 @@ if (isset($_GET['enquiry_id'])) {
                         </div>
                         <div>
                             <label for="sales_quotation_currency" class="text-gray-700 font-semibold">Currency</label>
-                            <select name="sales_quotation_currency" id="sales_quotation_currency" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
+                            <!-- <select name="sales_quotation_currency" id="sales_quotation_currency" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important">
                                 <option value="Currency">Currency</option>
                                 <?php
                                 getoptionwithcode('currency', 'currency', 'country', 'currency');
 
                                 ?>
-                            </select>
+                            </select> -->
+                            <input type="text" id="sales_quotation_currency" placeholder="Currency" name="sales_quotation_currency" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+
                         </div>
                         <div>
                             <label for="quotation_type" class="text-gray-700 font-semibold">Quotation Type</label>
                             <div class="flex items-center mt-4">
                                 <div class="flex items-center mr-3">
-                                    <input type="radio" id="domestic" name="sales_quotation_type" name="qsales_quotation_type" class="border rounded-sm outline-none p-3 mr-2 w-5 h-5" value="Domestic">
+                                    <input type="radio" id="domestic" name="sales_quotation_type" class="border rounded-sm outline-none p-3 mr-2 w-5 h-5" value="Domestic">
                                     <label for="domestic" class="text-gray-400 font-normal">Domestic</label>
                                 </div>
                                 <div class="flex items-center">
@@ -265,12 +267,12 @@ if (isset($_GET['enquiry_id'])) {
         <div id="bw_popup" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width:1100px;">
             <div class="flex justify-between border-b">
                 <h2 class="text-gray-800 font-semibold p-4 text-xl">Terms Condition</h2>
-                <svg id="closeCCategory" onclick="closeModal('terms_conditionPopup')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg id="closeCCategory" onclick="closeModal('productPopup')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M37.5 12.5L12.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
                     <path d="M12.5 12.5L37.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </div>
-            <form class="p-4" name="terms_conditionform" action="../include/function.php" id="terms_conditionform">
+            <form class="p-4" name="editproductform" action="../include/function.php" id="terms_conditionform">
 
                 <div class="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 p-4 gap-4">
                     <div>
@@ -291,11 +293,11 @@ if (isset($_GET['enquiry_id'])) {
                     </div>
                     <div>
                         <label for="customer_type" class="text-gray-700 font-semibold">Quantity</label>
-                        <input type="text" name="quantity" id="quantity" placeholder="Quantity" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <input type="text" name="quantity" id="quantity" placeholder="Quantity" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" onchange="calculatamount()">
                     </div>
                     <div>
                         <label for="customer_type" class="text-gray-700 font-semibold">Rate</label>
-                        <input type="text" name="rate" id="rate" placeholder="Rate" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <input type="text" name="rate" id="rate" placeholder="Rate" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2" onchange="calculatamount()">
                     </div>
                     <div>
                         <label for="customer_type" class="text-gray-700 font-semibold">Amount</label>
@@ -307,15 +309,39 @@ if (isset($_GET['enquiry_id'])) {
                 <div class="grid lg:grid-cols-4 md:grid-cols-1 sm:grid-cols-1 p-4 gap-4">
                     <div>
                         <label for="customer_type" class="text-gray-700 font-semibold">CGST</label>
-                        <input type="text" name="cgst" id="cgst" placeholder="cgst"  class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <select name="cgst" id="cgst" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important" onchange="calculattax()">
+                            <option value="">CGST</option>
+                            <option value="5">5%</option>
+                            <option value="12">12%</option>
+                            <option value="18">18%</option>
+                            <option value="28">28%</option>
+
+
+                        </select>
                     </div>
                     <div>
                         <label for="customer_type" class="text-gray-700 font-semibold">SGST</label>
-                        <input type="text" name="sgst" id="sgst" placeholder="sgst" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <select name="SGST" id="SGST" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important" onchange="calculattax()">
+                            <option value="">SGST</option>
+                            <option value="5">5%</option>
+                            <option value="12">12%</option>
+                            <option value="18">18%</option>
+                            <option value="28">28%</option>
+
+
+
+                        </select>
                     </div>
                     <div>
                         <label for="customer_type" class="text-gray-700 font-semibold">IGST</label>
-                        <input type="text" name="igst" id="igst" placeholder="igst" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <select name="IGST" id="IGST" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 !important" onchange="calculattax()">
+                            <option value="">IGST</option>
+                            <option value="5">5%</option>
+                            <option value="12">12%</option>
+                            <option value="18">18%</option>
+                            <option value="28">28%</option>
+
+                        </select>
                     </div>
                     <div>
                         <label for="customer_type" class="text-gray-700 font-semibold">Tax Amount</label>
@@ -325,7 +351,7 @@ if (isset($_GET['enquiry_id'])) {
                     <input type="hidden" name="Product_id" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                 </div>
                 <div class="flex items-center justify-start gap-4 mt-10 ">
-                    <button class="text-white text-sm px-4 py-2 w-28" onclick="savedatanow('terms_conditionform','<?php echo  isset($_GET['Terms_Condition_id']) ?  'terms_condition_update' : 'Terms_Condition_Condition' ?>')" type="button" id="openButton" style="background-color: #007bff;">Save</button>
+                    <button class="text-white text-sm px-4 py-2 w-28" onclick="saveditproduct()" type="button" id="openButton" style="background-color: #007bff;">Save</button>
                     <button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('terms_conditionPopup')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
 
             </form>
@@ -346,6 +372,8 @@ if (isset($_GET['enquiry_id'])) {
         });
     </script>
     <script>
+        var currency;
+
         function getenquirydata(e) {
             // var data = e.params.data;
 
@@ -375,6 +403,8 @@ if (isset($_GET['enquiry_id'])) {
                     });
                     let sales_quotation_contact = document.getElementById('sales_quotation_contact');
                     sales_quotation_contact.value = "";
+
+                    currency = data[0].enquiry_currency;
                     $('#sales_quotation_currency').val(null); // Deselect all options
                     $('#sales_quotation_currency').prop('disabled', false); // Disable the selector
                     $('#sales_quotation_currency').trigger('change');
@@ -447,10 +477,10 @@ if (isset($_GET['enquiry_id'])) {
                     footerRow.innerHTML = `
 
 <td colspan="2" class="px-6 py-4 whitespace-no-wrap">
-Amount In Words:
+
 </td>
 <td colspan="9" class="px-6 py-4 whitespace-no-wrap">
-Amount In Words: INR ${netAmount.toFixed(2)} only Total Quantity NOs. ${totalQuantity} Total ${totalAmount.toFixed(2)} Tax Amount ${totalTaxAmount.toFixed(2)} Net Amount (INR) ${netAmount.toFixed(2)}
+Amount In Words: <b>INR ${netAmount.toFixed(2)}</b> only Total Quantity NOs. <b>${totalQuantity}</b> Total <b>${totalAmount.toFixed(2)}</b> Tax Amount <b>${totalTaxAmount.toFixed(2)}</b> Net Amount (${currency}) <b> ${netAmount.toFixed(2)}</b>
 </td>
 `;
                 },
@@ -473,9 +503,13 @@ Amount In Words: INR ${netAmount.toFixed(2)} only Total Quantity NOs. ${totalQua
                     let sales_quotation_contact = document.getElementById('sales_quotation_contact');
                     sales_quotation_contact.value = data[0].first_name + ' ' + data[0].last_name;
                     sales_quotation_contact.disabled = true; // Disable the input field
-                    $('#sales_quotation_currency').val(data[0].enquiry_currency); // Select by value
-                    $('#sales_quotation_currency').prop('disabled', true); // Disable the selector
-                    $('#sales_quotation_currency').trigger('change');
+                    // $('#sales_quotation_currency').val(data[0].enquiry_currency); // Select by value
+                    // $('#sales_quotation_currency').prop('disabled', true); // Disable the selector
+                    // $('#sales_quotation_currency').trigger('change');
+                    let sales_quotation_currency = document.getElementById('sales_quotation_currency');
+                    sales_quotation_currency.value = data[0].enquiry_currency;
+                    sales_quotation_currency.disabled = true;
+
                     let sales_quotation_sr_by = document.getElementById('sales_quotation_sr_by');
                     sales_quotation_sr_by.value = data[0].enquiry_source;
                     sales_quotation_sr_by.disabled = true;
@@ -490,7 +524,7 @@ Amount In Words: INR ${netAmount.toFixed(2)} only Total Quantity NOs. ${totalQua
 
         function editproduct(id) {
             // console.log(id);
-            var id  = id;
+            var id = id;
             document.getElementById('productPopup').style.display = 'block';
 
             document.querySelector('input[name="quotation_Product_id"]').value = id;
@@ -504,15 +538,88 @@ Amount In Words: INR ${netAmount.toFixed(2)} only Total Quantity NOs. ${totalQua
                 },
                 success: function(response) {
                     let data = JSON.parse(response);
+                    console.log(data)
                     // Add data to input fields in the productPopup div
-                    document.querySelector('input[name="Product_Description"]').value = data.enquiry_p_product_description;
-                    document.querySelector('input[name="part_number"]').value = data.enquiry_p_part_number;
-                    document.querySelector('input[name="hsn_code"]').value = data.enquiry_p_product_hsn_code;
-                    document.querySelector('input[name="quantity"]').value = data.enquiry_p_product_quantity;
-                    document.querySelector('input[name="rate"]').value = data.enquiry_p_product_rate;
+                    document.querySelector('input[name="Product_Description"]').value = data[0].enquiry_p_product_description;
+                    document.querySelector('input[name="part_number"]').value = data[0].enquiry_p_part_number;
+                    document.querySelector('input[name="hsn_code"]').value = data[0].enquiry_p_product_hsn_code;
+                    document.querySelector('input[name="quantity"]').value = data[0].enquiry_p_product_quantity;
+                    document.querySelector('input[name="rate"]').value = data[0].enquiry_p_product_rate;
+
+
+                    calculatamount();
+                    calculattax();
                 },
                 error: function(error) {
                     console.error('AJAX request failed: ' + error);
+                }
+            });
+        }
+
+        function calculatamount() {
+            var quantity = document.getElementById('quantity').value;
+            var rate = document.getElementById('rate').value;
+            var amount = quantity * rate;
+            document.getElementById('amount').value = amount;
+        }
+
+        function calculattax() {
+
+            var amount = parseFloat(document.getElementById('amount').value);
+            var cgst = parseFloat(document.getElementById('cgst').value);
+            var sgst = parseFloat(document.getElementById('SGST').value);
+            var igst = parseFloat(document.getElementById('IGST').value);
+
+            // Check if the values are null or NaN and assign default values
+            amount = isNaN(amount) ? 1 : amount;
+            cgst = isNaN(cgst) ? 1 : cgst;
+            sgst = isNaN(sgst) ? 1 : sgst;
+            igst = isNaN(igst) ? 1 : igst;
+
+            var tax_amount = (amount * (cgst / 100)) + (amount * (sgst / 100)) + (amount * (igst / 100));
+            console.log(tax_amount);
+            document.getElementById('tax_amount').value = tax_amount;
+        }
+
+        // function saveditproduct() {
+
+
+        //     const formData = new FormData(document.querySelector('form[name="editproductform"]'));
+
+
+        //     console.log(formData);
+        //     $.ajax({
+        //         url: '../include/function.php',
+        //         method: 'POST',
+        //         editproduct: formData,
+        //         success: function(response) {
+        //             // Handle success response
+        //             console.log(response);
+        //         },
+        //         error: function(error) {
+        //             // Handle error response
+        //             console.error('AJAX request failed: ' + error);
+        //         }
+        //     });
+
+
+
+        // }
+        function saveditproduct() {
+            const formData = new FormData(document.querySelector('form[name="editproductform"]'));
+            formData.append('editproduct', 'true');
+
+            $.ajax({
+                url: '../include/function.php',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.error('AJAX request failed: ', error);
                 }
             });
         }

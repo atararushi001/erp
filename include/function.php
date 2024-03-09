@@ -2270,3 +2270,50 @@ if(isset($_GET['Enquirydetaildata'])){
     echo $json;
 
   }
+  if(isset($_POST['editproduct'])){
+  
+    // $data = $_POST['quotation_Product_id'];
+    // $json = json_encode($data);
+    // echo $json;
+    // die();
+  $enquiry_p_id = mysqli_real_escape_string($conn, $_POST['quotation_Product_id']);
+  $enquiry_p_product_description = mysqli_real_escape_string($conn, $_POST['Product_Description']);
+  $enquiry_p_part_number = mysqli_real_escape_string($conn, $_POST['part_number']);
+  $enquiry_p_product_hsn_code = mysqli_real_escape_string($conn, $_POST['hsn_code']);
+  $enquiry_p_product_quantity = mysqli_real_escape_string($conn, $_POST['quantity']);
+  $enquiry_p_product_rate = mysqli_real_escape_string($conn, $_POST['rate']);
+  $enquiry_p_product_amount = mysqli_real_escape_string($conn, $_POST['amount']);
+
+  $enquiry_p_product_amount = mysqli_real_escape_string($conn, $_POST['amount']);
+  $enquiry_p_product_amount = mysqli_real_escape_string($conn, $_POST['amount']);
+  $enquiry_p_product_amount = mysqli_real_escape_string($conn, $_POST['amount']);
+
+
+  $stmt = $conn->prepare("UPDATE `enquiry_product` SET 
+    `enquiry_p_product_description` = ?,
+    `enquiry_p_part_number` = ?,
+    `enquiry_p_product_hsn_code` = ?,
+    `enquiry_p_product_quantity` = ?,
+    `enquiry_p_product_rate` = ?,
+    `enquiry_p_product_amount` = ?
+    WHERE `enquiry_p_id` = ?");
+
+  $stmt->bind_param(
+    "ssssssi",
+    $enquiry_p_product_description,
+    $enquiry_p_part_number,
+    $enquiry_p_product_hsn_code,
+    $enquiry_p_product_quantity,
+    $enquiry_p_product_rate,
+    $enquiry_p_product_amount,
+    $enquiry_p_id
+  );
+
+  if ($stmt->execute()) {
+    echo "Data updated successfully";
+  } else {
+    echo "Error updating data: " . $stmt->error;
+  }
+}
+   
+  
