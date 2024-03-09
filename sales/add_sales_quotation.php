@@ -436,6 +436,12 @@ if (isset($_GET['enquiry_id'])) {
                     let totalAmount = 0;
                     let totalTaxAmount = 0;
                     let taxRate = 0;
+                    // Clear all rows in the table
+                    for (let i = table.rows.length - 1; i > 0; i--) {
+                        table.deleteRow(i);
+                    }
+
+
                     data.forEach((item, index) => {
                         let row = table.insertRow(-1);
 
@@ -445,7 +451,7 @@ if (isset($_GET['enquiry_id'])) {
                         let taxAmount = amount * taxRate;
 
                         row.innerHTML = `
-<td class="px-6 py-4 whitespace-no-wrap" ><input type="checkbox" name="Productheadercheckbox[]"></td>
+<td class="px-6 py-4 whitespace-no-wrap" ><input type="checkbox" name="Productheadercheckbox[]" value="${item.enquiry_p_id}"></td>
 <td class="px-6 py-4 whitespace-no-wrap">${index + 1}</td>
 <td class="px-6 py-4 whitespace-no-wrap" colspan="2">${item.enquiry_p_product_description}</td>
 <td   class="px-6 py-4 whitespace-no-wrap" >${item.enquiry_p_part_number}</td>
@@ -476,11 +482,20 @@ if (isset($_GET['enquiry_id'])) {
                     let footerRow = table.insertRow(-1);
                     footerRow.innerHTML = `
 
-<td colspan="2" class="px-6 py-4 whitespace-no-wrap">
-
+<td colspan="3" class="px-6 py-4 whitespace-no-wrap">
+Amount In Words: <b>INR ${netAmount.toFixed(2)}</b>
 </td>
-<td colspan="9" class="px-6 py-4 whitespace-no-wrap">
-Amount In Words: <b>INR ${netAmount.toFixed(2)}</b> only Total Quantity NOs. <b>${totalQuantity}</b> Total <b>${totalAmount.toFixed(2)}</b> Tax Amount <b>${totalTaxAmount.toFixed(2)}</b> Net Amount (${currency}) <b> ${netAmount.toFixed(2)}</b>
+<td colspan="2" class="px-6 py-4 whitespace-no-wrap">
+only Total Quantity NOs. <b>${totalQuantity}</b>
+</td>
+<td colspan="2" class="px-6 py-4 whitespace-no-wrap">
+Total <b>${totalAmount.toFixed(2)}</b>
+</td>
+<td colspan="2" class="px-6 py-4 whitespace-no-wrap">
+Tax Amount <b>${totalTaxAmount.toFixed(2)}</b>
+</td>
+<td colspan="2" class="px-6 py-4 whitespace-no-wrap">
+    Net Amount (${currency}) <b> ${netAmount.toFixed(2)}</b>
 </td>
 `;
                 },
@@ -499,7 +514,7 @@ Amount In Words: <b>INR ${netAmount.toFixed(2)}</b> only Total Quantity NOs. <b>
 
 
                     let data = JSON.parse(response);
-                    console.log(data[0]);
+                    // console.log(data[0]);
                     let sales_quotation_contact = document.getElementById('sales_quotation_contact');
                     sales_quotation_contact.value = data[0].first_name + ' ' + data[0].last_name;
                     sales_quotation_contact.disabled = true; // Disable the input field
@@ -538,7 +553,7 @@ Amount In Words: <b>INR ${netAmount.toFixed(2)}</b> only Total Quantity NOs. <b>
                 },
                 success: function(response) {
                     let data = JSON.parse(response);
-                    console.log(data)
+                    // console.log(data)
                     // Add data to input fields in the productPopup div
                     document.querySelector('input[name="Product_Description"]').value = data[0].enquiry_p_product_description;
                     document.querySelector('input[name="part_number"]').value = data[0].enquiry_p_part_number;
@@ -546,6 +561,26 @@ Amount In Words: <b>INR ${netAmount.toFixed(2)}</b> only Total Quantity NOs. <b>
                     document.querySelector('input[name="quantity"]').value = data[0].enquiry_p_product_quantity;
                     document.querySelector('input[name="rate"]').value = data[0].enquiry_p_product_rate;
 
+                    let cgstSelect = document.getElementById('cgst');
+                    let cgstValue = parseFloat(data[0].enquiry_p_cgst);
+
+                    if (cgstValue !== 0) {
+                        cgstSelect.value = cgstValue;
+                    }
+
+                    let sgstSelect = document.getElementById('SGST');
+                    let sgstValue = parseFloat(data[0].enquiry_p_sgst);
+
+                    if (sgstValue !== 0) {
+                        sgstSelect.value = sgstValue;
+                    }
+
+                    let igstSelect = document.getElementById('IGST');
+                    let igstValue = parseFloat(data[0].enquiry_p_igst);
+
+                    if (igstValue !== 0) {
+                        igstSelect.value = igstValue;
+                    }
 
                     calculatamount();
                     calculattax();
@@ -581,30 +616,6 @@ Amount In Words: <b>INR ${netAmount.toFixed(2)}</b> only Total Quantity NOs. <b>
             document.getElementById('tax_amount').value = tax_amount;
         }
 
-        // function saveditproduct() {
-
-
-        //     const formData = new FormData(document.querySelector('form[name="editproductform"]'));
-
-
-        //     console.log(formData);
-        //     $.ajax({
-        //         url: '../include/function.php',
-        //         method: 'POST',
-        //         editproduct: formData,
-        //         success: function(response) {
-        //             // Handle success response
-        //             console.log(response);
-        //         },
-        //         error: function(error) {
-        //             // Handle error response
-        //             console.error('AJAX request failed: ' + error);
-        //         }
-        //     });
-
-
-
-        // }
         function saveditproduct() {
             const formData = new FormData(document.querySelector('form[name="editproductform"]'));
             formData.append('editproduct', 'true');
