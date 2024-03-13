@@ -1742,6 +1742,11 @@ function getsales_quotation()
   $count = 0;
   while ($datarow = mysqli_fetch_array($data)) {
     $count++;
+    $activebtn = $datarow['sales_quotation_status'] == 1 ? ' <a style="cursor: pointer;" href=" ../include/function.php?sales_quotation_status=' . $datarow['quotation_id'] . '" class="text-green-900 border border-green-600 bg-green-300 w-16 p-2">
+    Active
+  </a>' : '<a  style="cursor: pointer;" href=" ../include/function.php?sales_quotation_status=' . $datarow['quotation_id'] . '"  class="text-red-900 border border-red-600 bg-red-300 w-16 p-2">
+  Inactive
+</a>';
     echo ' <tr>
       <td class="px-6 py-4 whitespace-no-wrap">' . $count . '</td>
       <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['qsales_quotation_number'] . '</td>
@@ -1753,9 +1758,7 @@ function getsales_quotation()
       <td class="px-6 py-4 whitespace-no-wrap">' . $datarow['sales_quotation_version'] . '</td>
   
       <td class="px-6 py-4 whitespace-no-wrap">
-        <button class="text-green-900 border border-green-600 bg-green-300 w-16 p-2">
-          Active
-        </button>
+      ' . $activebtn . '
       </td> 
       <td class="px-6 py-4 whitespace-no-wrap">
      <a href=""> <svg class="cursor-pointer" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1824,6 +1827,7 @@ if (isset($_GET['changestatus'])) {
   $stmt->execute();
   echo json_encode(['success' => true]);
 }
+
 if (isset($_GET['cu_cat_id_status'])) {
   $stmt = $conn->prepare("UPDATE `customer_category` SET `cu_cat_status` = 1- `cu_cat_status`  WHERE `cu_cat_id`=  ? ");
   $stmt->bind_param("s", $_GET['cu_cat_id_status']);
@@ -1873,7 +1877,13 @@ if (isset($_GET['job_title_status_id_status'])) {
   $stmt->execute();
   echo '<script> window.location.href = "../other_pages/job_title.php" </script> ';
 }
+if (isset($_GET['sales_quotation_status'])) {
 
+  $stmt = $conn->prepare("UPDATE `quotation` SET `sales_quotation_status` = 1- `sales_quotation_status`  WHERE `quotation_id`=  ? ");
+  $stmt->bind_param("s", $_GET['sales_quotation_status']);
+  $stmt->execute();
+  echo '<script> window.location.href = "../sales/sales_quotation.php" </script> ';
+}
 if (isset($_GET['department_id_status'])) {
 
   $stmt = $conn->prepare("UPDATE `department` SET `department_status` = 1- `department_status`  WHERE `department_id`=  ? ");
@@ -2018,6 +2028,12 @@ if (isset($_GET['deleteTerms_Condition_id'])) {
   $stmt->bind_param("s", $_GET['deleteTerms_Condition_id']);
   $stmt->execute();
   echo '<script> window.location.href = "../other_pages/Terms_Condition.php" </script> ';
+}
+if (isset($_GET['deletequotation_id'])) {
+  $stmt = $conn->prepare("DELETE FROM `quotation` WHERE `quotation_id`=  ? ");
+  $stmt->bind_param("s", $_GET['deletequotation_id']);
+  $stmt->execute();
+  echo '<script> window.location.href = "../sales/sales_quotation.php" </script> ';
 }
 
 if (isset($_POST['add_sales_quotation_contact'])) {

@@ -355,13 +355,14 @@
                     </div>
                     <div class="flex items-center justify-start gap-4 mt-10 ">
                         <button class="text-white text-sm px-4 py-2 w-28" onclick="saveditproduct()" type="button" id="openButton" style="background-color: #007bff;">Save</button>
-                        <button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('terms_conditionPopup')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
+                        <button type="button" class="border bg-white text-sm px-4 py-2 w-28" onclick="closeModal('productPopup')" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
 
                 </form>
             </div>
         </div>
         <script src="../assets/js/script.js"></script>
         <script>
+            
             $('input[name="sales_quotation_type"]').change(function() {
                 if ($(this).val() === 'Domestic') {
                     $('#gsts').show();
@@ -371,6 +372,11 @@
             });
 
             $(document).ready(function() {
+
+                let tax_amount = document.getElementById('tax_amount');
+                tax_amount.readOnly = true;
+                tax_amount.style.backgroundColor = '#eeeeee';
+                
                 console.log($('input[name="sales_quotation_type"]').val());
 
                 document.querySelector('input[value="Domestic"]').checked = true;
@@ -626,9 +632,9 @@
 
                 // Check if the values are null or NaN and assign default values
                 amount = isNaN(amount) ? 1 : amount;
-                cgst = isNaN(cgst) ? 1 : cgst;
-                sgst = isNaN(sgst) ? 1 : sgst;
-                igst = isNaN(igst) ? 1 : igst;
+                cgst = isNaN(cgst) ? 0 : cgst;
+                sgst = isNaN(sgst) ? 0 : sgst;
+                igst = isNaN(igst) ? 0 : igst;
 
                 var tax_amount = (amount * (cgst / 100)) + (amount * (sgst / 100)) + (amount * (igst / 100));
                 console.log(tax_amount);
@@ -673,8 +679,9 @@
             });
         </script>
         <?php
-        $qsales_quotation_product_id = explode(',', $quotationdata['qsales_quotation_product_id']);
+        
         if (isset($_GET['quotation_id'])) {
+            $qsales_quotation_product_id = explode(',', $quotationdata['qsales_quotation_product_id']);
             getselecterdata($quotationdata['sales_quotation_cc_name'], '#sales_quotation_cc_name');
             echo "<script>
                 setTimeout(function() {
