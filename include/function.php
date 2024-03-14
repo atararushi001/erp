@@ -2039,8 +2039,34 @@ if (isset($_GET['deletequotation_id'])) {
 if (isset($_POST['add_sales_quotation_contact'])) {
 
 
-  $_SESSION['user_id'] = 1;
+  // $_SESSION['user_id'] = 1;
 
+  $company_name = mysqli_real_escape_string($conn, $_POST['company_name']);
+  $prefix = mysqli_real_escape_string($conn, $_POST['prefix']);
+  $first_name = mysqli_real_escape_string($conn, $_POST['first_name']);
+  $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
+  $email1 = mysqli_real_escape_string($conn, $_POST['email1']);
+  $email2 = mysqli_real_escape_string($conn, $_POST['email2']);
+  $mobile_no1 = mysqli_real_escape_string($conn, $_POST['mobile_no1']);
+  $mobile_no2 = mysqli_real_escape_string($conn, $_POST['mobile_no2']);
+  $job_title = mysqli_real_escape_string($conn, $_POST['job_title']);
+  $department = mysqli_real_escape_string($conn, $_POST['department']);
+  $skype_id = mysqli_real_escape_string($conn, $_POST['skype_id']);
+  $communication_preference = mysqli_real_escape_string($conn, $_POST['communication_preference']);
+  $website_link = mysqli_real_escape_string($conn, $_POST['website_link']);
+  $linkedln_profile = mysqli_real_escape_string($conn, $_POST['linkedln_profile']);
+  $shipping_address = mysqli_real_escape_string($conn, $_POST['shipping_address']);
+  $shipping_country = mysqli_real_escape_string($conn, $_POST['shipping_country']);
+  $shipping_state = mysqli_real_escape_string($conn, $_POST['shipping_state']);
+  $shipping_city = mysqli_real_escape_string($conn, $_POST['shipping_city']);
+  $shipping_postal_code = mysqli_real_escape_string($conn, $_POST['shipping_postal_code']);
+  $billing_address = mysqli_real_escape_string($conn, $_POST['billing_address']);
+  $billing_country = mysqli_real_escape_string($conn, $_POST['billing_country']);
+  $billing_state = mysqli_real_escape_string($conn, $_POST['billing_state']);
+  $billing_city = mysqli_real_escape_string($conn, $_POST['billing_city']);
+  $billing_postal_code = mysqli_real_escape_string($conn, $_POST['billing_postal_code']);
+  $date_of_birth = mysqli_real_escape_string($conn, $_POST['date_of_birth']);
+  $fax = mysqli_real_escape_string($conn, $_POST['fax']);
   $home_phone = mysqli_real_escape_string($conn, $_POST['home_phone']);
   $other_phone = mysqli_real_escape_string($conn, $_POST['other_phone']);
 

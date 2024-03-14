@@ -260,18 +260,20 @@
                     <button class="text-white text-sm px-4 py-2 w-28" style="background-color: #007bff;" name="<?php echo isset($_GET['quotation_id']) ? "edit_sales_quotation" : "add_sales_quotation" ?>"><?php echo isset($_GET['quotation_id']) ? "Update" : "Save" ?></button>
                     <button class="text-white text-sm px-4 py-2" style="background-color: #007bff;">Save & Preview</button>
                     <button class="text-white text-sm px-4 py-2" style="background-color: #007bff;">Save & Create Sales Order</button>
-                    <button class="bordertext-sm px-4 py-2 w-28" style="color: #007bff; border: 1px solid #007bff;">Cancel</button>
+                    <a href="sales_quotation.php" class="bordertext-sm px-4 py-2 w-20" style="color: #007bff; border: 1px solid #007bff;">Cancel</a>
                 </div>
             </div>
         </form>
         <div class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 p-4 transition-all duration-300" style="z-index: 99;" id="productPopup" style="display: BLOCK;">
             <div id="bw_popup" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-lg" style="width:1100px;">
-                <div class="flex justify-between border-b">
-                    <h2 class="text-gray-800 font-semibold p-4 text-xl">Terms Condition</h2>
+
+                <!-- <h2 class="text-gray-800 font-semibold p-4 text-xl">Terms Condition</h2> -->
+                <div class="flex justify-end">
                     <svg id="closeCCategory" onclick="closeModal('productPopup')" class="cursor-pointer mt-3 mr-2 close-button" width="35" height="35" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M37.5 12.5L12.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
                         <path d="M12.5 12.5L37.5 37.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
+
                 </div>
                 <form class="p-4" name="editproductform" action="../include/function.php" id="terms_conditionform">
 
@@ -362,11 +364,27 @@
         </div>
         <script src="../assets/js/script.js"></script>
         <script>
-            
+            function numberToWords(n) {
+                const units = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+                const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+                if (n < 20) return units[n];
+                const digit = n % 10;
+                if (n < 100) return tens[Math.floor(n / 10)] + (digit ? ' ' + units[digit] : '');
+                if (n < 1000) return units[Math.floor(n / 100)] + ' hundred' + (n % 100 === 0 ? '' : ' ' + numberToWords(n % 100));
+                return numberToWords(Math.floor(n / 1000)) + ' thousand' + (n % 1000 !== 0 ? ' ' + numberToWords(n % 1000) : '');
+            }
+
             $('input[name="sales_quotation_type"]').change(function() {
                 if ($(this).val() === 'Domestic') {
                     $('#gsts').show();
                 } else {
+                    table = document.getElementById('Producttable');
+                    for (let i = 1; i < table.rows.length; i++) {
+                        table.rows[i].cells[8].innerHTML = '0';
+                        table.rows[i].cells[9].innerHTML = '0';
+                    }
+
                     $('#gsts').hide();
                 }
             });
@@ -376,7 +394,10 @@
                 let tax_amount = document.getElementById('tax_amount');
                 tax_amount.readOnly = true;
                 tax_amount.style.backgroundColor = '#eeeeee';
-                
+                let amount = document.getElementById('amount');
+                amount.readOnly = true;
+                amount.style.backgroundColor = '#eeeeee';
+
                 console.log($('input[name="sales_quotation_type"]').val());
 
                 document.querySelector('input[value="Domestic"]').checked = true;
@@ -465,7 +486,7 @@
 
                         data.forEach((item, index) => {
                             let row = table.insertRow(-1);
-                         
+
                             let quantity = Number(item.enquiry_p_product_quantity);
                             let rate = Number(item.enquiry_p_product_rate);
                             let amount = quantity * rate;
@@ -474,7 +495,7 @@
                             let igst = parseInt(item.enquiry_p_igst);
                             let totalTaxPercentage = cgst + sgst + igst;
                             let taxAmount = (totalTaxPercentage / 100) * amount;
-                        
+
                             row.innerHTML = `
     <td class="px-6 py-4 whitespace-no-wrap" ><input type="checkbox" name="Productheadercheckbox[]" value="${item.enquiry_p_id}"></td>
     <td class="px-6 py-4 whitespace-no-wrap">${index + 1}</td>
@@ -507,11 +528,11 @@
                         let footerRow = table.insertRow(-1);
                         footerRow.innerHTML = `
 
-    <td colspan="3" class="px-6 py-4 whitespace-no-wrap">
-    Amount In Words: <b>INR ${netAmount.toFixed(2)}</b>
+    <td colspan="4" class="px-6 py-4 whitespace-no-wrap">
+    Amount In Words: <b> ${numberToWords(netAmount.toFixed(2))} ${currency}  Only</b>
     </td>
     <td colspan="2" class="px-6 py-4 whitespace-no-wrap">
-    only Total Quantity NOs. <b>${totalQuantity}</b>
+     Total Quantity NOs. <b>${totalQuantity}</b>
     </td>
     <td colspan="2" class="px-6 py-4 whitespace-no-wrap">
     Total <b>${totalAmount.toFixed(2)}</b>
@@ -679,16 +700,24 @@
             });
         </script>
         <?php
-        
+
         if (isset($_GET['quotation_id'])) {
             $qsales_quotation_product_id = explode(',', $quotationdata['qsales_quotation_product_id']);
-            getselecterdata($quotationdata['sales_quotation_cc_name'], '#sales_quotation_cc_name');
+            // getselecterdata($quotationdata['sales_quotation_cc_name'], '#sales_quotation_cc_name');
             echo "<script>
-                setTimeout(function() {
-                    $('#sales_quotation_enquiry').val('" . $quotationdata['sales_quotation_enquiry'] . "'); 
-                    $('#sales_quotation_enquiry').trigger('change');
-                }, 50);
-            
+
+
+            $('#sales_quotation_cc_name').val('" . $quotationdata['sales_quotation_cc_name'] . "'); 
+            $('#sales_quotation_cc_name').trigger('change');
+
+            setTimeout(function() {
+                $('#sales_quotation_enquiry').val('" . $quotationdata['sales_quotation_enquiry'] . "'); 
+                $('#sales_quotation_enquiry').trigger('change');
+            }, 200);
+               
+
+
+
                 document.querySelector('input[value=\"" . $quotationdata['sales_quotation_type'] . "\"]').checked = true;
                 document.querySelector('input[value=\"" . $quotationdata['sales_quotation_type'] . "\"]').checked = true;
                 setTimeout(function() {
