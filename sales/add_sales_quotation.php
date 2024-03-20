@@ -93,6 +93,7 @@
                                 <label for="qsales_quotation_number" class="text-gray-700 font-semibold">Quotation number</label>
                                 <input type="text" id="qsales_quotation_number" placeholder="Quotation number" name="qsales_quotation_number" value="<?php echo isset($_GET['quotation_id']) ? $quotationdata['qsales_quotation_number'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                                 <input type="hidden" name="quotation_id" value="<?php echo isset($_GET['quotation_id']) ? $quotationdata['quotation_id'] : '' ?>" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                                <input type="hidden" name="quotation_p_id"  class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
 
                             </div>
                             <div>
@@ -211,7 +212,17 @@
                                     </th>
                                 </tr>
                             </thead>
-
+                            <tbody>
+                            <tr>
+                                <td colspan="12">
+                                </td>
+                                </tr>
+                                <tr>
+                                <td colspan="12">
+                                <button class="text-white text-sm px-4 py-2 w-40 bg-[#007BFF] m-5" >Add in Quotation</button>
+                                </td>
+                                </tr>
+                            </tbody>
                         </table>
 
                     </div>
@@ -307,7 +318,7 @@
                             <input type="text" name="amount" id="amount" placeholder="amount" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                         </div>
 
-                        <input type="hidden" name="Product_id" class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
+                        <input type="hidden" name=" " class="border rounded-sm outline-none p-2 w-full focus:ring focus:ring-blue-400 mt-2">
                     </div>
 
 
@@ -469,10 +480,10 @@
                     data: {
                         Productdata: e
                     },
-                    success: function(response) {
-                        console.log(response);
+                    success: function(Productdatadatat) {
+                        // console.log(response);
 
-                        let data = JSON.parse(response);
+                        let Productdatadatat = JSON.parse(Productdatadatat);
                         let table = document.getElementById('Producttable');
                         let totalQuantity = 0;
                         let totalAmount = 0;
@@ -487,28 +498,28 @@
                         data.forEach((item, index) => {
                             let row = table.insertRow(-1);
 
-                            let quantity = Number(item.enquiry_p_product_quantity);
-                            let rate = Number(item.enquiry_p_product_rate);
+                            let quantity = Number(item.quotation_p_product_quantity);
+                            let rate = Number(item.quotation_p_product_rate);
                             let amount = quantity * rate;
-                            let cgst = parseInt(item.enquiry_p_cgst);
-                            let sgst = parseInt(item.enquiry_p_sgst);
-                            let igst = parseInt(item.enquiry_p_igst);
+                            let cgst = parseInt(item.quotation_p_cgst);
+                            let sgst = parseInt(item.quotation_p_sgst);
+                            let igst = parseInt(item.quotation_p_igst);
                             let totalTaxPercentage = cgst + sgst + igst;
                             let taxAmount = (totalTaxPercentage / 100) * amount;
 
                             row.innerHTML = `
-    <td class="px-6 py-4 whitespace-no-wrap" ><input type="checkbox" name="Productheadercheckbox[]" value="${item.enquiry_p_id}"></td>
+    <td class="px-6 py-4 whitespace-no-wrap" ><input type="checkbox" name="Productheadercheckbox[]" value="${item.quotation_p_id}"></td>
     <td class="px-6 py-4 whitespace-no-wrap">${index + 1}</td>
-    <td class="px-6 py-4 whitespace-no-wrap" colspan="2">${item.enquiry_p_product_description}</td>
-    <td   class="px-6 py-4 whitespace-no-wrap" >${item.enquiry_p_part_number}</td>
-    <td   class="px-6 py-4 whitespace-no-wrap" >${item.enquiry_p_product_hsn_code}</td>
-    <td   class="px-6 py-4 whitespace-no-wrap" >${item.enquiry_p_product_quantity}</td>
-    <td   class="px-6 py-4 whitespace-no-wrap" >${item.enquiry_p_product_rate}</td>
-    <td   class="px-6 py-4 whitespace-no-wrap" >${item.enquiry_p_product_amount}</td>
+    <td class="px-6 py-4 whitespace-no-wrap" colspan="2">${item.quotation_p_product_description}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >${item.quotation_p_part_number}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >${item.quotation_p_part_number}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >${item.quotation_p_product_quantity}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >${item.quotation_p_product_rate}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >${item.quotation_p_product_rate}</td>
     <td class="px-6 py-4 whitespace-no-wrap">${totalTaxPercentage}</td>
     <td   class="px-6 py-4 whitespace-no-wrap" >${taxAmount}</td>
     <td   class="px-6 py-4 whitespace-no-wrap" >
-    <button type="button" onclick="editproduct(${item.enquiry_p_id })">
+    <button type="button" onclick="editproduct(${item.quotation_p_id})">
     <svg class="mt-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 20H21" stroke="#8A8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
             <path d="M16.5 3.50023C16.8978 3.1024 17.4374 2.87891 18 2.87891C18.2786 2.87891 18.5544 2.93378 18.8118 3.04038C19.0692 3.14699 19.303 3.30324 19.5 3.50023C19.697 3.69721 19.8532 3.93106 19.9598 4.18843C20.0665 4.4458 20.1213 4.72165 20.1213 5.00023C20.1213 5.2788 20.0665 5.55465 19.9598 5.81202C19.8532 6.06939 19.697 6.30324 19.5 6.50023L7 19.0002L3 20.0002L4 16.0002L16.5 3.50023Z" stroke="#8A8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -601,28 +612,29 @@
                         let data = JSON.parse(response);
                         // console.log(data)
                         // Add data to input fields in the productPopup div
-                        document.querySelector('input[name="Product_Description"]').value = data[0].enquiry_p_product_description;
-                        document.querySelector('input[name="part_number"]').value = data[0].enquiry_p_part_number;
-                        document.querySelector('input[name="hsn_code"]').value = data[0].enquiry_p_product_hsn_code;
-                        document.querySelector('input[name="quantity"]').value = data[0].enquiry_p_product_quantity;
-                        document.querySelector('input[name="rate"]').value = data[0].enquiry_p_product_rate;
+                        document.querySelector('input[name="Product_Description"]').value = data[0].quotation_p_product_description;
+                        document.querySelector('input[name="part_number"]').value = data[0].quotation_p_part_number;
+                        document.querySelector('input[name="hsn_code"]').value = data[0].quotation_p_product_hsn_code;
+                        document.querySelector('input[name="quantity"]').value = data[0].quotation_p_product_quantity;
+                        document.querySelector('input[name="rate"]').value = data[0].quotation_p_product_rate;
+                        document.querySelector('input[name="quotation_p_id"]').value = data[0].quotation_p_id   ;
 
                         let cgstSelect = document.getElementById('cgst');
-                        let cgstValue = parseFloat(data[0].enquiry_p_cgst);
+                        let cgstValue = parseFloat(data[0].quotation_p_cgst);
 
                         if (cgstValue !== 0) {
                             cgstSelect.value = cgstValue;
                         }
 
                         let sgstSelect = document.getElementById('SGST');
-                        let sgstValue = parseFloat(data[0].enquiry_p_sgst);
+                        let sgstValue = parseFloat(data[0].quotation_p_sgst);
 
                         if (sgstValue !== 0) {
                             sgstSelect.value = sgstValue;
                         }
 
                         let igstSelect = document.getElementById('IGST');
-                        let igstValue = parseFloat(data[0].enquiry_p_igst);
+                        let igstValue = parseFloat(data[0].quotation_p_igst);
 
                         if (igstValue !== 0) {
                             igstSelect.value = igstValue;
@@ -682,7 +694,94 @@
                 closeModal('productPopup');
                 let sales_quotation_enquiry = document.getElementById('sales_quotation_enquiry').value;
 
-                getcontactdata(sales_quotation_enquiry);
+                // getcontactdata(sales_quotation_enquiry);
+                $.ajax({
+                    url: '../include/function.php',
+                    method: 'GET',
+                    data: {
+                        getqusationproduct: sales_quotation_enquiry
+                    },
+                    success: function(response) {
+                        console.log(response);
+
+                        let data = JSON.parse(response);
+                        let table = document.getElementById('Producttable');
+                        let totalQuantity = 0;
+                        let totalAmount = 0;
+                        let totalTaxAmount = 0;
+                        let taxRate = 0;
+                        // Clear all rows in the table
+                        for (let i = table.rows.length - 1; i > 0; i--) {
+                            table.deleteRow(i);
+                        }
+
+
+                        data.forEach((item, index) => {
+                            let row = table.insertRow(-1);
+
+                            let quantity = Number(item.quotation_p_product_quantity);
+                            let rate = Number(item.quotation_p_product_rate);
+                            let amount = quantity * rate;
+                            let cgst = parseInt(item.quotation_p_cgst);
+                            let sgst = parseInt(item.quotation_p_sgst);
+                            let igst = parseInt(item.quotation_p_igst);
+                            let totalTaxPercentage = cgst + sgst + igst;
+                            let taxAmount = (totalTaxPercentage / 100) * amount;
+
+                            row.innerHTML = `
+    <td class="px-6 py-4 whitespace-no-wrap" ><input type="checkbox" name="Productheadercheckbox[]" value="${item.quotation_p_id}"></td>
+    <td class="px-6 py-4 whitespace-no-wrap">${index + 1}</td>
+    <td class="px-6 py-4 whitespace-no-wrap" colspan="2">${item.quotation_p_product_description}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >${item.quotation_p_part_number}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >${item.quotation_p_part_number}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >${item.quotation_p_product_quantity}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >${item.quotation_p_product_rate}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >${item.quotation_p_product_rate}</td>
+    <td class="px-6 py-4 whitespace-no-wrap">${totalTaxPercentage}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >${taxAmount}</td>
+    <td   class="px-6 py-4 whitespace-no-wrap" >
+    <button type="button" onclick="editproduct(${item.quotation_p_id})">
+    <svg class="mt-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 20H21" stroke="#8A8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M16.5 3.50023C16.8978 3.1024 17.4374 2.87891 18 2.87891C18.2786 2.87891 18.5544 2.93378 18.8118 3.04038C19.0692 3.14699 19.303 3.30324 19.5 3.50023C19.697 3.69721 19.8532 3.93106 19.9598 4.18843C20.0665 4.4458 20.1213 4.72165 20.1213 5.00023C20.1213 5.2788 20.0665 5.55465 19.9598 5.81202C19.8532 6.06939 19.697 6.30324 19.5 6.50023L7 19.0002L3 20.0002L4 16.0002L16.5 3.50023Z" stroke="#8A8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+    </button>
+    </td>
+    `;
+
+                            totalQuantity += quantity;
+                            totalAmount += amount;
+                            totalTaxAmount += taxAmount;
+                        });
+
+
+                        let netAmount = totalAmount + totalTaxAmount;
+
+                        let footerRow = table.insertRow(-1);
+                        footerRow.innerHTML = `
+
+    <td colspan="4" class="px-6 py-4 whitespace-no-wrap">
+    Amount In Words: <b> ${numberToWords(netAmount.toFixed(2))} ${currency}  Only</b>
+    </td>
+    <td colspan="2" class="px-6 py-4 whitespace-no-wrap">
+     Total Quantity NOs. <b>${totalQuantity}</b>
+    </td>
+    <td colspan="2" class="px-6 py-4 whitespace-no-wrap">
+    Total <b>${totalAmount.toFixed(2)}</b>
+    </td>
+    <td colspan="2" class="px-6 py-4 whitespace-no-wrap">
+    Tax Amount <b>${totalTaxAmount.toFixed(2)}</b>
+    </td>
+    <td colspan="2" class="px-6 py-4 whitespace-no-wrap">
+        Net Amount (${currency}) <b> ${netAmount.toFixed(2)}</b>
+    </td>
+    `;
+                    },
+                    error: function(error) {
+                        console.error('AJAX request failed: ' + error);
+                    }
+                });
+               
 
             }
             $(document).ready(function() {

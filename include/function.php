@@ -16,6 +16,7 @@ if (isset($_POST['login'])) {
     $rowlogin = $resultlogin->fetch_array();
     $_SESSION['user_id'] = $rowlogin['user_id'];
     header("Location: ../index.php");
+    
   }
 }
 function getoptionwithcode($table, $field, $value, $value2)
@@ -1761,7 +1762,7 @@ function getsales_quotation()
       ' . $activebtn . '
       </td> 
       <td class="px-6 py-4 whitespace-no-wrap">
-     <a href=""> <svg class="cursor-pointer" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+     <a href="../invoice.php"> <svg class="cursor-pointer" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#007BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M14 2V8H20" stroke="#007BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M16 13H8" stroke="#007BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2336,8 +2337,40 @@ if (isset($_GET['Productdata'])) {
   $data = mysqli_query($conn, "SELECT * FROM `enquiry_product`  WHERE enquiry_id  = '" . $_GET['Productdata'] . "'");
   $datarow = mysqli_fetch_all($data, MYSQLI_ASSOC);
 
-  $json = json_encode($datarow);
+  $insertedIds = array(); 
 
+  foreach ($datarow as $row) {
+    $stmt = $conn->prepare("INSERT INTO `quotation_product`( `quotation_p_product_description`, `quotation_p_part_number`, `quotation_p_product_hsn_code`, `quotation_p_product_quantity`, `quotation_p_product_rate`, `quotation_p_product_amount`, `enquiry_id`, `quotation_p_product_category`, `quotation_p_Group`, `quotation_p_cgst`, `quotation_p_sgst`, `quotation_p_igst`, `quotation_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $stmt->bind_param(
+      "sssssssssssss",
+      $row['enquiry_p_product_description'],
+      $row['enquiry_p_part_number'],
+      $row['enquiry_p_product_hsn_code'],
+      $row['enquiry_p_product_quantity'],
+      $row['enquiry_p_product_rate'],
+      $row['enquiry_p_product_amount'],
+      $row['enquiry_id'],
+      $row['enquiry_p_product_category'],
+      $row['enquiry_p_Group'],
+      $row['enquiry_p_cgst'],
+      $row['enquiry_p_sgst'],
+      $row['enquiry_p_igst'],
+      $row['quotation_id']
+    );
+
+    if ($stmt->execute()) {
+      $insertedIds[] = $stmt->insert_id; // Store the last inserted ID
+    } else {
+      echo "Error inserting data: " . $stmt->error;
+    }
+  }
+
+  // Retrieve data from the database based on the inserted IDs
+  $data2 = mysqli_query($conn, "SELECT * FROM `quotation_product` WHERE quotation_p_id IN (" . implode(",", $insertedIds) . ")");
+  $datarow2 = mysqli_fetch_all($data2, MYSQLI_ASSOC);
+
+  // Encode and echo the table as JSON
+  $json = json_encode($datarow2);
   echo $json;
 }
 if (isset($_GET['Enquirydetaildata'])) {
@@ -2350,58 +2383,60 @@ if (isset($_GET['Enquirydetaildata'])) {
 }
 if (isset($_GET['ProductId'])) {
 
-  $data = mysqli_query($conn, "SELECT * FROM `enquiry_product`  WHERE enquiry_p_id    = '" . $_GET['ProductId'] . "'");
+  $data = mysqli_query($conn, "SELECT * FROM `quotation_product` WHERE quotation_p_id = '" . $_GET['ProductId'] . "'");
   $datarow = mysqli_fetch_all($data, MYSQLI_ASSOC);
   $json = json_encode($datarow);
   echo $json;
 }
 if (isset($_POST['editproduct'])) {
 
-  // $data = $_POST['quotation_Product_id'];
-  // $json = json_encode($data);
-  // echo $json;
-  // die();
-  $enquiry_p_id = mysqli_real_escape_string($conn, $_POST['quotation_Product_id']);
-  $enquiry_p_product_description = mysqli_real_escape_string($conn, $_POST['Product_Description']);
-  $enquiry_p_part_number = mysqli_real_escape_string($conn, $_POST['part_number']);
-  $enquiry_p_product_hsn_code = mysqli_real_escape_string($conn, $_POST['hsn_code']);
-  $enquiry_p_product_quantity = mysqli_real_escape_string($conn, $_POST['quantity']);
-  $enquiry_p_product_rate = mysqli_real_escape_string($conn, $_POST['rate']);
-  $enquiry_p_product_amount = mysqli_real_escape_string($conn, $_POST['amount']);
-  $enquiry_p_cgst = mysqli_real_escape_string($conn, $_POST['cgst']);
-  $enquiry_p_sgst = mysqli_real_escape_string($conn, $_POST['SGST']);
-  $enquiry_p_igst = mysqli_real_escape_string($conn, $_POST['SGST']);
+  $quotation_p_id = mysqli_real_escape_string($conn, $_POST['quotation_Product_id']);
+  $quotation_p_product_description = mysqli_real_escape_string($conn, $_POST['Product_Description']);
+  $quotation_p_part_number = mysqli_real_escape_string($conn, $_POST['part_number']);
+  $quotation_p_product_hsn_code = mysqli_real_escape_string($conn, $_POST['hsn_code']);
+  $quotation_p_product_quantity = mysqli_real_escape_string($conn, $_POST['quantity']);
+  $quotation_p_product_rate = mysqli_real_escape_string($conn, $_POST['rate']);
+  $quotation_p_product_amount = mysqli_real_escape_string($conn, $_POST['amount']);
+  // $enquiry_id = mysqli_real_escape_string($conn, $_POST['enquiry_id']);
+  $quotation_p_product_category = mysqli_real_escape_string($conn, $_POST['product_category']);
+  $quotation_p_Group = mysqli_real_escape_string($conn, $_POST['Group']);
+  $quotation_p_cgst = mysqli_real_escape_string($conn, $_POST['cgst']);
+  $quotation_p_sgst = mysqli_real_escape_string($conn, $_POST['SGST']);
+  $quotation_p_igst = mysqli_real_escape_string($conn, $_POST['SGST']);
+  $quotation_id = mysqli_real_escape_string($conn, $_POST['quotation_id']);
+  $quotation_Product_id = mysqli_real_escape_string($conn, $_POST['quotation_Product_id']);
 
-
-  $stmt = $conn->prepare("UPDATE `enquiry_product` SET 
-    `enquiry_p_product_description` = ?,
-    `enquiry_p_part_number` = ?,
-    `enquiry_p_product_hsn_code` = ?,
-    `enquiry_p_product_quantity` = ?,
-    `enquiry_p_product_rate` = ?,
-    `enquiry_p_product_amount` = ?,
-    `enquiry_p_cgst` = ?,
-    `enquiry_p_sgst` = ?,
-    `enquiry_p_igst` = ?
-    WHERE `enquiry_p_id` = ?");
+  $stmt = $conn->prepare("UPDATE `quotation_product` SET `quotation_p_product_description` = ?, `quotation_p_part_number` = ?, `quotation_p_product_hsn_code` = ?, `quotation_p_product_quantity` = ?, `quotation_p_product_rate` = ?, `quotation_p_product_amount` = ?,  `quotation_p_product_category` = ?, `quotation_p_Group` = ?, `quotation_p_cgst` = ?, `quotation_p_sgst` = ?, `quotation_p_igst` = ?, `quotation_id` = ? WHERE `quotation_p_id` = ?");
 
   $stmt->bind_param(
-    "sssssssssi",
-    $enquiry_p_product_description,
-    $enquiry_p_part_number,
-    $enquiry_p_product_hsn_code,
-    $enquiry_p_product_quantity,
-    $enquiry_p_product_rate,
-    $enquiry_p_product_amount,
-    $enquiry_p_cgst,
-    $enquiry_p_sgst,
-    $enquiry_p_igst,
-    $enquiry_p_id
+    "ssssssssssssi",
+    $quotation_p_product_description,
+    $quotation_p_part_number,
+    $quotation_p_product_hsn_code,
+    $quotation_p_product_quantity,
+    $quotation_p_product_rate,
+    $quotation_p_product_amount,
+
+    $quotation_p_product_category,
+    $quotation_p_Group,
+    $quotation_p_cgst,
+    $quotation_p_sgst,
+    $quotation_p_igst,
+    $quotation_id,
+    $quotation_Product_id
   );
 
   if ($stmt->execute()) {
-    echo "Data updated successfully";
+    echo "Data inserted successfully";
   } else {
-    echo "Error updating data: " . $stmt->error;
+    echo "Error inserting data: " . $stmt->error;
   }
+}
+if (isset($_GET['getqusationproduct'])) {
+  $data = mysqli_query($conn, "SELECT * FROM `quotation_product`  WHERE enquiry_id  = '" . $_GET['getqusationproduct'] . "'");
+  $datarow = mysqli_fetch_all($data, MYSQLI_ASSOC);
+
+
+  $json = json_encode($datarow);
+  echo $json;
 }
